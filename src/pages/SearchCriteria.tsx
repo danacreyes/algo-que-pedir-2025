@@ -10,7 +10,7 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 const SearchCriteria = () => {
     return(
         <>
-        <Container sx={{display: 'flex', width: '100vw', height: '100%', flexDirection: 'column', padding: '1em', gap: '1em' }}>
+        <Container sx={{display: 'flex', width: '100vw', height: '100%', flexDirection: 'column', padding: '2em', gap: '1em' }}>
             <Box component="section" sx={{display: 'flex', width: '100%', position: 'relative'}}>
                 <IconButton size='small' href='/profile' sx={{ color: 'black'}}>
                     <ArrowBackIcon className='icon-profile'/>
@@ -131,7 +131,7 @@ const SearchCriteria = () => {
                     </Grid>
                 </Grid>
             </Card>
-            <Button size='small' variant="contained" sx={{background: '#E82933', padding: '0.8em', width: '100%', borderRadius: '6px', textTransform: 'none', fontWeight: 300}}>Guardar</Button>
+            <Button variant="contained" sx={{background: '#E82933', padding: '0.8em', width: '100%', borderRadius: '6px', textTransform: 'none', fontWeight: 300}}>Guardar</Button>
         </Container>
         </>
     )

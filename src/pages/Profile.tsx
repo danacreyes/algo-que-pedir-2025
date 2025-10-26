@@ -8,7 +8,7 @@ import '../css/profile.css'
 const Profile = () => {
     return(
         <>
-        <Container className='container-profile'>
+        <Container sx={{display: 'flex', width: '100vw', height: '100%', flexDirection: 'column', padding: '2em', gap: '1em' }}>
             <Box component="section" sx={{display: 'flex', width: '100%', position: 'relative'}}>
                 <ArrowBackIcon className='icon-profile'/>
                 <Typography variant="h6" sx={{ display: 'flex', width: '100%', justifyContent: 'center', fontWeight: 600 }}>Perfil</Typography>
@@ -35,10 +35,10 @@ const Profile = () => {
                     <TextField id="user-location" label="Ubicacion" variant="outlined" size="small"/>
                     <Grid container spacing={2} columns={16}>
                         <Grid size={8}>
-                            <TextField id="user-latitude" label="Latitud" variant="outlined" size="small"/>
+                            <TextField id="user-latitude" label="Latitud" variant="outlined" size="small" sx={{width: '100%'}}/>
                         </Grid>
                         <Grid size={8}>
-                            <TextField id="user-longitude" label="Longitud" variant="outlined" size="small"/>
+                            <TextField id="user-longitude" label="Longitud" variant="outlined" size="small" sx={{width: '100%'}}/>
                         </Grid>
                     </Grid>
                 </FormControl>
