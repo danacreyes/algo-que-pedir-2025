@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Home from '../pages/Home'
 import OrderDetails from '../pages/OrderDetails'
-import { RouterLayout } from '../common/RouterLayout'
+import { RouterLayout } from './RouterLayout'
 
 export const AppRouter = () => {
     return (
