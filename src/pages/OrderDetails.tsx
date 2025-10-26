@@ -1,7 +1,7 @@
 
 const OrderDetails = () => {
   return (
-    <div>Maxi reputo</div>
+    <div>Nico malo</div>
   )
 }
 
