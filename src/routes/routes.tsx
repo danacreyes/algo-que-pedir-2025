@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Home from '../pages/Home'
 import OrderDetails from '../pages/OrderDetails'
-import { RouterLayout } from '../components/RouterLayout'
+import { RouterLayout } from './RouterLayout'
 import Profile from '../pages/Profile'
 import SearchCriteria from '../pages/SearchCriteria'
 
