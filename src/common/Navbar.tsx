@@ -1,8 +1,7 @@
 import { AppBar, Box, Button, Container, Toolbar } from '@mui/material'
 import { House, Receipt, Star, User } from 'phosphor-react'
-import React from 'react'
 
-export const NavBar: React.FC<{}> = () => {
+export const NavBar = () => {
         
     return (
         <Box sx={{ flexGrow: 1 }}>

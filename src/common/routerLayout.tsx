@@ -1,12 +1,12 @@
-import React from 'react'
-import { NavBar } from './Navbar'
+import SimpleBottomNavigation from './BottomNavigator'
 import { Outlet } from 'react-router-dom'
 
-export const RouterLayout: React.FC<{}> = () => {
+export const RouterLayout = () => {
     return(
         <>
-        <Outlet />
-        <NavBar />
+            <Outlet />
+            {/* <NavBar /> */}
+            <SimpleBottomNavigation/>
         </>
     )
 }

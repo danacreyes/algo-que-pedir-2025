@@ -1,13 +1,15 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Home } from '../pages/home'
-import { RouterLayout } from '../common/routerLayout'
+import Home from '../pages/Home'
+import OrderDetails from '../pages/OrderDetails'
+import { RouterLayout } from '../common/RouterLayout'
 
-export const AppRouter: React.FC<{}> = () => {
+export const AppRouter = () => {
     return (
         <Routes>
             <Route  path="/" element={<RouterLayout/>}>
+                {/* <Route  path="/tu-ruta" element={<TuPagina/>}/> */}
                 <Route  path="/" element={<Home/>}/>
+                <Route  path="/order-details" element={<OrderDetails/>}/>
             </Route>
         </Routes>
     )
