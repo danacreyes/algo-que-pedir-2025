@@ -1,8 +1,8 @@
 import { Button, Container } from '@mui/material'
-import * as React from 'react'
+// import * as React from 'react'
 
 
-export const Home: React.FC<{}> = () => {
+export const Home = () => {
   return (
     <Container>
       <Button>
