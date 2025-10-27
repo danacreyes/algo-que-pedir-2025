@@ -15,7 +15,7 @@ import { orderService } from '../services/orderService'
   Se agrego la dependencia 'sessionStorage' en el linter
   El back del repositorio de pedidos filtra por el mail del local del pedido, agregue un nuevo endpoint que filtre por mail de user
   Por que cuando clickeo la primera vez no los trae pero la segunda si?
-  "Each child in a list should have a unique "key" prop"
+  'Each child in a list should have a unique 'key' prop'
 
 
 
@@ -26,27 +26,19 @@ import { orderService } from '../services/orderService'
 sessionStorage.setItem('email', 'sofiamiller@gmail.com')
 
 const OrderDetails = () => {
-  const [value, setValue] = React.useState('1')
   const [orders, setOrders] = useState<Order[]>([])
   const [state, setState] = useState('PENDIENTE')
   const [errorMessage, setErrorMessage] = useState('')
-
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-  }
   
   function showFilteredOrders() {
     return orders
-    .filter(order => order.estado == state)
-    .map(order => 
-      <>
-        <PedidoRow key={order.id} order={order} />
-        <br />
-      </>
-    )
+      .filter(order => order.estado == state)
+      .map(order => 
+          <PedidoRow key={order.id} order={order} />
+      )
   }
 
-  const setNewState = (newState: string) => {
+  const setNewState = (event: React.SyntheticEvent, newState: string) => {
     setState(newState)
     getOrders()
   }
@@ -54,9 +46,10 @@ const OrderDetails = () => {
   const getOrders = async () => {
     setErrorMessage('')
     try {
-        setOrders(await orderService.getFilteredUserOrders(state))
+        const newOrders = await orderService.getFilteredUserOrders(state)
+        setOrders(newOrders)
     } catch (error) {
-      console.info('Unexpected error', error)
+      console.info('Unexpected error' + errorMessage, error)
         // if (!toastLock) {
         //     // toasts.push('Error cargando los pedidos', {type: 'error'})
         //     showError('Error cargando los pedidos', error)
@@ -75,12 +68,12 @@ const OrderDetails = () => {
             Pedidos
         </Typography>
         <Box sx={{ width: '100%', typography: 'body1'}}>
-          <TabContext value={value}>
+          <TabContext value={state}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="Pendientes" value="PENDIENTE" onClick={() => setNewState('PENDIENTE')}/>
-                <Tab label="Completados" value="ENTREGADO" onClick={() => setNewState('ENTREGADO')}/>
-                <Tab label="Cancelados" value="CANCELADO" onClick={() => setNewState('CANCELADO')}/>
+              <TabList onChange={setNewState} aria-label='lab API tabs example'>
+                <Tab label='Pendientes' value='PENDIENTE' />
+                <Tab label='Completados' value='ENTREGADO' />
+                <Tab label='Cancelados' value='CANCELADO' />
               </TabList>
             </Box>
             <TabPanel value={state} sx={{padding: 0, marginTop: '0.5em'}}>
