@@ -18,6 +18,7 @@ export default [
       globals: {
         window: 'readonly',
         document: 'readonly',
+        sessionStorage: 'readonly', // Definir para traer del sessionStorage?
         console: 'readonly',
         navigator: 'readonly',
         setInterval: 'readonly',

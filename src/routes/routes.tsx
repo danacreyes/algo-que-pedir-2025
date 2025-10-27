@@ -1,14 +1,19 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Home } from '../pages/home'
-import { RouterLayout } from '../common/RouterLayout'
+import Home from '../pages/Home'
+import OrderDetails from '../pages/OrderDetails'
+import { RouterLayout } from './RouterLayout'
+import Profile from '../pages/Profile'
+import SearchCriteria from '../pages/SearchCriteria'
 
-
-export const AppRouter: React.FC<{}> = () => {
+export const AppRouter = () => {
     return (
         <Routes>
             <Route  path="/" element={<RouterLayout/>}>
+                {/* <Route  path="/tu-ruta" element={<TuPagina/>}/> */}
                 <Route  path="/" element={<Home/>}/>
+                <Route  path="/order-details" element={<OrderDetails/>}/>
+                <Route  path="/profile" element={<Profile/>}/>
+                <Route  path="/search-criteria" element={<SearchCriteria/>}/>
             </Route>
         </Routes>
     )
