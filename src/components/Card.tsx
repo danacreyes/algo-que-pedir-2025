@@ -20,6 +20,7 @@ export default function MediaCard() {
           boxShadow: 3, 
         },
         margin: 2,
+        padding:2,
       }}
       onClick={handleCardClick} 
     >

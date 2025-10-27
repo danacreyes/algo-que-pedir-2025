@@ -17,7 +17,7 @@ const Home = () => {
         marginTop: '80px', 
       }}>
         <ColorCheckboxes />
-        <Box display={'flex'} justifyContent={'space-between'} width={'100%'}>
+        <Box display={'flex'} width={'100%'}>
           <MediaCard />
           <MediaCard />
         </Box>
