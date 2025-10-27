@@ -4,6 +4,7 @@ import OrderDetails from '../pages/OrderDetails'
 import { RouterLayout } from './RouterLayout'
 import Profile from '../pages/Profile'
 import SearchCriteria from '../pages/SearchCriteria'
+import StoreRatings from '../pages/StoreRatings'
 
 export const AppRouter = () => {
     return (
@@ -14,6 +15,7 @@ export const AppRouter = () => {
                 <Route  path="/order-details" element={<OrderDetails/>}/>
                 <Route  path="/profile" element={<Profile/>}/>
                 <Route  path="/search-criteria" element={<SearchCriteria/>}/>
+                <Route  path="/store-ratings" element={<StoreRatings/>}/>
             </Route>
         </Routes>
     )

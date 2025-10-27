@@ -3,6 +3,15 @@ import { Order } from '../domain/order'
 
 
 function PedidoRow({ order }: {order: Order}) {
+  const deleteOrder = () => {
+    try {
+      // pedidoService.deleteOrder(order)
+      // Toast de exito
+    } catch (error) {
+      console.info('An error ocurred', error)
+    }
+  }
+
   return (
     <Card sx={{ maxWidth: 245 }}>
       <CardMedia
@@ -25,7 +34,7 @@ function PedidoRow({ order }: {order: Order}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">DELETE</Button>
+        <Button size="small"onClick={deleteOrder}>DELETE</Button>
       </CardActions>
     </Card>
   )
