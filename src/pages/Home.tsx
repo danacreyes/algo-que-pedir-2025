@@ -19,7 +19,6 @@ const Home = () => {
         <ColorCheckboxes />
         <Box display={'flex'} width={'100%'}>
           <MediaCard />
-          <MediaCard />
         </Box>
       </Box>
     </Box>

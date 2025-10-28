@@ -68,8 +68,6 @@ export class StoreType {
     return this.errors.length > 0
   }
 
-
-
   validate() {
     this.errors = []
    
@@ -84,9 +82,7 @@ export class StoreType {
     // Verificar que comience con http o https (como en el back)
       if (!this.storeURL.startsWith('http://') && !this.storeURL.startsWith('https://')) {
         this.addError('url', 'La URL debe comenzar con http:// o https://')
-      }}
-
-    
+      }} 
 
     if (!this.storeAddress || this.storeAddress.trim() === '' || this.storeAddress === 'null' || this.storeAddress === 'undefined') {
       this.addError('address', 'Debe ingresar dirección')
