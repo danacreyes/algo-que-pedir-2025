@@ -52,6 +52,8 @@ function OrderDetails () {
     }
   }
 
+  const showOrders = () => orders.map(order => <PedidoRow key={order.id} order={order} />)
+
   useOnInit(getOrders, state)
 
   return (
@@ -59,7 +61,7 @@ function OrderDetails () {
     <div className='main-container'>
       <section className='section-title-and-tabs'>
         <Typography 
-          variant='h5' sx={{margin: '2rem 0'}}>
+          variant='h5' sx={{margin: '1rem 0'}}>
             Pedidos
         </Typography>
         <Box sx={{ width: '100%', typography: 'body1'}}>
@@ -73,8 +75,7 @@ function OrderDetails () {
             </Box>
             <TabPanel value={state} sx={{padding: 0, marginTop: '0.5em'}}>
               {orders.length != 0 ?
-              orders.map(order => 
-                    <PedidoRow key={order.id} order={order} />) :
+              showOrders() :
               <Typography 
                 variant='subtitle1' sx={{margin: '2rem 0', color: 'text.secondary'}}>
                   No hay pedidos para mostrar

@@ -3,21 +3,22 @@ import { useState } from 'react'
 import { StoreType } from '../domain/store'
 
 const StoreRatings = () => {
-    const [stores, setStores] = useState<StoreType[]>([])
+    // Podrian no ser StoreTypes no? Directamente mandar al back la puntuacion
+    const [unratedStores, setUnratedStores] = useState<StoreType[]>([])
     // const [errorMessage, setErrorMessage] = useState('') // para errores 
 
     const getUnratedStores = async () => {
         try {
             // Aca es userService? Es el que usamos para loguearnos con Local...
             // const unratedStores = userService.getUnratedStores()
-            setStores(stores)
+            setUnratedStores(unratedStores)
         } catch (error) {
             console.info('An error has occurred',error)
         }
     }
 
     const showUnratedStores = () => {
-        return stores
+        return unratedStores
         .map(store => 
             <Card sx={{ display: 'flex' }}>
                 <CardMedia
@@ -55,7 +56,7 @@ const StoreRatings = () => {
                     variant='h5' sx={{margin: '2rem 0'}}>
                         Restaurantes a calificar
                     </Typography>
-                    {stores.length != 0 ? 
+                    {unratedStores.length != 0 ? 
                         showUnratedStores() : 
                         <Typography variant='subtitle1' sx={{margin: '2rem 0', color: 'text.secondary'}}>
                             No hay locales para puntuar

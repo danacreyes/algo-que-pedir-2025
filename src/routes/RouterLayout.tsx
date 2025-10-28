@@ -5,7 +5,6 @@ export const RouterLayout = () => {
     return(
         <>
             <Outlet />
-            {/* <NavBar /> */}
             <SimpleBottomNavigation/>
         </>
     )
