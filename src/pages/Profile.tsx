@@ -1,18 +1,21 @@
 import Typography from '@mui/material/Typography'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { Avatar, FormControl, TextField, Grid, Box, Container, IconButton } from '@mui/material'
+import { Avatar, FormControl, TextField, Grid, Box, Container, IconButton, Button } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import AddIcon from '@mui/icons-material/Add'
 import '../css/profile.css'
+import { useState } from 'react'
+import { IngredientType } from '../domain/ingredient'
+import { ingredientService } from '../services/IngredientService'
 
 const Profile = () => {
     return(
         <>
-        <Container sx={{display: 'flex', width: '100vw', height: '100%', flexDirection: 'column', padding: '2em', gap: '1em' }}>
-            <Box component="section" sx={{display: 'flex', width: '100%', position: 'relative'}}>
-                <ArrowBackIcon className='icon-profile'/>
-                <Typography variant="h6" sx={{ display: 'flex', width: '100%', justifyContent: 'center', fontWeight: 600 }}>Perfil</Typography>
-            </Box>
+        <Container sx={{display: 'flex', width: '100vw', height: '100%', flexDirection: 'column', padding: '2em', gap: '1em'}}>
+            
+            <Typography variant="h6" sx={{ display: 'flex', width: '100%', justifyContent: 'center', fontWeight: 600}}>Perfil</Typography>
+
+            {/* AVATAR */}
             <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Avatar
@@ -26,6 +29,8 @@ const Profile = () => {
                     <Typography variant="body2" color='gray' align='center'>olivia.bennett@email.com</Typography>
                 </Box>
             </Container>
+
+            {/* PERSONAL INFORMATION */}
             <Container sx={{ display: 'flex', flexDirection: 'column', rowGap: '1em', padding: '0' }}> 
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>Informacion personal</Typography>
                 <FormControl className='form-field'>
@@ -43,6 +48,8 @@ const Profile = () => {
                     </Grid>
                 </FormControl>
             </Container>
+
+            {/* PREFERENCES */}
             <Container sx={{ display: 'flex', flexDirection: 'column', rowGap: '1em', padding: '0' }}>
                 <Typography variant="h6" sx={{fontWeight: 700}}>Preferencias</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
@@ -60,10 +67,10 @@ const Profile = () => {
                     <AddIcon/>
                 </Box>
             </Container>
-            
+            <Button variant="contained" sx={{background: '#E82933', padding: '0.8em', width: '100%', borderRadius: '6px', textTransform: 'none', fontWeight: 300}}>Guardar</Button>
+
         </Container>
         </>
-        
     )
 }
 
