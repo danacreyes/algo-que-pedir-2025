@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import Home from '../pages/Home'
+import Login from '../pages/Login'
 import OrderDetails from '../pages/OrderDetails'
 import { RouterLayout } from './RouterLayout'
 import Profile from '../pages/Profile'
@@ -10,6 +11,8 @@ export const AppRouter = () => {
         <Routes>
             <Route  path="/" element={<RouterLayout/>}>
                 {/* <Route  path="/tu-ruta" element={<TuPagina/>}/> */}
+                <Route  path="/login" element={<Login />}/>
+                <Route  path="/register" element={<Login />}/>
                 <Route  path="/" element={<Home/>}/>
                 <Route  path="/order-details" element={<OrderDetails/>}/>
                 <Route  path="/profile" element={<Profile/>}/>
