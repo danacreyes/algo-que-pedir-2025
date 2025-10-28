@@ -1,4 +1,4 @@
-import { toasts } from '../components/toast/toastStore'
+// import { toasts } from '../components/toast/toastStore'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getErrorMessage = (error: any): string => {
@@ -31,8 +31,8 @@ export const getErrorMessage = (error: any): string => {
  
 }
 
-export const showError = (operation: string, error: unknown) => {
-  // eslint-disable-next-line no-console
-  console.info(operation, error)
-  toasts.push(`${operation}. ${getErrorMessage(error)}`, { type: 'error' })
-}
+// export const showError = (operation: string, error: unknown) => {
+//   // eslint-disable-next-line no-console
+//   console.info(operation, error)
+//   toasts.push(`${operation}. ${getErrorMessage(error)}`, { type: 'error' })
+// }
