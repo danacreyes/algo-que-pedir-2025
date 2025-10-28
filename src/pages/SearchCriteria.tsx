@@ -5,10 +5,9 @@ import ClearIcon from '@mui/icons-material/Clear'
 import AddIcon from '@mui/icons-material/Add'
 import '../css/profile.css'
 import CheckboxCard from '../components/CheckBoxContainer'
-import FavoriteRestaurantItem from '../components/FavoriteRestaurantItem'
 import { useState } from 'react'
 import RemoveIcon from '@mui/icons-material/Remove'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
+import RestaurantCard from '../components/RestaurantCard'
 
 const SearchCriteria = () => {
     const [counter, setCounter] = useState(0)
@@ -53,14 +52,14 @@ const SearchCriteria = () => {
                 description = 'Solo los restaurantes preferidos'
                 defaultChecked = {true}
             >
-                <FavoriteRestaurantItem
+                <RestaurantCard
                     src ='https://images.unsplash.com/photo-1534650075489-3baecec1e8b1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170'
                     alt ='Restaurant'
                     name ='La pizzeria'
                     detail ='4.2 • 25-35 min • $'
                     icon ={<ClearIcon />}
                 />
-                <FavoriteRestaurantItem
+                <RestaurantCard
                     src='https://images.unsplash.com/photo-1605478371310-a9f1e96b4ff4?ixlib=rb-4.1.0&ixid'
                     alt='Restaurant'
                     name='El Gran Sabor'
@@ -89,12 +88,12 @@ const SearchCriteria = () => {
             >
                 <Container sx={{display: 'flex', width: '100%', justifyContent: 'space-between', padding: 0}}>
                     <Typography variant="body2" color='gray'>Distancia (km)</Typography>
+                    
                     <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.5em'}}>
                         <Fab size='small' aria-label="remove" sx={{color: 'ligth-gray', width: '2.2em', boxShadow: 'none', fontSize: '16px'}} onClick={rest} disabled={counter === 0}>
                             <RemoveIcon />
                         </Fab>
                         <Typography>{counter}</Typography>
-                        
                         <Fab size='small' aria-label="add" sx={{color: 'ligth-gray', width: '2.2em', boxShadow: 'none', fontSize: '16px'}} onClick={add}>
                             <AddIcon />
                         </Fab>
@@ -107,6 +106,7 @@ const SearchCriteria = () => {
                             <AddCircleIcon sx={{color: 'gray'}}/>
                         </Button> */}
                     </Box>
+                    
                 </Container>
 
             </CheckboxCard>

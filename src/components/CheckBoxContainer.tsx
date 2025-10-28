@@ -1,6 +1,10 @@
-import { Box, Container, Card, Grid, Checkbox, IconButton, Button } from '@mui/material'
+import { Card, Grid, Checkbox } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
+
+// React Node
+// is a flexible type that includes primitive values like strings and numbers, 
+// as well as complex types like JSX elements, arrays, or other React nodes. 
 
 const CheckboxCard = ({ title, description, defaultChecked, children }: {title: string, description: string, defaultChecked: boolean, children?: ReactNode }) => {
     const label = { inputProps: { 'aria-label': `${title} Checkbox`} }

@@ -1,12 +1,9 @@
 import Typography from '@mui/material/Typography'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { Avatar, FormControl, TextField, Grid, Box, Container, IconButton, Button } from '@mui/material'
+import { Avatar, FormControl, TextField, Grid, Box, Container, Button } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import AddIcon from '@mui/icons-material/Add'
 import '../css/profile.css'
-import { useState } from 'react'
-import { IngredientType } from '../domain/ingredient'
-import { ingredientService } from '../services/IngredientService'
+import PreferencesBox from '../components/PreferencesBox'
 
 const Profile = () => {
     return(
@@ -49,23 +46,26 @@ const Profile = () => {
                 </FormControl>
             </Container>
 
-            {/* PREFERENCES */}
+            {/* PREFERENCES (podria hacer los Box otro componente) */}
             <Container sx={{ display: 'flex', flexDirection: 'column', rowGap: '1em', padding: '0' }}>
                 <Typography variant="h6" sx={{fontWeight: 700}}>Preferencias</Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
-                    <Typography variant="body1" sx={{fontWeight: 600}} >Criterios de busqueda</Typography>
-                    <IconButton size='small' href='/search-criteria' sx={{ color: 'black', padding: '0'}}> 
-                        <ArrowForwardIosIcon fontSize='small'/>
-                    </IconButton>
-                </Box>
+                
+                <PreferencesBox
+                    title ='Criterios de busqueda'
+                    link ='/search-criteria'
+                    icon = {<ArrowForwardIosIcon fontSize='small'/>}
+                />
+
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="body1" sx={{fontWeight: 600}}>Ingredientes preferidos</Typography>
                     <AddIcon/>
                 </Box>
-                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="body1" sx={{fontWeight: 600}}>Ingredientes a evitar</Typography>
                     <AddIcon/>
                 </Box>
+
             </Container>
             <Button variant="contained" sx={{background: '#E82933', padding: '0.8em', width: '100%', borderRadius: '6px', textTransform: 'none', fontWeight: 300}}>Guardar</Button>
 
