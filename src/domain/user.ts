@@ -14,19 +14,23 @@ export type UserJSONLoginRequest = {
 export interface UserJSONResponse {
   email: string;
   name: string;
+  id: number;
 } 
 
 export interface UserJSONRegisterRequest {
   name: string
+  lastName: string
   email: string
   password: string
+  passwordRetry: string
 }
 
 export class UserType {
   errors: ValidationMessage[] = []
 
   constructor(
-    public name: string = 'Default User'.trim(),
+    public name: string = 'nombre'.trim(),
+    public lastName: string = 'apellido'.trim(),
     public password: string = ''.trim(),
     public email: string = ''
   ) {}
