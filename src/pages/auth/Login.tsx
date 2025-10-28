@@ -1,16 +1,17 @@
 import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TextField } from '@mui/material'
 import {Button} from '@mui/material'
-import '../css/login.css'
-import { UserJSONLoginRequest, UserType } from '../domain/user';
-import { userService } from '../services/UserService';
-import { ValidationMessage } from '../domain/validationMessage';
-import ValidationField from '../components/ValidationField';
+import { CookingPot, } from 'phosphor-react'
+import './login-register.css'
+import { UserJSONLoginRequest, UserType } from '../../domain/user';
+import { userService } from '../../services/UserService';
+import { ValidationMessage } from '../../domain/validationMessage';
+import ValidationField from '../../components/ValidationField';
 // import { showError } from '../domain/errorHandler';
-import { getErrorMessage } from '../domain/errorHandler';
-import { Toast } from '../components/toast/ToastContainer';
-import { useToast } from '../components/toast/useToast';
+import { getErrorMessage } from '../../domain/errorHandler';
+import { Toast } from '../../components/toast/ToastContainer';
+import { useToast } from '../../components/toast/useToast';
 
 const Login = () => {
   const { toast, showToast } = useToast()
@@ -27,13 +28,14 @@ const Login = () => {
 
     const userLogin = new UserType(
       'nombre',
+      'apellido',
       (formData.get("password") ?? "").toString(),
       (formData.get("email") ?? "").toString(),
     );
 
     userLogin.validate();
-    console.log(userLogin.errors);
-    console.log(userLogin);
+    // console.log(userLogin.errors);
+    // console.log(userLogin);
 
     if (userLogin.errors.length > 0) {
       setErrors(userLogin.errors);
@@ -42,7 +44,7 @@ const Login = () => {
     }
 
     try {
-      let validation = await userService.getClient(userLogin.email, userLogin.password)
+      let validation = await userService.getUser(userLogin.email, userLogin.password)
         if (validation) navigate("/") // si devuelve Truthy redirige a home
     } catch (error) {
       // alert(`Email: ${user.email}, Password: ${user.password}`);
@@ -63,15 +65,19 @@ const Login = () => {
     
   return (
     <div className="main-container-login">
+      <div className='header-logo'>
+        <CookingPot weight='fill' className='cooking-pot-logo'></CookingPot>
+        <h1>Algo que pedir</h1>
+      </div>
 
       <form
         onSubmit={handleSubmit}
         id='login-form'
-        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '300px' }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '80vw' }}
       >
         <TextField
           id='email'
-          label="Email"
+          label="Email*"
           type="email"
           name='email'
           value={user.email}
@@ -81,7 +87,7 @@ const Login = () => {
 
         <TextField
           id='password'
-          label="Contraseña"
+          label="Contraseña*"
           type="password"
           name='password'
           value={user.password}
@@ -102,6 +108,8 @@ const Login = () => {
           Iniciar sesión
         </Button>
       </form>
+
+      <span>¿No tenes cuenta? <Link to={'/register'}>Registrate</Link></span>
 
       <div id="toast-container">
         <Toast toast={toast} />

@@ -13,6 +13,12 @@
   --button-hover-color: hsl(1, 77%, 45%);
   --button-active-color: hsl(1, 77%, 35%);
 
+    --font-h1: 2.5rem;
+    --font-h2: 2rem;
+    --font-h3: 1.5rem;
+    --font-h4: 1.25rem;
+    --font-text: 1.2rem;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -28,7 +34,7 @@
 a {
   font-weight: 500;
   color: var(--primary-color);
-  text-decoration: inherit;
+  /* text-decoration: inherit; */
 }
 
 a:hover {
