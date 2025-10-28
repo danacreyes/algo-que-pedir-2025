@@ -10,7 +10,7 @@ export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0)
 
   return (
-    <Paper sx={{ position: 'sticky', bottom: 0, left: 0, right: 0 }} elevation={3}>
+    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <Box sx={{ maxWidth: '100%', minWidth: '100%'}}>
             <BottomNavigation
                 showLabels
