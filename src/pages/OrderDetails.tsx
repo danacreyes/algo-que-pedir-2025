@@ -4,10 +4,11 @@ import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import '../index.css'
 import '../css/order-details.css'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PedidoRow from '../components/PedidoRow'
 import { Order } from '../domain/order'
 import { orderService } from '../services/orderService'
+import { useOnInit } from '../customHooks/useOnInit'
 
 /*
   Agregue local al objeto de dominio 'Order'
@@ -17,6 +18,7 @@ import { orderService } from '../services/orderService'
   Por que cuando clickeo la primera vez no los trae pero la segunda si?
   'Each child in a list should have a unique 'key' prop'
   Que son los 'event' que se pasa aveces a las funciones? Casi nunca se usan
+  Pregunta por el warning en el hook
 
 
 
@@ -49,10 +51,8 @@ function OrderDetails () {
         // }
     }
   }
-  // :)
-  useEffect(() => {
-    getOrders()
-  }, [state])
+
+  useOnInit(getOrders, state)
 
   return (
     <>

@@ -13,6 +13,7 @@ export const AppRouter = () => {
                 {/* <Route  path="/tu-ruta" element={<TuPagina/>}/> */}
                 <Route  path="/" element={<Home/>}/>
                 <Route  path="/order-details" element={<OrderDetails/>}/>
+                {/* <Route path="/order/:id" element={<Componente de Max />} /> */}
                 <Route  path="/profile" element={<Profile/>}/>
                 <Route  path="/search-criteria" element={<SearchCriteria/>}/>
                 <Route  path="/store-ratings" element={<StoreRatings/>}/>

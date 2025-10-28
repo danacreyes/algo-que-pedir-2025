@@ -59,6 +59,18 @@ const StoreRatings = () => {
                         showUnratedStores() : 
                         <Typography variant='subtitle1' sx={{margin: '2rem 0', color: 'text.secondary'}}>
                             No hay locales para puntuar
+                            <br />
+                            /*
+                                TODO:
+                                Cuando maxi arme la pagina del pedido, agregale en su endpoint todo lo de que se va a 
+                                poder puntuar el local. Medio hardcodeado pero como no tenemos envio, creo que lo mas practico
+                                va ser que cuando se confirme el carrito, ya se pueda puntuar y cancelar.
+                                Si se cancela igual se puede puntuar.
+                            
+                            
+                            
+                            
+                             */
                         </Typography>}
                 </section>
             </div>
