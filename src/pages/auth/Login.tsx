@@ -82,6 +82,7 @@ const Login = () => {
           name='email'
           value={user.email}
           onChange={(e) => actualizar('email', e.target.value)}
+          error={!errors?.every(valMess => valMess.field != 'email')}
         />
         <ValidationField field='email' errors={errors} />
 
@@ -92,6 +93,7 @@ const Login = () => {
           name='password'
           value={user.password}
           onChange={(e) => actualizar('password', e.target.value)}
+          error={!errors?.every(valMess => valMess.field != 'password')}
         />
         <ValidationField field='password' errors={errors} />
 
