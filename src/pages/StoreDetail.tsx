@@ -9,13 +9,25 @@ import {
     CardMedia,
     CardContent,
     Divider,
+    Modal,
 } from '@mui/material'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 
-const dishesMock = [
+type dishType = {
+    id: number,
+    title: string,
+    desc: string,
+    price: string,
+    img: string,
+    tag?: string,
+}
+
+// si lo pones aca tenes que ver como cambiar el tag
+const dishesMock: dishType[] = [
     {
+        id: 1,
         title: 'Pizza Margherita',
         desc: 'Classic pizza with tomato sauce, mozzarella, and basil',
         price: '$12.99',
@@ -24,6 +36,7 @@ const dishesMock = [
         tag: 'Popular',
     },
     {
+        id: 2,
         title: 'Pizza Pepperoni',
         desc: 'Pizza with tomato sauce, mozzarella, and pepperoni',
         price: '$13.99',
@@ -32,6 +45,7 @@ const dishesMock = [
         tag: 'Popular',
     },
     {
+        id: 3,
         title: 'Spaghetti Carbonara',
         desc: 'Spaghetti with creamy sauce, bacon, and parmesan cheese',
         price: '$14.99',
@@ -39,6 +53,7 @@ const dishesMock = [
         + 'recipe/ras/Assets/0346a29a89ef229b1a0ff9697184f944/Derivates/cb5051204f4a4525c8b013c16418ae2904e737b7.jpg',
     },
     {
+        id: 4,
         title: 'Fettuccine Alfredo',
         desc: 'Fettuccine with creamy Alfredo sauce',
         price: '$13.99',
@@ -46,19 +61,42 @@ const dishesMock = [
     }
 ]
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+}
+
 const StoreDetail = () => {
-
     const [value, setValue] = React.useState('1')
+    const [open, setOpen] = React.useState(false)
+    const [selectedDish, setSelectedDish] = React.useState<dishType | null> (null)
 
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    const handleChange = (event: React.SyntheticEvent,newValue: string) => {
         setValue(newValue)
     }
+
+    const handleOpen = (dishID: number) => {
+        const dish = dishesMock.find(it => it.id == dishID)
+        setSelectedDish(dish ?? null)
+        setOpen(true)
+    }
+
+    const handleClose = () => setOpen(false)
 
     return (
         <Box sx={{ pb: 9 }}>
 
         //! aca arriba tengo que agregar el boton para volver a home, donde estan todos los locales
         //! me falta poner que cuando toques un plato te salta el popup que muestre el detalle y te deje agregar la cantidad
+        //! ver donde guardar el pedido, el profe dijo que tiene que estar en el front
+        //! test end to end
 
             <Box
             component='img'
@@ -96,9 +134,9 @@ const StoreDetail = () => {
                     </Box>
 
                     <TabPanel value='1' sx={{ px: 0 }}>
-                        {dishesMock.map((dish, i) => (
+                        {dishesMock.map((dish) => (
                         <Card
-                            key={i}
+                            onClick={() => handleOpen(dish.id)}
                             variant='outlined'
                             sx={{
                                 display: 'flex',
@@ -164,6 +202,42 @@ const StoreDetail = () => {
                 Ver pedido (2)
                 </Button>
             </Box>
+
+            <div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <CardMedia
+                    component='img'
+                    image={selectedDish?.img}
+                    alt={selectedDish?.title}
+                    sx={{ width: '35%' }}
+                    />
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {selectedDish?.title}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {selectedDish?.desc}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Precio unitario: {selectedDish?.price}
+                    </Typography>
+                    <Box sx={{display: 'flex'}}>
+                        <Button sx={{ bgcolor: 'red'}}>-</Button>
+                        <Typography>contador</Typography>
+                        <Button sx={{ bgcolor: 'red'}}>+</Button>
+                    </Box>
+                    <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                        <Button sx={{ bgcolor: 'red'}}>Cancelar</Button>
+                        <Button sx={{ bgcolor: 'red'}}>Agregar al Pedido</Button>
+                    </Box>
+                </Box>
+            </Modal>
+            </div>
 
         </Box>
     )
