@@ -1,10 +1,10 @@
 import { Box, IconButton, Typography } from '@mui/material'
 import { ReactNode } from 'react'
 
-const FavoriteRestaurantItem = ({src, alt, name, detail, detail2, icon}:{src: string, alt: string, name: string, detail: string, detail2?: string, icon: ReactNode}) => {
+const FavoriteRestaurantItem = ({src, alt, name, detail, detail2, icon, onClickFunction}:{src: string, alt: string, name: string, detail: string, detail2?: string, icon: ReactNode, onClickFunction?: () => void}) => {
     return(
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingY: 1 }}>  
-            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, gap: '10px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, gap: '10px' }} onClick={onClickFunction}>
                 <Box
                     component='img'
                     src = {src}
