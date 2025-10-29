@@ -1,15 +1,16 @@
 import { Box, IconButton, Typography } from '@mui/material'
 import { ReactNode } from 'react'
+import './restaurant-card.css'
 
 const RestaurantCard = ({src, alt, name, detail, icon}:{src: string, alt: string, name: string, detail: string, icon: ReactNode}) => {
     return(
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingY: 1 }}>  
-            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, gap: '10px' }}>
+        <Box className='main-box-restaurant'>  
+            <Box className='box-item-restaurant'>
                 <Box
                     component='img'
                     src = {src}
                     alt = {alt}
-                    sx={{ width: 50, height: 50, borderRadius: '12px', objectFit: 'cover' }}
+                    className='img-restaurant'
                 />
                 <Box>
                     <Typography variant="body2" sx={{ fontWeight: 600 }} color='gray'>{name}</Typography>
@@ -17,7 +18,7 @@ const RestaurantCard = ({src, alt, name, detail, icon}:{src: string, alt: string
                 </Box>
             </Box>
             
-            <IconButton size="small" sx={{ color: 'gray', paddingRight: '0.5em' }}>
+            <IconButton size="small" className='icon-custom'>
                 {icon}
             </IconButton>
         </Box>
