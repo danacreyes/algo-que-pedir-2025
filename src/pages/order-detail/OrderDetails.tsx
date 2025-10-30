@@ -10,7 +10,7 @@ import { Order } from '../../domain/order'
 import { orderService } from '../../services/orderService'
 import { useOnInit } from '../../customHooks/useOnInit'
 import RestaurantCard from '../../components/RestaurantCard'
-import { useNavigation } from '../../routes/navigationHandler'
+import { Navigator } from '../../routes/Navigator'
 /*
 Imprimir IDs de pedidos -> solved. Subi la key un nivel mas arriba
 Mandar ID de usuario al sessionStorage -> solved
@@ -24,7 +24,7 @@ sessionStorage.setItem('email', 'sofiamiller@gmail.com')
 function OrderDetails () {
   const [orders, setOrders] = useState<Order[]>([])
   const [state, setState] = useState('PENDIENTE')
-  const navigation = useNavigation()
+  const navigation = Navigator()
   // const [errorMessage, setErrorMessage] = useState('')
 
   const handleStateChange = (newState: string) => {

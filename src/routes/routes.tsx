@@ -5,6 +5,7 @@ import { RouterLayout } from './RouterLayout'
 import Profile from '../pages/Profile'
 import SearchCriteria from '../pages/SearchCriteria'
 import StoreRatings from '../pages/store-ratings/StoreRatings'
+import RateStore from '../pages/store-ratings/rateStore'
 
 export const AppRouter = () => {
     return (
@@ -16,7 +17,8 @@ export const AppRouter = () => {
                 {/* <Route path="/order/:id" element={<Componente de Max />} /> */}
                 <Route  path="/profile" element={<Profile/>}/>
                 <Route  path="/search-criteria" element={<SearchCriteria/>}/>
-                <Route  path="/store-ratings" element={<StoreRatings/>}/>
+                <Route  path="/store-ratings/" element={<StoreRatings/>}/>
+                <Route  path="/rate-store/:id" element={<RateStore/>}/>
             </Route>
         </Routes>
     )

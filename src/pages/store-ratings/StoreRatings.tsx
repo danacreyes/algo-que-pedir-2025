@@ -2,7 +2,7 @@ import { Container, Typography } from '@mui/material'
 import { useState } from 'react'
 import { StoreCardJSON } from '../../domain/store'
 import RestaurantCard from '../../components/RestaurantCard'
-import { useNavigation } from '../../routes/navigationHandler'
+import { Navigator } from '../../routes/Navigator'
 
 const mockCard: StoreCardJSON = {
     id: 1,
@@ -34,11 +34,11 @@ const StoreRatings = () => {
     const [unratedStores, setUnratedStores] = useState<StoreCardJSON[]>([mockCard, mockCard2, mockCard3])
     // const [errorMessage, setErrorMessage] = useState('') // para errores 
 
-    const navigation = useNavigation()
+    const navigation = Navigator()
     
     const getUnratedStores = async () => {
         try {
-            // const unratedStores = userService.getUnratedStores()
+            // const unratedStores = clientService.getUnratedStores()
             setUnratedStores(unratedStores)
         } catch (error) {
             console.info('An error has occurred',error)
@@ -55,7 +55,7 @@ const StoreRatings = () => {
                 name={store.name} 
                 detail = {`${store.gradePointAvg} · ${store.deliveryTimeAvg} · ${store.isExpensive ? '$$' : '$'}`}
                 icon='CALIFICAR'
-                buttonOnClickFunction={() => navigation.goTo(`/puntuar-local/${store.id}`)}
+                buttonOnClickFunction={() => navigation.goTo(`/rate-store/${store.id}`, { name : store.name })}
                 />
             </Container>
         )
