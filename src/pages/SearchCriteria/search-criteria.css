@@ -5,6 +5,8 @@
     flex-direction: column; 
     padding: 1.5em; 
     gap: 1em;
+    font-family: var(--primary-font);
+    height: 100%;
 }
 
 div.main-container-check{
@@ -13,6 +15,7 @@ div.main-container-check{
     border-radius: 15px;
     border: solid 1px lightgray;
     overflow: visible;
+    
 }
 
 /* TITLE SECTION */
@@ -51,4 +54,5 @@ button.btn-primary{
     border-radius: 6px;
     text-transform: none;
     font-weight: 300;
+    box-shadow: none;
 }

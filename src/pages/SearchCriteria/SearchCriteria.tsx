@@ -7,25 +7,21 @@ import { useState } from 'react'
 import RemoveCircleIcon from '@mui/icons-material/Remove'
 import AddCircleIcon from '@mui/icons-material/Add'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
+
 import '../Profile/profile.css'
 import './search-criteria.css'
 
 const SearchCriteria = () => {
     const label = useState
-
     const [counter, setCounter] = useState(0)
 
-    const add = () => {
-        setCounter(counter + 1)
-    }
-
-    const rest = () => {
-        setCounter(counter - 1)
-    }
-
+    const add = () => setCounter(counter + 1)
+    
+    const rest = () => setCounter(counter - 1)
+    
     return(
         <>
-        <Container className='main-container-search'>
+        <Container className='main-container-search' sx={{ pb: 9 }}>
             {/* ESTO SE PODRIA PONER EN OTRO COMPONENTE PARA QUE LO PODAMOS COMPARTIR TODOS */}
             <Box component="section" className='title-box'>
                 <IconButton size='small' href='/profile'>

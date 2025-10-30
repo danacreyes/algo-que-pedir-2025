@@ -2,14 +2,14 @@ import Typography from '@mui/material/Typography'
 import { Avatar, FormControl, TextField, Grid, Box, Container, Button, IconButton } from '@mui/material'
 import PreferencesBox from '../../components/PreferencesBox/PreferencesBox'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+
 import '../SearchCriteria/search-criteria.css'
 import './profile.css'
-import { ingredientService } from '../../services/IngredientService'
 
 const Profile = () => {
     return(
         <>
-        <Container className='container-profile'>
+        <Container className='container-profile' sx={{ pb: 9 }}>
             
             <Typography variant="h6" className='title-main-container'>Perfil</Typography>
 
@@ -66,7 +66,6 @@ const Profile = () => {
                         title ='Ingredientes a evitar'
                         link ='/ingredient-criteria/avoid'
                         icon = {<KeyboardArrowRightIcon/>}
-                        // ingredient={ingredientService.getAllIngredients}
                     />
                     
                     <PreferencesBox

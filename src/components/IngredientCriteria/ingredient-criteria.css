@@ -1,9 +1,29 @@
 .box-section-criteria{
-    display: flex;
     width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
 
+div.box-ingredients{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+div.ingredient-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em;
+}
+
+.no-ingredients{
+    padding-top: 1em;
+    display: flex;
+    justify-content: center;
+}
 /* MODAL */
 
 div.modal{
@@ -16,4 +36,57 @@ div.modal{
     z-index: 1000;
     gap: 1rem;
     margin: 0 auto;
+}
+.card-modal{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    max-width: 500px;
+    width: 90%;
+    gap: 0.5em;
+}
+
+.modal-items{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    align-items: flex-start;
+    width: 55%;
+    margin: 0 auto;
+}
+
+.label-item{
+    display: flex;
+    gap: 0.2em;
+}
+
+.btn-group{
+    display: flex;
+    gap: 0.5em;
+}
+
+button.btn-secondary{
+    width: 100%;
+    color: #E82933;
+    background-color: #fff;
+    border-color: #E82933;
+    border: 1px solid;
+    padding: .5em;
+    border-radius: .5rem;
+    text-transform: none;
+    box-shadow: none;
+}
+
+button.btn-add-ingredient{
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    margin-bottom: 5em;
+    width: 90%;
+    display: flex;
+    justify-content: center;
 }
