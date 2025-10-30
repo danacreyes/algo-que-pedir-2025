@@ -1,15 +1,43 @@
-import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material'
+import { Container, Typography } from '@mui/material'
 import { useState } from 'react'
-import { StoreType } from '../domain/store'
+import { StoreCardJSON } from '../../domain/store'
+import RestaurantCard from '../../components/RestaurantCard'
+import { useNavigation } from '../../routes/navigationHandler'
+
+const mockCard: StoreCardJSON = {
+    id: 1,
+    name: 'Pizzeria Fina',
+    imageURL: 'https://assets.surlatable.com/m/15a89c2d9c6c1345/72_dpi_webp-REC-283110_Pizza.jpg',
+    gradePointAvg: 4.1,
+    deliveryTimeAvg: '30 - 45 min',
+    isExpensive: true
+}
+const mockCard2: StoreCardJSON = {
+    id: 2,
+    name: 'Pizzeria Cruda',
+    imageURL: 'https://assets.surlatable.com/m/15a89c2d9c6c1345/72_dpi_webp-REC-283110_Pizza.jpg',
+    gradePointAvg: 3.1,
+    deliveryTimeAvg: '15 - 25 min',
+    isExpensive: false
+}
+const mockCard3: StoreCardJSON = {
+    id: 3,
+    name: 'Pizzeria Fina',
+    imageURL: 'https://assets.surlatable.com/m/15a89c2d9c6c1345/72_dpi_webp-REC-283110_Pizza.jpg',
+    gradePointAvg: 5.0,
+    deliveryTimeAvg: '20 - 30 min',
+    isExpensive: false
+}
 
 const StoreRatings = () => {
     // Podrian no ser StoreTypes no? Directamente mandar al back la puntuacion
-    const [unratedStores, setUnratedStores] = useState<StoreType[]>([])
+    const [unratedStores, setUnratedStores] = useState<StoreCardJSON[]>([mockCard, mockCard2, mockCard3])
     // const [errorMessage, setErrorMessage] = useState('') // para errores 
 
+    const navigation = useNavigation()
+    
     const getUnratedStores = async () => {
         try {
-            // Aca es userService? Es el que usamos para loguearnos con Local...
             // const unratedStores = userService.getUnratedStores()
             setUnratedStores(unratedStores)
         } catch (error) {
@@ -20,31 +48,16 @@ const StoreRatings = () => {
     const showUnratedStores = () => {
         return unratedStores
         .map(store => 
-            <Card sx={{ display: 'flex' }}>
-                <CardMedia
-                    component="img"
-                    sx={{ width: 100 }}
-                    image={store.storeURL}
-                    alt="Store profile image"
+            <Container sx={{padding: '0.5em'}} key={store.id}>
+                <RestaurantCard 
+                src={store.imageURL} 
+                alt='Imagen de local' 
+                name={store.name} 
+                detail = {`${store.gradePointAvg} · ${store.deliveryTimeAvg} · ${store.isExpensive ? '$$' : '$'}`}
+                icon='CALIFICAR'
+                buttonOnClickFunction={() => navigation.goTo(`/puntuar-local/${store.id}`)}
                 />
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <CardContent sx={{ flex: '1 0 auto' }}>
-                        <Typography component="div" variant="h5">
-                            {store.name}
-                        </Typography>
-                        <Typography
-                            variant="subtitle1"
-                            component="div"
-                            sx={{ color: 'text.secondary' }}
-                        >
-                            {/* Estas las tendria que agregar a la clase de dominio de nuestro front y al back tambien no?
-                                O las hardcodeo
-                             */}
-                            {/* {store.rating} · {store.avgDeliveryTime} · {store.avgPrice > 100 ? '$$' : '$'} */}
-                        </Typography>
-                    </CardContent>
-                </Box>
-            </Card>
+            </Container>
         )
     }
 

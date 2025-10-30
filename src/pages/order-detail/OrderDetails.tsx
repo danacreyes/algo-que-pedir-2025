@@ -1,4 +1,4 @@
-import { Box, Typography, Tab, Button, Container} from '@mui/material'
+import { Box, Typography, Tab, Container} from '@mui/material'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
@@ -13,11 +13,12 @@ import RestaurantCard from '../../components/RestaurantCard'
 import { useNavigation } from '../../routes/navigationHandler'
 /*
 Imprimir IDs de pedidos -> solved. Subi la key un nivel mas arriba
-Mandar ID de usuario al sessionStorage
-Fijarse otra manera de cargar los pedidos sin useEffect
+Mandar ID de usuario al sessionStorage -> solved
+Fijarse otra manera de cargar los pedidos sin useEffect -> solved
 
 
 */
+sessionStorage.setItem('id', '1')
 sessionStorage.setItem('email', 'sofiamiller@gmail.com')
 
 function OrderDetails () {
@@ -56,7 +57,7 @@ function OrderDetails () {
           detail={'Total: $' + order.precioTotal().toFixed(2)}
           detail2 = {order.fechaCreacionString + ' · ' + order.platos.length + ' productos'}
           icon='X'
-          onClickFunction={() => navigation.goTo(`/order/${order.id}`)}
+          cardOnClickFunction={() => navigation.goTo(`/order/${order.id}`)}
         />
       </Container>
       )
