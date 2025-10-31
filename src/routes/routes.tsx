@@ -5,7 +5,7 @@ import { RouterLayout } from './RouterLayout'
 import Profile from '../pages/Profile'
 import SearchCriteria from '../pages/SearchCriteria'
 import StoreRatings from '../pages/store-ratings/StoreRatings'
-import RateStore from '../pages/store-ratings/rateStore'
+import RateStore from '../pages/store-ratings/RateStore'
 
 export const AppRouter = () => {
     return (

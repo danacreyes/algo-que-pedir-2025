@@ -18,8 +18,8 @@ Fijarse otra manera de cargar los pedidos sin useEffect -> solved
 
 
 */
-sessionStorage.setItem('id', '1')
-sessionStorage.setItem('email', 'sofiamiller@gmail.com')
+sessionStorage.setItem('id', '5')
+sessionStorage.setItem('email', 'bostadevaca@gmail.com')
 
 function OrderDetails () {
   const [orders, setOrders] = useState<Order[]>([])
