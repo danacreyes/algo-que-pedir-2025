@@ -1,0 +1,26 @@
+.main-container {
+    padding: 0.5em;
+}
+.go-back-and-title-section {
+    position: absolute;
+}
+
+.go-back-btn {
+    position: fixed;
+    top: 1.5em;
+    left: 1.5em;
+}
+
+.section-title {
+    position: fixed;
+    top: 0.5em;
+    left: 7.5em;
+}
+
+.main-body-and-form {
+    position: fixed;
+    top: 6em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
