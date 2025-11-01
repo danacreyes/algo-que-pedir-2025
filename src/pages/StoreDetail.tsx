@@ -262,6 +262,7 @@ const StoreDetail = () => {
                 fullWidth
                 variant='contained'
                 color='error'
+                onClick={() => navigate('/order-chekout')}
                 sx={{ borderRadius: 2, py: 1.2, textTransform: 'none', fontWeight: 'bold' }}
                 >
                 Ver pedido (2)
