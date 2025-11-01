@@ -1,0 +1,32 @@
+.main-container-login {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 1em;
+}
+
+.header-logo {
+    display: flex;
+    gap: 1.5em;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+
+    h1 {
+        font-size: var(--font-h3);
+    }
+}
+
+.cooking-pot-logo {
+    font-size: 2em;
+    background-color: var(--primary-color);
+    color: var(--background-color-primary);
+    padding: .2em;
+    height: 1.5em;
+    width: auto;
+    border-radius: 50%;
+}

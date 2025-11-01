@@ -1,0 +1,69 @@
+.container-profile{
+    display: flex;
+    width: 100vw;
+    height: 100%;
+    flex-direction: column;
+    padding: 1em;
+    gap: 2em;
+}
+
+.text-with-icon{
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+.icon-profile{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* centra verticalmente */
+    /* justify-content: flex-start; */
+}
+
+.primary-title-profile{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.section-profile{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.group-section{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+}
+
+.avatar-img{
+    display: flex;
+    justify-content: center;
+}
+
+/* PREFERENCES */
+.preference-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* FORMULARIO */
+.form-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+.form-field{
+    gap: 1em;
+}
+
+.checkbox-profile{
+    display: flex;
+    justify-content: end;
+    color: hsl(1, 77%, 35%)
+}
+
