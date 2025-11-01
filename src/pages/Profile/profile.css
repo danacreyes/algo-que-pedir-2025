@@ -1,10 +1,11 @@
 .container-profile{
     display: flex;
-    width: 100vw;
-    height: 100%;
-    flex-direction: column;
-    padding: 1em;
-    gap: 2em;
+    width: 100vw !important;
+    flex-direction: column; 
+    align-items: center;
+    padding: 1em; 
+    gap: 1em;
+    font-family: var(--primary-font);
 }
 
 .text-with-icon{
@@ -16,8 +17,9 @@
 .icon-profile{
     position: absolute;
     top: 50%;
-    transform: translateY(-50%); /* centra verticalmente */
-    /* justify-content: flex-start; */
+    color: black;
+    transform: translateY(-50%);
+    margin-left: 0.5em;
 }
 
 .primary-title-profile{
@@ -32,15 +34,24 @@
     gap: 1em;
 }
 
-.group-section{
+form.group-section, div.group-section{
     display: flex;
     flex-direction: column;
-    row-gap: 1em;
+    row-gap: 0.5em;
+    padding: 0 0.2em;
 }
 
 .avatar-img{
     display: flex;
     justify-content: center;
+}
+
+.grid-section{
+    align-items: center;
+}
+
+.restaurant-section{
+    min-height: fit-content;
 }
 
 /* PREFERENCES */
@@ -51,12 +62,6 @@
 }
 
 /* FORMULARIO */
-.form-section{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-content: flex-start;
-}
 .form-field{
     gap: 1em;
 }
@@ -66,4 +71,3 @@
     justify-content: end;
     color: hsl(1, 77%, 35%)
 }
-

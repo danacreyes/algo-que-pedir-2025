@@ -1,5 +1,7 @@
+import { es } from 'date-fns/locale'
 import type { MenuItemType } from '../domain/menuItem'
 import { StoreType } from './store'
+import { format } from 'date-fns'
 // A MENU-ITEM LE FALTA: plato.cantidad
 
 export enum Estado {
@@ -58,6 +60,7 @@ export class Order {
     public metodoDePago: Pago = Pago.EFECTIVO,
     public estado: Estado = Estado.PENDIENTE,
     public horarioEntrega: string = '',
+    public fechaCreacion: Date = new Date(),
     public local: StoreType = new StoreType()
   ) {}
 
@@ -99,6 +102,10 @@ export class Order {
   get horarioEntregaString(): string {
     // return this.horarioEntrega.toLocaleString()
     return this.horarioEntrega.toString()
+  }
+
+  get fechaCreacionString(): string {
+    return format(this.fechaCreacion, 'dd \'de\' MMM', { locale: es })
   }
 
   toJSON(): OrderJSON {
