@@ -1,10 +1,12 @@
 import Typography from '@mui/material/Typography'
 import { Avatar, FormControl, TextField, Grid, Box, Container, Button, IconButton } from '@mui/material'
-import PreferencesBox from '../../components/preferencesBox/PreferencesBox'
+import PreferencesBox from '../../components/PreferencesBox/PreferencesBox'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
 import '../SearchCriteria/search-criteria.css'
 import './profile.css'
+
+import LogoutButton from '../../components/LogoutButton'
 
 const Profile = () => {
     return(
@@ -77,6 +79,7 @@ const Profile = () => {
 
             </Container>
             <Button variant="contained" className='btn-primary'>Guardar</Button>
+            <LogoutButton/>
 
         </Container>
         </>

@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { Order } from '../../domain/order'
 import { orderService } from '../../services/orderService'
 import { useOnInit } from '../../customHooks/useOnInit'
-import RestaurantCard from '../../components/restaurantCard/RestaurantCard'
+import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import { Navigator } from '../../routes/Navigator'
 /*
 Imprimir IDs de pedidos -> solved. Subi la key un nivel mas arriba
