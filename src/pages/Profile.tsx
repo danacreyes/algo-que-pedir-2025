@@ -4,8 +4,11 @@ import { Avatar, FormControl, TextField, Grid, Box, Container, IconButton } from
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import AddIcon from '@mui/icons-material/Add'
 import '../css/profile.css'
+import { useAuth } from '../routes/auth/AuthContext'
+import LogoutButton from '../components/LogoutButton'
 
 const Profile = () => {
+    const { logout } = useAuth()
     return(
         <>
         <Container className='container-profile'>
@@ -61,6 +64,7 @@ const Profile = () => {
                 </Box>
             </Container>
             
+            <LogoutButton/>
         </Container>
         </>
         

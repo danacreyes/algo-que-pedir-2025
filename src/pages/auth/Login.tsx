@@ -1,5 +1,5 @@
-import { FormEvent, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { FormEvent, useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TextField } from '@mui/material'
 import {Button} from '@mui/material'
 import { CookingPot, } from 'phosphor-react'
@@ -12,13 +12,17 @@ import ValidationField from '../../components/ValidationField';
 import { getErrorMessage } from '../../domain/errorHandler';
 import { Toast } from '../../components/toast/ToastContainer';
 import { useToast } from '../../components/toast/useToast';
+import { useAuth } from '../../routes/auth/AuthContext';
 
 const Login = () => {
   const { toast, showToast } = useToast()
-  
-  const navigate = useNavigate();
-  const [user, setUser] = useState<UserJSONLoginRequest>({email: '', password: ''});
+  const [user, setUser] = useState<UserJSONLoginRequest>({email: '', password: ''})
   const [errors, setErrors] = useState<Array<ValidationMessage>>([])
+  
+  const { login } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/"
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,7 +49,10 @@ const Login = () => {
 
     try {
       let validation = await userService.getUser(userLogin.email, userLogin.password)
-        if (validation) navigate("/") // si devuelve Truthy redirige a home
+      if (validation) {
+        login()
+        navigate(from, {replace: true}) // recordar la ruta “from” y volver tras login
+      }
     } catch (error) {
       // alert(`Email: ${user.email}, Password: ${user.password}`);
       // alert('Error en el login. Verifique sus credenciales.');
@@ -62,6 +69,11 @@ const Login = () => {
       [clave]: valor
     })
   }
+ // CAMBIAR POR OnInit()
+  useEffect(() => {
+    console.log(location.state?.from?.pathname)
+    if (location.state?.from?.pathname != "/" && location.state?.from?.pathname != undefined) showToast("Debe loguearse.", 'error')
+  }, [])
     
   return (
     <div className="main-container-login">
