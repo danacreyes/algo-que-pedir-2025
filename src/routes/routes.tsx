@@ -6,6 +6,7 @@ import { RouterLayout } from './RouterLayout'
 import Profile from '../pages/Profile'
 import SearchCriteria from '../pages/SearchCriteria'
 import Register from '../pages/auth/Register'
+import StoreDetail from '../pages/StoreDetail'
 
 export const AppRouter = () => {
     return (

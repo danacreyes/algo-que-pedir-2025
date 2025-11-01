@@ -117,6 +117,7 @@ const StoreDetail = () => {
     //! ver donde guardar el pedido, el profe dijo que tiene que estar en el front
     //! test end to end
 
+    //! que te traiga las cosas de el back y que cuando estes en inicio y toques un local te lleve a ese local
     //! falta que se guarde el pedido y se muestre cuando pongas ver pedido, te lleva a la pagina (Checkout del pedido)
     //! falta poner que en el modal cuando toques agregar al pedido se agregue
     //! la app no debe permitir a un usuario agregar dos veces el mismo plato. Puede solamente editar la cantidad.
