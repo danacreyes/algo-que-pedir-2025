@@ -3,10 +3,10 @@ import Home from '../pages/Home'
 import OrderDetails from '../pages/order-detail/OrderDetails'
 import { RouterLayout } from './RouterLayout'
 import StoreRatings from '../pages/store-ratings/StoreRatings'
-import RateStore from '../pages/store-ratings/RateStore'
-import Profile from '../pages/Profile/Profile'
-import SearchCriteria from '../pages/SearchCriteria/SearchCriteria'
-import IngredientCriteria from '../components/IngredientCriteria/IngredientCriteria'
+import RateStore from '../pages/store-ratings/rateStore'
+import Profile from '../pages/profile/Profile'
+import SearchCriteria from '../pages/searchCriteria/SearchCriteria'
+import IngredientCriteria from '../pages/ingredientCriteria/IngredientCriteria'
 
 export const AppRouter = () => {
     return (

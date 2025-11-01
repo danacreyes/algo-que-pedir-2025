@@ -47,12 +47,3 @@ button.btn-add{
     box-shadow: none;
 }
 
-button.btn-primary{
-    background-color: #E82933;
-    padding: 0.8em;
-    width: 100%;
-    border-radius: 6px;
-    text-transform: none;
-    font-weight: 300;
-    box-shadow: none;
-}

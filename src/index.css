@@ -45,7 +45,30 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+/* =========== BOTONES =========== */
+button.btn-primary{
+  background-color: #E82933;
+  padding: 0.8em;
+  width: 100%;
+  border-radius: 6px;
+  text-transform: none;
+  font-weight: 300;
+  box-shadow: none;
+}
+
+button.btn-secondary{
+  width: 100%;
+  color: #E82933;
+  background-color: #fff;
+  border-color: #E82933;
+  border: 1px solid;
+  padding: .5em;
+  border-radius: .5rem;
+  text-transform: none;
+  box-shadow: none;
+}
+
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -63,7 +86,7 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
+} */
 
 @media (prefers-color-scheme: light) {
   :root {

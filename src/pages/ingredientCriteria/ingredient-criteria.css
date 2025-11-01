@@ -69,18 +69,6 @@ div.modal{
     gap: 0.5em;
 }
 
-button.btn-secondary{
-    width: 100%;
-    color: #E82933;
-    background-color: #fff;
-    border-color: #E82933;
-    border: 1px solid;
-    padding: .5em;
-    border-radius: .5rem;
-    text-transform: none;
-    box-shadow: none;
-}
-
 button.btn-add-ingredient{
     position: fixed;
     bottom: 0;

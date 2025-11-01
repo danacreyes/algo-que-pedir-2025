@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography'
 import { Avatar, FormControl, TextField, Grid, Box, Container, Button, IconButton } from '@mui/material'
-import PreferencesBox from '../../components/PreferencesBox/PreferencesBox'
+import PreferencesBox from '../../components/preferencesBox/PreferencesBox'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
 import '../SearchCriteria/search-criteria.css'
