@@ -10,10 +10,13 @@ import {
     CardContent,
     Divider,
     Modal,
+    IconButton,
 } from '@mui/material'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useNavigate } from 'react-router-dom'
 
 type dishType = {
     id: number,
@@ -79,6 +82,8 @@ const StoreDetail = () => {
     const [open, setOpen] = React.useState(false)
     const [selectedDish, setSelectedDish] = React.useState<dishType | null>(null)
     const [modalCounter, setmodalCounter] = React.useState(1)
+    const navigate = useNavigate()
+
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue)
@@ -113,7 +118,7 @@ const StoreDetail = () => {
     }
 
 
-    //! aca arriba tengo que agregar el boton para volver a home, donde estan todos los locales
+    //! arreglar el movimiento raro que hace el header
     //! ver donde guardar el pedido, el profe dijo que tiene que estar en el front
     //! test end to end
 
@@ -126,6 +131,37 @@ const StoreDetail = () => {
         <Box sx={{ pb: 9 }}>
 
             <Box
+                sx={{
+                    position: 'sticky',
+                    top: 0,
+                    bgcolor: 'white',
+                    zIndex: 1000,
+                    borderBottom: '1px solid #e0e0e0',
+                    py: 1.5,
+                    px: 2,
+                }}
+            >
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                    <IconButton
+                        onClick={() => navigate('/')}
+                        sx={{
+                            position: 'absolute',
+                            left: 0,
+                            color: '#000',
+                            '&:hover': {
+                                bgcolor: '#f5f5f5',
+                            }
+                        }}
+                    >
+                        <ArrowBackIcon />
+                    </IconButton>
+                    <Typography variant='h6' fontWeight='bold'>
+                        Restaurante Italiano
+                    </Typography>
+                </Box>
+            </Box>
+
+            <Box
             component='img'
             src='https://images.unsplash.com/photo-1534650075489-3baecec1e8b1?ixlib=rb-4.1.0&ixid=
             M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170'
@@ -133,7 +169,7 @@ const StoreDetail = () => {
             sx={{ width: '100%' }}
             />
             <Container sx={{ mt: 2 }}>  {/* margin top */}
-                <Typography variant='h6' fontWeight='bold'>Restaurante Italiano</Typography>  {/*//! esto tiene que venir de el back */}
+                <Typography variant='h5' fontWeight='bold'>Restaurante Italiano</Typography>  {/*//! esto tiene que venir de el back */}
                 <Typography color='text.secondary' variant='body2'>4.5 (1200+ reviews) · 546 pedidos</Typography>
 
                 <TabContext value={value}>

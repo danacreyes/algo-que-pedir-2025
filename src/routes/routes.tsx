@@ -13,12 +13,12 @@ export const AppRouter = () => {
         <Routes>
             <Route path="/" element={<RouterLayout/>}>
                 {/* <Route  path="/tu-ruta" element={<TuPagina/>}/> */}
-                <Route  path="/login" element={<Login />}/>
-                <Route  path="/register" element={<Register />}/>
-                <Route  path="/" element={<Home/>}/>
-                <Route  path="/order-details" element={<OrderDetails/>}/>
-                <Route  path="/profile" element={<Profile/>}/>
-                <Route  path="/search-criteria" element={<SearchCriteria/>}/>
+                <Route path="/login" element={<Login />}/>
+                <Route path="/register" element={<Register />}/>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/order-details" element={<OrderDetails/>}/>
+                <Route path="/profile" element={<Profile/>}/>
+                <Route path="/search-criteria" element={<SearchCriteria/>}/>
                 <Route path="/store-detail" element={<StoreDetail/>}/>
                 <Route path="/order-details" element={<OrderDetails/>}/>
             </Route>
