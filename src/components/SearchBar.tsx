@@ -7,7 +7,7 @@ import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
 import Paper from '@mui/material/Paper'
 import { IconButton } from '@mui/material'
-import { BorderColor } from '@mui/icons-material'
+
 
 //contenedor del input y la lupa
 const Search = styled('div')(() => ({
@@ -68,7 +68,7 @@ export default function SearchBar() {
   }
 
   return (
-    <Paper sx={{ position: 'fixed', top: 40, left: 40, right: 40 }} elevation={3}>
+    <Paper sx={{ marginTop: 2 , marginRight:5, marginBottom: 2, marginLeft:5, top: 40, left: 40, right: 40 }} elevation={3}>
       <Box sx={{ maxWidth: '100%', minWidth: '100%', borderRadius:20,  }}>
         <AppBar position="static">
           <Toolbar >

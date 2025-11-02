@@ -40,6 +40,7 @@ export class StoreType {
     public storePaymentEfectivo: boolean = true,
     public storePaymentQR: boolean = true,
     public storePaymentTransferencia: boolean = true,
+    public searchName: string = ''.trim(),
   ) {}
 
 
@@ -66,6 +67,12 @@ export class StoreType {
       storePaymentQR: this.storePaymentQR,
       storePaymentTransferencia: this.storePaymentTransferencia,
     }
+  }
+
+  setSearchValue(inputSearchName: string){
+    this.searchName = inputSearchName
+    var nombreabuscar = this.searchName
+    console.info('Buscando:', nombreabuscar)
   }
 
   addError(field: string, message: string) {
