@@ -1,0 +1,223 @@
+/* ==================== Main Container ==================== */
+div.store-detail-container {
+    padding-bottom: 80px;
+    width: 100vw;
+}
+
+/* ==================== Restaurant Image ==================== */
+img.restaurant-image {
+    width: 100%;
+}
+
+/* ==================== Restaurant Info ==================== */
+div.restaurant-info-container {
+    margin-top: 16px;
+}
+
+h5.restaurant-title {
+    font-weight: bold;
+}
+
+p.restaurant-stats {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* ==================== Tabs ==================== */
+div.tabs-container {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    margin-top: 16px;
+}
+
+div.tabs-container .MuiTab-root {
+    text-transform: none;
+    font-weight: bold;
+    font-size: 0.9em;
+    min-width: 0;
+    color: #b36672ff;
+}
+
+div.tabs-container .MuiTab-root:focus {
+    outline: none;
+}
+
+div.tabs-container .Mui-selected {
+    color: #000;
+}
+
+div.tabs-container .MuiTabs-indicator {
+    background-color: lightgray;
+    height: 3px;
+    border-radius: 2px;
+}
+
+div.tab-panel {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* ==================== Dish Card ==================== */
+div.dish-card {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+div.dish-card-content {
+    flex: 1;
+}
+
+span.dish-tag {
+    font-weight: bold;
+}
+
+p.dish-title {
+    font-weight: bold;
+}
+
+p.dish-description {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+p.dish-price {
+    margin-top: 8px;
+    background-color: #f8f4f4;
+    display: inline-block;
+    padding: 3.2px 15.2px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #2e2e2e;
+    font-weight: bold;
+}
+
+img.dish-image {
+    width: 35%;
+}
+
+/* ==================== Divider ==================== */
+hr.transparent-divider {
+    margin-top: 32px;
+    border-color: transparent;
+}
+
+/* ==================== See Order Button ==================== */
+div.see-order-container {
+    position: fixed;
+    bottom: 56px;
+    left: 0;
+    width: 100%;
+    padding: 8px;
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button.see-order-button {
+    border-radius: 8px;
+    padding: 9.6px 0;
+    text-transform: none;
+    font-weight: bold;
+}
+
+/* ==================== Modal ==================== */
+div.modal-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    background-color: white;
+    border: 1px solid lightgrey;
+    box-shadow: 0px 11px 15px -7px rgba(0,0,0,0.2);
+    padding: 16px;
+    border-radius: 20px;
+    outline: none;
+}
+
+img.modal-image {
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+}
+
+div.modal-content {
+    padding-top: 24px;
+}
+
+h2.modal-title {
+    font-weight: bold;
+}
+
+p.modal-description {
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 12px;
+}
+
+/* ==================== Price Info ==================== */
+div.price-info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+p.price-label {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+p.price-value {
+    font-weight: bold;
+}
+
+/* ==================== Quantity Counter ==================== */
+div.quantity-counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    background-color: lightgray;
+    border-radius: 8px;
+}
+
+button.quantity-button {
+    width: 20%;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+p.quantity-display {
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* ==================== Total Price ==================== */
+div.total-price-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* ==================== Action Buttons ==================== */
+div.action-buttons-container {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+button.cancel-button {
+    border-radius: 8px;
+    padding: 9.6px 0;
+    text-transform: none;
+    font-weight: bold;
+    border-width: 2px;
+}
+
+button.add-button {
+    border-radius: 8px;
+    padding: 9.6px 0;
+    text-transform: none;
+    font-weight: bold;
+}

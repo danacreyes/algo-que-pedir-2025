@@ -68,6 +68,7 @@ const OrderCheckout = () => {
     }
 
     //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
+    //! sacar el css
 
     return (
         <Box sx={{ pb: 28, width: '100vw' }}>

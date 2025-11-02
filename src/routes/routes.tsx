@@ -10,7 +10,7 @@ import RateStore from '../pages/store-ratings/rateStore'
 import Profile from '../pages/Profile/Profile'
 import SearchCriteria from '../pages/SearchCriteria/SearchCriteria'
 import IngredientCriteria from '../pages/ingredientCriteria/IngredientCriteria'
-import StoreDetail from '../pages/StoreDetail'
+import StoreDetail from '../pages/StoreDetail/StoreDetail'
 import OrderCheckout from '../pages/OrderCheckout'
 
 export const AppRouter = () => {
