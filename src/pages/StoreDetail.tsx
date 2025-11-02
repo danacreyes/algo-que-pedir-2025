@@ -22,7 +22,7 @@ type dishType = {
     id: number,
     title: string,
     desc: string,
-    price: string,
+    price: number,
     img: string,
     tag?: string,
 }
@@ -33,7 +33,7 @@ const dishesMock: dishType[] = [
         id: 1,
         title: 'Pizza Margherita',
         desc: 'Classic pizza with tomato sauce, mozzarella, and basil',
-        price: '$12.99',
+        price: 12.99,
         img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.1.0&ixid'
         + '=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1169',
         tag: 'Popular',
@@ -42,7 +42,7 @@ const dishesMock: dishType[] = [
         id: 2,
         title: 'Pizza Pepperoni',
         desc: 'Pizza with tomato sauce, mozzarella, and pepperoni',
-        price: '$13.99',
+        price: 13.99,
         img: 'https://images.unsplash.com/photo-1605478371310-a9f1e96b4ff4?ixlib=rb-4.1.0&ixid'
         + '=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
         tag: 'Popular',
@@ -51,7 +51,7 @@ const dishesMock: dishType[] = [
         id: 3,
         title: 'Spaghetti Carbonara',
         desc: 'Spaghetti with creamy sauce, bacon, and parmesan cheese',
-        price: '$14.99',
+        price: 14.99,
         img: 'https://assets.tmecosys.com/image/upload/t_web_rdp_recipe_584x480_1_5x/img/'
         + 'recipe/ras/Assets/0346a29a89ef229b1a0ff9697184f944/Derivates/cb5051204f4a4525c8b013c16418ae2904e737b7.jpg',
     },
@@ -59,7 +59,7 @@ const dishesMock: dishType[] = [
         id: 4,
         title: 'Fettuccine Alfredo',
         desc: 'Fettuccine with creamy Alfredo sauce',
-        price: '$13.99',
+        price: 13.99,
         img: 'https://www.modernhoney.com/wp-content/uploads/2018/08/Fettuccine-Alfredo-Recipe-1-500x500.jpg',
     }
 ]
@@ -69,11 +69,12 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '100%',
+    width: '90%',
     bgcolor: 'background.paper',
     border: '1px solid ligthgrey',
     boxShadow: 24,
     p: 2,
+    borderRadius: '20px',
     // overflow: 'hidden',
 }
 
@@ -82,15 +83,19 @@ const StoreDetail = () => {
     const [open, setOpen] = React.useState(false)
     const [selectedDish, setSelectedDish] = React.useState<dishType | null>(null)
     const [modalCounter, setmodalCounter] = React.useState(1)
+    const [dishes, setDishes] = React.useState<dishType[]>(dishesMock)
     const navigate = useNavigate()
 
+    // React.useEffect(() => {
+    //     traerPlatosDelBakc().then(data => setDishes(data)) //algo asi ???
+    // }, [])
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue)
     }
 
     const handleOpen = (dishID: number) => {
-        const dish = dishesMock.find(it => it.id === dishID)
+        const dish = dishes.find(it => it.id === dishID)
         setSelectedDish(dish ?? null)
         setmodalCounter(1)
         setOpen(true)
@@ -110,28 +115,28 @@ const StoreDetail = () => {
     }
 
     const calculateTotalPrice = () => {
-        if (!selectedDish) return '$0.00'
-        const priceNumber = parseFloat(selectedDish.price.replace('$', ''))
-        const total = priceNumber * modalCounter
-        return `$${total.toFixed(2)}`
-        //! quiza es mejor que el $ no este en el json...
+        if (!selectedDish) return 0
+        return selectedDish.price * modalCounter
     }
-
 
     //! arreglar el movimiento raro que hace el header
     //! ver donde guardar el pedido, el profe dijo que tiene que estar en el front
     //! test end to end
 
     //! pasar todo a un css
+    //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
+    //! tambien todo lo que se comparta entre las dos paginas pasalo a componentes
 
     //! que te traiga las cosas de el back y que cuando estes en inicio y toques un local te lleve a ese local
     //! falta que se guarde el pedido y se muestre cuando pongas ver pedido, te lleva a la pagina (Checkout del pedido)
     //! falta poner que en el modal cuando toques agregar al pedido se agregue
     //! la app no debe permitir a un usuario agregar dos veces el mismo plato. Puede solamente editar la cantidad.
 
-    return (
-        <Box sx={{ pb: 9 }}>
+    //! arreglar el error que tira de la key, importante a la hora de borrar las cosas, porque si no se rompe todo
 
+    return (
+        <Box sx={{ pb: 10, width: '100vw' }}>
+            {/* ==================== Header ==================== */}
             <Box
                 sx={{
                     position: 'sticky',
@@ -163,6 +168,7 @@ const StoreDetail = () => {
                 </Box>
             </Box>
 
+            {/* ==================== Restaurant Info ==================== */}
             <Box
             component='img'
             src='https://images.unsplash.com/photo-1534650075489-3baecec1e8b1?ixlib=rb-4.1.0&ixid=
@@ -174,8 +180,9 @@ const StoreDetail = () => {
                 <Typography variant='h5' fontWeight='bold'>Restaurante Italiano</Typography>  {/*//! esto tiene que venir de el back */}
                 <Typography color='text.secondary' variant='body2'>4.5 (1200+ reviews) · 546 pedidos</Typography>
 
+            {/* ==================== Tabs ==================== */}
                 <TabContext value={value}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 2 }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 2}}>
                         <TabList onChange={handleChange} aria-label='menu tabs'
                             sx={{
                                 '& .MuiTab-root': { // esto selecciona a esta clase este estilo, dentro de el componente
@@ -198,9 +205,11 @@ const StoreDetail = () => {
                         </TabList>
                     </Box>
 
+                    {/* ==================== Items ==================== */}
                     <TabPanel value='1' sx={{ px: 0 }}>
-                        {dishesMock.map((dish) => (
+                        {dishes.map((dish) => (
                         <Card
+                            key={dish.id}
                             onClick={() => handleOpen(dish.id)}
                             variant='outlined'
                             sx={{
@@ -227,7 +236,7 @@ const StoreDetail = () => {
                                     color: '#2e2e2e',
                                 }}
                             >
-                                {dish.price}
+                                ${dish.price}
                             </Typography>
                             </CardContent>
                             <CardMedia
@@ -239,6 +248,7 @@ const StoreDetail = () => {
                         </Card>
                         ))}
                     </TabPanel>
+                    {/* ==================== Reviews ==================== */}
                     <TabPanel value='2'>
                         <Typography variant='body2' color='text.secondary'>Reseñas de clientes...</Typography> {/*//! esto tiene que venir de el back */}
                     </TabPanel>
@@ -247,10 +257,11 @@ const StoreDetail = () => {
 
             <Divider sx={{ mt: 4, borderColor: 'transparent' }} />
 
+            {/* ==================== See Order ==================== */}
             <Box
                 sx={{
                     position: 'fixed',
-                    bottom: 56,
+                    bottom: 56,  //! esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
                     left: 0,
                     width: '100%',
                     p: 1,
@@ -269,6 +280,7 @@ const StoreDetail = () => {
                 </Button>
             </Box>
 
+            {/* ==================== Modal ==================== */}
             <div>
             <Modal
                 open={open}
@@ -281,9 +293,10 @@ const StoreDetail = () => {
                     component='img'
                     image={selectedDish?.img}
                     alt={selectedDish?.title}
-                    sx={{ width: '100%', height: '250px' , borderRadius: 2 }}
+                    sx={{ width: '100%', height: '250px' , borderRadius: '8px' }}
                     />
                     <Box sx={{ pt: 3 }}>
+                        {/* ==================== Dish description ==================== */}
                         <Typography id="modal-modal-title" variant="h6" component="h2" fontWeight="bold">
                             {selectedDish?.title}
                         </Typography>
@@ -296,10 +309,11 @@ const StoreDetail = () => {
                                 Precio unitario
                             </Typography>
                             <Typography fontWeight="bold">
-                                {selectedDish?.price}
+                                ${selectedDish?.price}
                             </Typography>
                         </Box>
 
+                        {/* ==================== Quantity counter ==================== */}
                         <Box sx={{
                             display: 'flex', 
                             alignItems: 'center', 
@@ -346,10 +360,11 @@ const StoreDetail = () => {
                                 Precio total
                             </Typography>
                             <Typography fontWeight="bold">
-                                {calculateTotalPrice()}
+                                ${calculateTotalPrice()}
                             </Typography>
                         </Box>
 
+                        {/* ==================== Action buttons ==================== */}
                         <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
                             <Button 
                                 fullWidth
