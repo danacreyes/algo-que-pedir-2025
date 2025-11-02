@@ -16,6 +16,14 @@ export type StoreJSON ={
   storePaymentTransferencia: boolean
 }
 
+export type StoreCardJSON = {
+  id: number,
+  name: string,
+  imageURL: string,
+  gradePointAvg: number,
+  deliveryTimeAvg: string,
+  isExpensive: boolean
+}
 export class StoreType {
   errors: ValidationMessage[] = []
 

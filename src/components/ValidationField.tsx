@@ -9,7 +9,7 @@ const ValidationField = ({field, errors} : {field: string, errors: ValidationMes
     .map((_) => _.message)
     .join('. ')
 
-    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('')
     
     useEffect(() => {
         setErrorMessage(errorsFrom(errors, field))

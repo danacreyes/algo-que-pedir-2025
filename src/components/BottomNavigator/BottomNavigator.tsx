@@ -5,12 +5,13 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 import { Paper } from '@mui/material'
 import { House, Receipt, Star, User } from 'phosphor-react'
 import { Link } from 'react-router-dom'
+import '../BottomNavigator/bottom-navigator.css'
 
 export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0)
 
   return (
-    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+    <Paper className='main-container-nav'>
         <Box sx={{ maxWidth: '100%', minWidth: '100%'}}>
             <BottomNavigation
                 showLabels

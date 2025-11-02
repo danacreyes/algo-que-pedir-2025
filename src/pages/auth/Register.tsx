@@ -1,49 +1,52 @@
-import { FormEvent, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { FormEvent, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import {Button} from '@mui/material'
 import './login-register.css'
-import { UserJSONLoginRequest, UserJSONRegisterRequest, UserType } from '../../domain/user';
-import { userService } from '../../services/UserService';
-import { ValidationMessage } from '../../domain/validationMessage';
-import ValidationField from '../../components/ValidationField';
-import { getErrorMessage } from '../../domain/errorHandler';
-import { Toast } from '../../components/toast/ToastContainer';
-import { useToast } from '../../components/toast/useToast';
-import { CookingPot } from 'phosphor-react';
+import { UserJSONRegisterRequest, UserType } from '../../domain/user'
+import { userService } from '../../services/UserService'
+import { ValidationMessage } from '../../domain/validationMessage'
+import ValidationField from '../../components/ValidationField'
+import { getErrorMessage } from '../../domain/errorHandler'
+import { Toast } from '../../components/toast/ToastContainer'
+import { useToast } from '../../components/toast/useToast'
+import { CookingPot } from 'phosphor-react'
 
 const Register = () => {
     const { toast, showToast } = useToast()
   
-  const navigate = useNavigate();
-  const [user, setUser] = useState<UserJSONRegisterRequest>({name:'', lastName: '', email: '', password: '', passwordRetry: ''});
+  const navigate = useNavigate()
+  const [user, setUser] = useState<UserJSONRegisterRequest>({name:'', lastName: '', email: '', password: '', passwordRetry: ''})
   const [errors, setErrors] = useState<Array<ValidationMessage>>([])
 
+  // eslint-disable-next-line no-undef
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const form = e.currentTarget as HTMLFormElement;
-    const formData = new FormData(form);
+    // eslint-disable-next-line no-undef
+    const form = e.currentTarget as HTMLFormElement
+    // eslint-disable-next-line no-undef
+    const formData = new FormData(form)
 
     const userRegister = new UserType(
       'nombre',
       'apellido',
-      (formData.get("password") ?? "").toString(),
-      (formData.get("email") ?? "").toString(),
-    );
+      (formData.get('password') ?? '').toString(),
+      (formData.get('email') ?? '').toString(),
+    )
 
-    userRegister.validate();
-    // console.log(userRegister.errors);
-    // console.log(userRegister);
+    userRegister.validate()
+    // console.log(userRegister.errors)
+    // console.log(userRegister)
 
     if (userRegister.errors.length > 0) {
-      setErrors(userRegister.errors);
+      setErrors(userRegister.errors)
       return errors
       // return userRegister.errors
     }
 
     try {
-      if (formData.get("password") != formData.get("password-retry")) {
+      if (formData.get('password') != formData.get('password-retry')) {
         showToast('Las contraseñas no coinciden.', 'error')
         return
       }
@@ -51,15 +54,15 @@ const Register = () => {
 
         showToast('Usuario generado con exito. Seras redirigido a la pagina de Ingreso', 'success', 2000)
         setTimeout(() => {
-          navigate("/login")
+          navigate('/login')
         }, 2000)
     } catch (error) {
       const errorMessage = getErrorMessage(error)
       showToast(errorMessage, 'error', 100000)
     } finally {
-      setErrors([]);
+      setErrors([])
     }
-  };
+  }
 
   const actualizar = (clave: keyof typeof user, valor: unknown) => {
     setUser({
