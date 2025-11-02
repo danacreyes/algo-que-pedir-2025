@@ -10,9 +10,7 @@ import {
     Select,
     FormControl,
 } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloseIcon from '@mui/icons-material/Close'
-import { useNavigate } from 'react-router-dom'
 import HeaderBack from '../components/HeaderBack/HeaderBack'
 
 type OrderItemType = {
@@ -50,7 +48,6 @@ const ordersMock: OrderItemType[] =[
 const OrderCheckout = () => {
     const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
     const [paymentMethod, setPaymentMethod] = React.useState('Efectivo')
-    const navigate = useNavigate()
 
     const removeItem = (id: number) => {
         setItems(items.filter(item => item.id !== id))
