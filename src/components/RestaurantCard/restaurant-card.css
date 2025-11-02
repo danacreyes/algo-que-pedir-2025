@@ -1,0 +1,28 @@
+.main-box-restaurant{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1;
+    margin-top: 1;
+}
+
+div.box-item-restaurant{
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    gap: 1em;
+    padding: 1em 0 0.2em 0;
+    /* height: 100%; */
+}
+
+.img-restaurant{
+    width: 4em;
+    height: 3.5em;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.icon-custom{
+    color: gray;
+    padding-right: 2em;
+}
