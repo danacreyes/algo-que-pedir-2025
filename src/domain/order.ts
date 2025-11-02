@@ -41,6 +41,7 @@ export type OrderJSON = {
   metodoDePago: Pago
   estado: Estado
   horarioEntrega: string
+  fechaCreacion: Date
   local: StoreType
 }
 
@@ -124,6 +125,7 @@ export class Order {
       metodoDePago: this.metodoDePago,
       estado: this.estado,
       horarioEntrega: this.horarioEntrega,
+      fechaCreacion: this.fechaCreacion,
       local: this.local
     }
   }

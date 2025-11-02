@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material'
 import { Navigator } from '../../routes/Navigator'
 import './store-ratings.css'
+import RadioGroupRating from '../../components/RadioGroup/RadioGroupRating'
 
 function RateStore() {
   // const { id } = useParams()
@@ -9,8 +10,8 @@ function RateStore() {
 
   return (
     // Esto es raro...no esta ni importado y lo toma igual. De donde?
-    <body className='main-container'>
-      <section className='go-back-and-title-section'>
+    <div className='main-container'>
+      <article className='go-back-and-title-section'>
         <button onClick={() => navigation.goTo('/store-ratings')} className='go-back-btn'>
           X
         </button>
@@ -19,19 +20,25 @@ function RateStore() {
           className='section-title'>
             Calificar
         </Typography>
-      </section>
+      </article>
 
-      <section className='main-body-and-form'>
+      <article className='main-body-and-form'>
         <Typography 
           variant='h5' sx={{ fontSize: '1.9em'}}>
             ¿Cómo fue tu experiencia con {name}?
         </Typography>
         <Typography 
-          variant='subtitle1' sx={{ marginTop: '0.5em'}}>
+          variant='subtitle1' sx={{ margin: '1em 0em'}}>
             Tu opinión ayuda a otros a elegir el mejor lugar
         </Typography>
-      </section>
-    </body>
+        <RadioGroupRating />
+        <textarea 
+          className='experience-description-textarea'
+          name="experience-description"
+          placeholder='Describi tu experiencia'
+          style={{ marginTop: '2em', height: '15em', minWidth: '28em', maxWidth: '25em', resize: 'none', borderRadius: '0.5em'}}></textarea>
+      </article>
+    </div>
   )
 }
 
