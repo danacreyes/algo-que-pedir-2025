@@ -13,6 +13,7 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloseIcon from '@mui/icons-material/Close'
 import { useNavigate } from 'react-router-dom'
+import HeaderBack from '../components/HeaderBack/HeaderBack'
 
 type OrderItemType = {
     id: number
@@ -74,36 +75,7 @@ const OrderCheckout = () => {
     return (
         <Box sx={{ pb: 28, width: '100vw' }}>
             {/* ==================== Header ==================== */}
-            <Box
-                sx={{
-                    position: 'sticky',
-                    top: 0,
-                    bgcolor: 'white',
-                    zIndex: 1000,
-                    borderBottom: '1px solid #e0e0e0',
-                    py: 1.5,
-                    px: 2,
-                }}
-            >
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                    <IconButton
-                        onClick={() => navigate('/store-detail')}
-                        sx={{
-                            position: 'absolute',
-                            left: 0,
-                            color: '#000',
-                            '&:hover': {
-                                bgcolor: '#f5f5f5',
-                            }
-                        }}
-                    >
-                        <ArrowBackIcon />
-                    </IconButton>
-                    <Typography variant='h6' fontWeight='bold'>
-                        Tu pedido
-                    </Typography>
-                </Box>
-            </Box>
+            <HeaderBack title='Tu pedido' backTo='/store-detail'/>
 
             <Container sx={{ mt: 2 }}>
                 {/* ==================== Restaurant Info ==================== */}
