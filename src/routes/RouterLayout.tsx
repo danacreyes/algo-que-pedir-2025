@@ -1,11 +1,19 @@
 import SimpleBottomNavigation from '../components/BottomNavigator/BottomNavigator'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 
 export const RouterLayout = () => {
+    const location = useLocation()
+
+    // if (location.pathname == '/login' || location.pathname == '/register') {
+    //     return <Outlet />
+    // }
     return(
         <>
             <Outlet />
-            <SimpleBottomNavigation/>
+            {/* <NavBar /> */}
+            { !(location.pathname == '/login' || location.pathname == '/register') ? (
+                <SimpleBottomNavigation/>
+            ) : null }
         </>
     )
 }

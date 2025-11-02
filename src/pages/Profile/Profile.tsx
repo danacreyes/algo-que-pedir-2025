@@ -6,6 +6,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import '../SearchCriteria/search-criteria.css'
 import './profile.css'
 
+import LogoutButton from '../../components/LogoutButton'
+
 const Profile = () => {
     return(
         <>
@@ -77,6 +79,7 @@ const Profile = () => {
 
             </Container>
             <Button variant="contained" className='btn-primary'>Guardar</Button>
+            <LogoutButton/>
 
         </Container>
         </>

@@ -6,14 +6,17 @@ import AddIcon from '@mui/icons-material/Add'
 import { useState } from 'react'
 import RemoveCircleIcon from '@mui/icons-material/Remove'
 import AddCircleIcon from '@mui/icons-material/Add'
-import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
+import RestaurantCard from '../../components/restaurantCard/RestaurantCard'
 
 import '../Profile/profile.css'
 import './search-criteria.css'
+import { useNavigate } from 'react-router-dom'
 
 const SearchCriteria = () => {
     const label = useState
     const [counter, setCounter] = useState(0)
+
+    const navigator = useNavigate()
 
     const add = () => setCounter(counter + 1)
     
@@ -24,7 +27,7 @@ const SearchCriteria = () => {
         <Container className='main-container-search' sx={{ pb: 9 }}>
             {/* ESTO SE PODRIA PONER EN OTRO COMPONENTE PARA QUE LO PODAMOS COMPARTIR TODOS */}
             <Box component="section" className='title-box'>
-                <IconButton size='small' href='/profile'>
+                <IconButton size='small' onClick={() => navigator(-1)}>
                     <ArrowBackIcon className='icon-profile'/>
                 </IconButton>
                 <Typography variant="h6" className='title-main-container'>Selecciona tu criterio</Typography>

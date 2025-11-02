@@ -21,6 +21,7 @@ export default function SimpleBottomNavigation() {
                 }}
             >
                 <BottomNavigationAction label="Inicio" icon={<House />} component={Link} to='/' />
+                <BottomNavigationAction label="temp" component={Link} to='/store-detail' />
                 <BottomNavigationAction label="Pedidos" icon={<Receipt />} component={Link} to='/order-details' />
                 <BottomNavigationAction label="Calificar" icon={<Star />} component={Link} to='/store-ratings' />
                 <BottomNavigationAction label="Perfil" icon={<User />} component={Link} to='/profile' />

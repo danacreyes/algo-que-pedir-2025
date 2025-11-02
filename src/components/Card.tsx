@@ -18,8 +18,8 @@ const useOnInit = (initialCallBack: () => void) => {
 export default function MediaCard() {
   const Navigate = useNavigate()
 
-  const handleCardClick = (storeId: string) =>{
-    Navigate('/store-profile/${storeId}')
+  const handleCardClick = (storeId: number) =>{
+    Navigate(`/store-profile/${storeId}`)
   }
 
   const [stores, setStores] = useState<StoreType[]>([])
