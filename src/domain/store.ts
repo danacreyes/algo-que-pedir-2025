@@ -14,6 +14,7 @@ export type StoreJSON ={
   storePaymentEfectivo: boolean
   storePaymentQR: boolean
   storePaymentTransferencia: boolean
+  searchName: string
 }
 
 export type StoreCardJSON = {
@@ -40,6 +41,7 @@ export class StoreType {
     public storePaymentEfectivo: boolean = true,
     public storePaymentQR: boolean = true,
     public storePaymentTransferencia: boolean = true,
+    public searchName: string = ''.trim(),
   ) {}
 
 
@@ -65,7 +67,14 @@ export class StoreType {
       storePaymentEfectivo: this.storePaymentEfectivo,
       storePaymentQR: this.storePaymentQR,
       storePaymentTransferencia: this.storePaymentTransferencia,
+      searchName: this.searchName,
     }
+  }
+
+  setSearchValue(inputSearchName: string){
+    this.searchName = inputSearchName
+    var nombreabuscar = this.searchName
+    console.info('Buscando:', nombreabuscar)
   }
 
   addError(field: string, message: string) {
