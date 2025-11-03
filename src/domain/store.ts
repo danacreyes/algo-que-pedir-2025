@@ -14,6 +14,7 @@ export type StoreJSON ={
   storePaymentEfectivo: boolean
   storePaymentQR: boolean
   storePaymentTransferencia: boolean
+  searchName: string
 }
 
 export type StoreCardJSON = {
@@ -66,6 +67,7 @@ export class StoreType {
       storePaymentEfectivo: this.storePaymentEfectivo,
       storePaymentQR: this.storePaymentQR,
       storePaymentTransferencia: this.storePaymentTransferencia,
+      searchName: this.searchName,
     }
   }
 

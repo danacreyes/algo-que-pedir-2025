@@ -1,42 +1,75 @@
-import * as React from 'react'
-import { styled, alpha } from '@mui/material/styles'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import InputBase from '@mui/material/InputBase'
+import React, { JSX, useState } from 'react'
+import { Paper, Box, AppBar, Toolbar, InputBase } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import Paper from '@mui/material/Paper'
-import { IconButton } from '@mui/material'
-import { BorderColor } from '@mui/icons-material'
-import './SearchBar.css'
 
-export default function SearchBar() {
-  const handleSearchClick = () => {
-    const input = document.querySelector('input[name="search"]') as HTMLInputElement
-    const searchValue = input?.value.trim()
+interface SearchBarProps {
+  onSearch: (searchValue: string) => void;
+  searchValue: string;
+}
 
-    if (searchValue) {
-      console.info('Buscando:', searchValue)
-      // lógica de búsqueda
+export default function SearchBar({ onSearch, searchValue }: SearchBarProps): JSX.Element {
+  const [localSearchValue, setLocalSearchValue] = useState(searchValue)
+
+  const handleSearchClick = (): void => {
+    onSearch(localSearchValue)
+    console.info('buscando', localSearchValue)
+  }
+
+  const handleKeyPress = (event: React.KeyboardEvent): void => {
+    if (event.key === 'Enter') {
+      handleSearchClick()
     }
   }
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = event.target.value
+    setLocalSearchValue(value)
+  }
+
   return (
-    <Paper sx={{ position: 'fixed', top: 40, left: 40, right: 40 }} elevation={3}>
-      <Box sx={{ maxWidth: '100%', minWidth: '100%', borderRadius: 20 }}>
+    <Paper sx={{ 
+      marginTop: 2, 
+      marginRight: 5, 
+      marginBottom: 2, 
+      marginLeft: 5, 
+      top: 40, 
+      left: 40, 
+      right: 40 
+    }} 
+    elevation={3}
+    >
+      <Box sx={{ 
+        maxWidth: '100%', 
+        minWidth: '100%', 
+        borderRadius: 20 
+      }}>
         <AppBar position="static">
-          <Toolbar>
-            <div className="search-container">
-              <IconButton className="search-icon-wrapper" onClick={handleSearchClick}>
-                <SearchIcon />
-              </IconButton>
+          <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box 
+              sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                backgroundColor: 'white', 
+                borderRadius: 1,
+                padding: '0 10px',
+                width: '100%',
+                maxWidth: '600px'
+              }}
+            >
+              <SearchIcon 
+                sx={{ color: 'action.active', mr: 1, cursor: 'pointer' }} 
+                onClick={handleSearchClick}
+              />
               <InputBase
-                className="styled-input-base"
-                name="search"
+                name='search'
                 placeholder="Buscá tu local para pedir…"
                 inputProps={{ 'aria-label': 'search' }}
+                value={localSearchValue}
+                onChange={handleInputChange}
+                onKeyUp={handleKeyPress}
+                sx={{ width: '100%' }}
               />
-            </div>
+            </Box>
           </Toolbar>
         </AppBar>
       </Box>

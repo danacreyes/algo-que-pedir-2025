@@ -1,68 +1,73 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router-dom'
-import { storeService } from '../../services/LocalesService'
 import { StoreType } from '../../domain/store'
 import { Box } from '@mui/material'
 
-//esto lo copie de fernando
-const useOnInit = (initialCallBack: () => void) => {
-    useEffect(() => {
-      initialCallBack()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])}
 
-export default function MediaCard() {
+// Define la interface para las props
+interface MediaCardProps {
+  stores: StoreType[];
+}
+
+export default function MediaCard({ stores }: MediaCardProps) {
   const Navigate = useNavigate()
 
-  const handleCardClick = (storeId: number) =>{
-    Navigate('/store-profile/${storeId}')
+  const handleCardClick = (storeId: number) => {
+    Navigate(`/store-profile/${storeId}`)
   }
-
-  const [stores, setStores] = useState<StoreType[]>([])
-  const [errors, setErrors] = useState('')
-
-
-  const getStores = async () => {
-    const stores = await storeService.getStores()
-    setStores(stores)
-  }
-
-   useOnInit(getStores)
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {stores.map((store) => (
-        <Card 
-          key={store.id}
-          sx={{ width: 150, weight: 200, minWidth: 150, minHeight: 200, cursor: 'pointer', 
-            '&:hover': {boxShadow: 3 }, margin: 2, padding: 2, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
-          //quizas aca deberia pasar el id como param para traer el local por id
-          onClick={() => handleCardClick(store.id)} 
-        >
-          <div style={{position: 'relative'}}> 
-          
-          <CardMedia
-            sx={{ height: 100,  width: '100%',  objectFit: 'cover', position: 'relative' }}
-            image={store.storeURL}
-            title={`Imagen de ${store.name}`}
+    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+      {stores.length > 0 ? (
+        stores.map((store) => (
+          <Card 
+            key={store.id}
+            sx={{ 
+              width: 150, 
+              height: 200,
+              minWidth: 150, 
+              minHeight: 200, 
+              cursor: 'pointer', 
+              '&:hover': { boxShadow: 3 }, 
+              margin: 2, 
+              padding: 2, 
+              display: 'flex', 
+              flexDirection: 'column', 
+              overflow: 'hidden' 
+            }}
+            onClick={() => handleCardClick(store.id)} 
           >
-          </CardMedia>
-          </div>
-          <CardContent>
-            <Typography noWrap component="div" sx={{maxWidth: '100px'}}>
-              {store.name}
-            </Typography>
-            <Typography noWrap sx={{ color: 'text.secondary', maxWidth: '100px' }}>
-              {store.storeAddress}{' '}{store.storeAltitude}
-            </Typography>
-            
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+            <Box sx={{ position: 'relative' }}> 
+              <CardMedia
+                sx={{ 
+                  height: 100,  
+                  width: '100%',  
+                  objectFit: 'cover', 
+                  position: 'relative' 
+                }}
+                image={store.storeURL}
+                title={`Imagen de ${store.name}`}
+              />
+            </Box>
+            <CardContent sx={{ flexGrow: 1 }}>
+              <Typography noWrap component="div" sx={{ maxWidth: '100px' }}>
+                {store.name}
+              </Typography>
+              <Typography noWrap sx={{ color: 'text.secondary', maxWidth: '100px' }}>
+                {store.storeAddress} {store.storeAltitude}
+              </Typography>
+            </CardContent>
+          </Card>
+        ))
+      ) : (
+        <Typography sx={{ padding: 2 }}>
+          No hay locales disponibles
+        </Typography>
+      )}
+    </Box>
   )
 }
