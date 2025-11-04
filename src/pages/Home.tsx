@@ -5,7 +5,7 @@ import ColorCheckboxes from '../components/Checkbox'
 
 const Home = () => {
   return (
-    <Box sx={{ 
+    <Box className='mainContainerNew' sx={{ 
       width: '100vw',  
       flexGrow: 1, 
       minHeight: '100vh', 

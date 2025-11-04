@@ -88,7 +88,7 @@ const Login = () => {
       <form
         onSubmit={handleSubmit}
         id='login-form'
-        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '80vw' }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '80%' }}
       >
         <TextField
           id='email'
