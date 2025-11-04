@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add'
 import { useState } from 'react'
 import RemoveCircleIcon from '@mui/icons-material/Remove'
 import AddCircleIcon from '@mui/icons-material/Add'
-import RestaurantCard from '../../components/restaurantCard/RestaurantCard'
+import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 
 import '../Profile/profile.css'
 import './search-criteria.css'

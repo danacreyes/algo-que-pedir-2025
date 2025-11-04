@@ -1,12 +1,12 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { useAuth } from './AuthContext'
 
 
 const RequireAuth = () => {
   const { isAuth } = useAuth()
   const location = useLocation() // para
 
-  if (!isAuth) return <Navigate to={"/login"} replace state={{ from: location }} />
+  if (!isAuth) return <Navigate to={'/login'} replace state={{ from: location }} />
   return <Outlet /> // renderiza las rutas hijas protegidas
 } 
 export default RequireAuth
