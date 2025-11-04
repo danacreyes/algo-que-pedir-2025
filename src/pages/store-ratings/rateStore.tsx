@@ -1,12 +1,14 @@
-import { Typography } from '@mui/material'
+import { Rating, Typography } from '@mui/material'
 import { Navigator } from '../../routes/Navigator'
 import './store-ratings.css'
 import RadioGroupRating from '../../components/RadioGroup/RadioGroupRating'
+import { useState } from 'react'
 
 function RateStore() {
   // const { id } = useParams()
   const navigation = Navigator()
   const { name } = navigation.getStateData()
+  const [value, setValue] = useState<number | null>(3)
 
   return (
     // Esto es raro...no esta ni importado y lo toma igual. De donde?
@@ -31,12 +33,30 @@ function RateStore() {
           variant='subtitle1' sx={{ margin: '1em 0em'}}>
             Tu opinión ayuda a otros a elegir el mejor lugar
         </Typography>
-        <RadioGroupRating />
+        <section className='rating-section'>
+          <Rating
+            name="simple-controlled"
+            value={value}
+            onChange={(_, newValue) => {
+              setValue(newValue)
+            }}
+          />
+        </section>
         <textarea 
           className='experience-description-textarea'
           name="experience-description"
           placeholder='Describi tu experiencia'
-          style={{ marginTop: '2em', height: '15em', minWidth: '28em', maxWidth: '25em', resize: 'none', borderRadius: '0.5em'}}></textarea>
+          style={{ 
+            marginTop: '1em',
+            padding: '0.5em',
+            height: '15em', 
+            minWidth: '28em', 
+            maxWidth: '25em', 
+            resize: 'none', 
+            borderRadius: '0.5em',
+            background: 'none',
+            border: '0.01em solid black'
+        }}></textarea>
       </article>
     </div>
   )
