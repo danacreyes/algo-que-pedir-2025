@@ -1,7 +1,7 @@
 import { Container, Typography } from '@mui/material'
 import { useState } from 'react'
 import { StoreCardJSON } from '../../domain/store'
-import RestaurantCard from '../../components/restaurantCard/RestaurantCard'
+import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import { Navigator } from '../../routes/Navigator'
 
 const mockCard: StoreCardJSON = {
