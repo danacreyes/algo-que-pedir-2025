@@ -1,16 +1,22 @@
-import { Typography } from '@mui/material'
+import { Button, Rating, Typography } from '@mui/material'
 import { Navigator } from '../../routes/Navigator'
-import './store-ratings.css'
+import './rate-store.css'
+import { useState } from 'react'
+
+const MAX_CHARACTERS: number = 250 
 
 function RateStore() {
   // const { id } = useParams()
   const navigation = Navigator()
   const { name } = navigation.getStateData()
+  const [rate, setRate] = useState<number>(3)
+  const [experienceDesc, setExperienceDesc] = useState<string>('')
+  const [charactersLeft, setCharactersLeft] = useState<number>(MAX_CHARACTERS)
 
   return (
     // Esto es raro...no esta ni importado y lo toma igual. De donde?
-    <body className='main-container'>
-      <section className='go-back-and-title-section'>
+    <div className='main-container'>
+      <article className='go-back-and-title-section'>
         <button onClick={() => navigation.goTo('/store-ratings')} className='go-back-btn'>
           X
         </button>
@@ -19,19 +25,69 @@ function RateStore() {
           className='section-title'>
             Calificar
         </Typography>
-      </section>
+      </article>
 
-      <section className='main-body-and-form'>
+      <article className='main-body-and-form'>
         <Typography 
           variant='h5' sx={{ fontSize: '1.9em'}}>
             ¿Cómo fue tu experiencia con {name}?
         </Typography>
         <Typography 
-          variant='subtitle1' sx={{ marginTop: '0.5em'}}>
+          variant='subtitle1' sx={{ margin: '1em 0em'}}>
             Tu opinión ayuda a otros a elegir el mejor lugar
         </Typography>
-      </section>
-    </body>
+        <Rating
+          name="simple-controlled"
+          value={rate}
+          onChange={(_, newRate) => {
+            // Podia ser null, asi que si es null conservamos el anterior
+            setRate(newRate === null ? rate : newRate as number)
+          }}
+          sx={{
+            margin: '0',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1em',
+            left: '0.4em'
+          }}
+        />
+        <section>
+          <textarea 
+            className='experience-description-textarea'
+            name="experience-description"
+            value={experienceDesc}
+            onChange={(e) => {
+              setExperienceDesc(e.target.value)
+              setCharactersLeft(MAX_CHARACTERS - e.target.value.length)
+              console.info(e.target.value)
+            }}
+            placeholder='Describi tu experiencia'
+            style={{ 
+              marginTop: '1em',
+              padding: '0.5em',
+              height: '15em', 
+              minWidth: '28em', 
+              maxWidth: '25em', 
+              resize: 'none', 
+              borderRadius: '0.5em',
+              background: 'none',
+              border: '0.01em solid black'
+          }}></textarea>
+          <div
+            style={{
+              width: '3em',
+              border: '0.01em solid black',
+              borderRadius: '0.5em',
+              position: 'relative',
+              left: '24.8em',
+              bottom: '2.25em'
+            }}
+          >{charactersLeft}</div>
+        </section>
+
+        <Button variant="contained" className='btn-primary spaced-top'>Guardar</Button>
+      </article>
+    </div>
   )
 }
 

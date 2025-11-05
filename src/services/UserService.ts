@@ -2,6 +2,7 @@ import { UserType, type UserJSONLoginRequest, type UserJSONRegisterRequest, type
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
+import { StoreCardJSON, StoreJSON } from '../domain/store'
 
 class UserService {
   // USER CLIENTE
@@ -60,6 +61,12 @@ class UserService {
     const ingredientJSONs = ingredients.map(ingredient => ingredient.toJSON())
     const ingredientesActualizados = await axios.put<IngredientJSON[]>(REST_SERVER_URL + `/actualizar-ingredientes/${criteria}?id=${id}`, ingredientJSONs)
     return ingredientesActualizados.data.map(IngredientType.fromJson)
+  }
+
+  async getUnratedStores() {
+    const sessionID = Number(sessionStorage.getItem('id'))
+    const unratedStoresCardJson = await axios.get<StoreCardJSON[]>(REST_SERVER_URL + `/locales-puntuables/${sessionID}`)
+    return unratedStoresCardJson.data
   }
 }
 

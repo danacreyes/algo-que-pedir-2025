@@ -4,16 +4,12 @@ import { Outlet, useLocation } from 'react-router-dom'
 export const RouterLayout = () => {
     const location = useLocation()
 
-    // if (location.pathname == '/login' || location.pathname == '/register') {
-    //     return <Outlet />
-    // }
     return(
-        <>
+        <div className='app-wrapper'>
             <Outlet />
-            {/* <NavBar /> */}
             { !(location.pathname == '/login' || location.pathname == '/register') ? (
                 <SimpleBottomNavigation/>
             ) : null }
-        </>
+        </div>
     )
 }

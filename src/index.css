@@ -97,7 +97,17 @@ mejorar la anmacion */
 
 html { font-family: var(--primary-font); } /* sin esto no se ven los iconos */
 
-body { background-color: var(--background-color-primary);}
+body { 
+  /* background-color: var(--background-color-primary); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-wrapper {
+  max-width: 430px;
+}
+
 button:hover {
   cursor: pointer;
 }
