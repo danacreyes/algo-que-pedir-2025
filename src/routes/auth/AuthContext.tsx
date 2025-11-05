@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useState,  } from "react";
+import { createContext, useContext, useEffect, useState } from 'react'
+import React from 'react'
 
 type AuthCtx = {
-    isAuth: boolean;
-    login: () => void;
-    logout: () => void;
+    isAuth: boolean
+    login: () => void
+    logout: () => void
 }
 
 const Ctx = createContext<AuthCtx | null>(null)
@@ -13,13 +14,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // sessionStorage por ahora, luego localStorage
         // Token? capaz ahora si....
         // lo setea en el init (solo una vez, evitamos re-leer en cada render) <- si fuera localStorage?
-        return sessionStorage.getItem("logged") === "true"
+        return sessionStorage.getItem('logged') === 'true'
     })
 
     // persistir cada cambio para sobrevivir recargas
     useEffect(() => {
-        // setteo el sessionStorage con "true" o "false" dependiendo del isAuth()
-        sessionStorage.setItem("logged", String(isAuth))
+        // setteo el sessionStorage con 'true' o 'false' dependiendo del isAuth()
+        sessionStorage.setItem('logged', String(isAuth))
     }, [isAuth])
 
     // modifico el isAuth cuando logueo o deslogueo

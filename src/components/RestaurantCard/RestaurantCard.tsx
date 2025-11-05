@@ -5,7 +5,7 @@ import './restaurant-card.css'
 const RestaurantCard = ({src, alt, name, detail, detail2, icon, cardOnClickFunction, buttonOnClickFunction}:{src: string, alt: string, name: string, detail: string, detail2?: string, icon: ReactNode, cardOnClickFunction?: () => void, buttonOnClickFunction?: () => void}) => {
     return(
         <Box className='main-box-restaurant'>  
-            <Box className='box-item-restaurant'>
+            <Box className='box-item-restaurant' onClick={cardOnClickFunction}>
                 <Box
                     component='img'
                     src = {src}
@@ -19,7 +19,7 @@ const RestaurantCard = ({src, alt, name, detail, detail2, icon, cardOnClickFunct
                 </Box>
             </Box>
             
-            <IconButton size="small" className='icon-custom'>
+            <IconButton size="small" className='icon-custom' onClick={buttonOnClickFunction}>
                 {icon}
             </IconButton>
         </Box>

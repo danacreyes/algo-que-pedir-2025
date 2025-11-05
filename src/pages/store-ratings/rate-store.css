@@ -1,0 +1,11 @@
+.rating-section {
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+button.spaced-top {
+    margin-top: 1.15em;
+    width: 8em;
+    left: 12em;
+}

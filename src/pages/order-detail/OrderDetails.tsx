@@ -5,21 +5,11 @@ import TabPanel from '@mui/lab/TabPanel'
 import '../../index.css'
 import './order-details.css'
 import { useState } from 'react'
-// import PedidoRow from '../components/PedidoRow'
 import { Order } from '../../domain/order'
 import { orderService } from '../../services/orderService'
 import { useOnInit } from '../../customHooks/useOnInit'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import { Navigator } from '../../routes/Navigator'
-/*
-Imprimir IDs de pedidos -> solved. Subi la key un nivel mas arriba
-Mandar ID de usuario al sessionStorage -> solved
-Fijarse otra manera de cargar los pedidos sin useEffect -> solved
-
-
-*/
-sessionStorage.setItem('id', '5')
-sessionStorage.setItem('email', 'bostadevaca@gmail.com')
 
 function OrderDetails () {
   const [orders, setOrders] = useState<Order[]>([])
@@ -68,7 +58,7 @@ function OrderDetails () {
 
   return (
     <>
-    <div className='main-container'>
+    <div className='main-container' style={{padding: '0.5em'}}>
       <section className='section-title-and-tabs'>
         <Typography 
           variant='h5' sx={{margin: '1rem 0'}}>

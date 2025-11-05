@@ -3,7 +3,7 @@ import { Avatar, FormControl, TextField, Grid, Box, Container, Button, IconButto
 import PreferencesBox from '../../components/PreferencesBox/PreferencesBox'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
-import '../SearchCriteria/search-criteria.css'
+import '../search-criteria/search-criteria.css'
 import './profile.css'
 
 import LogoutButton from '../../components/LogoutButton'

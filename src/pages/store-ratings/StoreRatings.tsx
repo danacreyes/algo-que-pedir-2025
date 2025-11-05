@@ -1,49 +1,27 @@
 import { Container, Typography } from '@mui/material'
 import { useState } from 'react'
 import { StoreCardJSON } from '../../domain/store'
-import RestaurantCard from '../../components/restaurantCard/RestaurantCard'
+import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import { Navigator } from '../../routes/Navigator'
-
-const mockCard: StoreCardJSON = {
-    id: 1,
-    name: 'Pizzeria Fina',
-    imageURL: 'https://assets.surlatable.com/m/15a89c2d9c6c1345/72_dpi_webp-REC-283110_Pizza.jpg',
-    gradePointAvg: 4.1,
-    deliveryTimeAvg: '30 - 45 min',
-    isExpensive: true
-}
-const mockCard2: StoreCardJSON = {
-    id: 2,
-    name: 'Pizzeria Cruda',
-    imageURL: 'https://assets.surlatable.com/m/15a89c2d9c6c1345/72_dpi_webp-REC-283110_Pizza.jpg',
-    gradePointAvg: 3.1,
-    deliveryTimeAvg: '15 - 25 min',
-    isExpensive: false
-}
-const mockCard3: StoreCardJSON = {
-    id: 3,
-    name: 'Pizzeria Fina',
-    imageURL: 'https://assets.surlatable.com/m/15a89c2d9c6c1345/72_dpi_webp-REC-283110_Pizza.jpg',
-    gradePointAvg: 5.0,
-    deliveryTimeAvg: '20 - 30 min',
-    isExpensive: false
-}
+import { userService } from '../../services/UserService'
+import { useOnInit } from '../../customHooks/useOnInit'
+import './store-ratings.css'
 
 const StoreRatings = () => {
-    // Podrian no ser StoreTypes no? Directamente mandar al back la puntuacion
-    const [unratedStores, setUnratedStores] = useState<StoreCardJSON[]>([mockCard, mockCard2, mockCard3])
-    // const [errorMessage, setErrorMessage] = useState('') // para errores 
+    const [unratedStores, setUnratedStores] = useState<StoreCardJSON[]>([])
 
     const navigation = Navigator()
     
     const getUnratedStores = async () => {
         try {
-            // const unratedStores = clientService.getUnratedStores()
+            const unratedStores: StoreCardJSON[] = await userService.getUnratedStores()
             setUnratedStores(unratedStores)
         } catch (error) {
             console.info('An error has occurred',error)
         }
     }
+
+    useOnInit(() => getUnratedStores())
 
     const showUnratedStores = () => {
         return unratedStores
@@ -63,7 +41,7 @@ const StoreRatings = () => {
 
     return (
         <>
-            <div className='main-container'>
+            <div className='main-container' style={{padding: '0.5em'}}>
                 <section className='section-title-and-tabs'>
                     <Typography 
                     variant='h5' sx={{margin: '2rem 0'}}>
