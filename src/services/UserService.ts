@@ -5,7 +5,7 @@ import { IngredientJSON, IngredientType } from '../domain/ingredient'
 
 class UserService {
   // USER CLIENTE
-  async getUser(emailSent: string, passwordSent: string) {
+  async login(emailSent: string, passwordSent: string) {
     // Hace el POST al backend
     const userCliente: UserJSONLoginRequest = {
       email: emailSent,
@@ -16,9 +16,9 @@ class UserService {
     // eslint-disable-next-line no-console
 
     // Guardar datos en sessionStorage son solo para cuando esta el navegador se borra al cerrar la pestaña supuestamente....
-    sessionStorage.setItem('userName', response.data.name)
-    sessionStorage.setItem('email', response.data.email)
-    sessionStorage.setItem('id', response.data.id.toString())
+    localStorage.setItem('userName', response.data.name)
+    localStorage.setItem('email', response.data.email)
+    localStorage.setItem('id', response.data.id.toString())
 
     console.log(response.data)
     
@@ -60,6 +60,18 @@ class UserService {
     const ingredientJSONs = ingredients.map(ingredient => ingredient.toJSON())
     const ingredientesActualizados = await axios.put<IngredientJSON[]>(REST_SERVER_URL + `/actualizar-ingredientes/${criteria}?id=${id}`, ingredientJSONs)
     return ingredientesActualizados.data.map(IngredientType.fromJson)
+  }
+
+  isAuth() {
+    const email = localStorage.getItem("userName")
+    if (email != null || email != undefined) {
+      return true
+    }
+    return false
+  }
+
+  logout() {
+    localStorage.clear()
   }
 }
 

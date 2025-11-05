@@ -1,12 +1,13 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from './AuthContext'
+// import { useAuth } from './AuthContext'
+import { userService } from '../../services/UserService'
 
 
 const RequireAuth = () => {
-  const { isAuth } = useAuth()
   const location = useLocation() // para
 
-  if (!isAuth) return <Navigate to={'/login'} replace state={{ from: location }} />
+  // preguntar al service si esta logueado y volar el context
+  if (!userService.isAuth()) return <Navigate to={'/login'} replace state={{ from: location }} />
   return <Outlet /> // renderiza las rutas hijas protegidas
 } 
 export default RequireAuth
