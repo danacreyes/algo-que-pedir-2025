@@ -7,11 +7,11 @@ import './login-register.css'
 import { UserJSONLoginRequest, UserType } from '../../domain/user'
 import { userService } from '../../services/UserService'
 import { ValidationMessage } from '../../domain/validationMessage'
-import ValidationField from '../../components/ValidationField'
+import ValidationField from '../../components/ValidationField/ValidationField'
 // import { showError } from '../domain/errorHandler';
 import { getErrorMessage } from '../../domain/errorHandler'
-import { Toast } from '../../components/toast/ToastContainer'
-import { useToast } from '../../components/toast/useToast'
+import { Toast } from '../../components/ToastE/ToastContainer'
+import { useToast } from '../../components/ToastE/useToast'
 import { useAuth } from '../../routes/auth/AuthContext'
 
 const Login = () => {
