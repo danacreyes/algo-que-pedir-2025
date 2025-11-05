@@ -68,15 +68,13 @@ const dishesMock: dishType[] = [
     //! ver donde guardar el pedido, el profe dijo que tiene que estar en el front
     //! test end to end un test por end point
 
-    //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
+    //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation, esto es con lo que dijo el profe
     //! tambien todo lo que se comparta entre las dos paginas pasalo a componentes
 
     //! que te traiga las cosas de el back y que cuando estes en inicio y toques un local te lleve a ese local
     //! falta que se guarde el pedido y se muestre cuando pongas ver pedido, te lleva a la pagina (Checkout del pedido)
     //! falta poner que en el modal cuando toques agregar al pedido se agregue
     //! la app no debe permitir a un usuario agregar dos veces el mismo plato. Puede solamente editar la cantidad.
-
-    //! arreglar el error que tira de la key, importante a la hora de borrar las cosas, porque si no se rompe todo
 
 
     //! cambiar todo a porcentajes lo que sea vw y vh(este no tanto, igual ni lo uso)
