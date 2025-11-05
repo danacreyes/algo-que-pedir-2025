@@ -10,16 +10,14 @@ import { ValidationMessage } from '../../domain/validationMessage'
 import ValidationField from '../../components/ValidationField/ValidationField'
 // import { showError } from '../domain/errorHandler';
 import { getErrorMessage } from '../../domain/errorHandler'
-import { Toast } from '../../components/ToastE/ToastContainer'
-import { useToast } from '../../components/ToastE/useToast'
-import { useAuth } from '../../routes/auth/AuthContext'
+import { Toast } from '../../components/Toast/ToastContainer'
+import { useToast } from '../../components/Toast/useToast'
 
 const Login = () => {
   const { toast, showToast } = useToast()
   const [user, setUser] = useState<UserJSONLoginRequest>({email: '', password: ''})
   const [errors, setErrors] = useState<Array<ValidationMessage>>([])
   
-  const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from?.pathname || '/'
@@ -51,9 +49,8 @@ const Login = () => {
     }
 
     try {
-      let validation = await userService.getUser(userLogin.email, userLogin.password)
+      let validation = await userService.login(userLogin.email, userLogin.password)
       if (validation) {
-        login()
         navigate(from, {replace: true}) // recordar la ruta “from” y volver tras login
       }
     } catch (error) {
@@ -88,7 +85,7 @@ const Login = () => {
       <form
         onSubmit={handleSubmit}
         id='login-form'
-        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '80%' }}
+        className='auth-form'
       >
         <TextField
           id='email'
@@ -114,19 +111,13 @@ const Login = () => {
 
         <Button variant="contained" color="primary" 
           type="submit"
-          sx={{
-            backgroundColor: 'var(--primary-color)',
-            borderRadius: '2em',
-            '&:hover': {
-              backgroundColor: 'var(--button-hover-color)',
-            }
-          }}
+          className='auth-submit-btn'
         >
           Iniciar sesión
         </Button>
       </form>
 
-      <span>¿No tenes cuenta? <Link to={'/register'}>Registrate</Link></span>
+      <span>¿No tenes cuenta? <Link to={'/register'} className='auth-anchor'>Registrate</Link></span>
 
       <div id="toast-container">
         <Toast toast={toast} />

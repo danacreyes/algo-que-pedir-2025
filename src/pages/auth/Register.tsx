@@ -80,8 +80,8 @@ const Register = () => {
 
       <form
         onSubmit={handleSubmit}
-        id='login-form'
-        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '300px' }}
+        id='register-form'
+        className='auth-form'
       >
         <TextField
           id='email'
@@ -119,19 +119,13 @@ const Register = () => {
 
         <Button variant="contained" color="primary" 
           type="submit"
-          sx={{
-            backgroundColor: 'var(--primary-color)',
-            borderRadius: '2em',
-            '&:hover': {
-              backgroundColor: 'var(--button-hover-color)',
-            }
-          }}
+          className='auth-submit-btn'
         >
           Registrarme
         </Button>
       </form>
 
-          <span>Ya tengo cuenta. <Link to={'/login'}>Iniciar Sesión</Link></span>
+          <span>Ya tengo cuenta. <Link to={'/login'} className='auth-anchor'>Iniciar Sesión</Link></span>
 
       <div id="toast-container">
         <Toast toast={toast} />
