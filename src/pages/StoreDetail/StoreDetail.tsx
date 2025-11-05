@@ -66,7 +66,7 @@ const dishesMock: dishType[] = [
 
     //! arreglar el movimiento raro que hace el header
     //! ver donde guardar el pedido, el profe dijo que tiene que estar en el front
-    //! test end to end
+    //! test end to end un test por end point
 
     //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
     //! tambien todo lo que se comparta entre las dos paginas pasalo a componentes
@@ -78,6 +78,15 @@ const dishesMock: dishType[] = [
 
     //! arreglar el error que tira de la key, importante a la hora de borrar las cosas, porque si no se rompe todo
 
+
+    //! cambiar todo a porcentajes lo que sea vw y vh(este no tanto, igual ni lo uso)
+    //! con parrams de router de me devuleva el store id que hizo fernanda
+    //! traer las cosas en dos partes, si entra a menu traer los platos, si entra a reseñas traer las reseñas, y armar otro DTO para que me traiga las cosas tipo reseñas, reviws, pedidos, eso se hace apenas carga la pagina
+    // hacer un count de el repo de pedidos y ver cuantos hay con el id de el local
+    //! como usas el local storage lo que tiene que hacer cuando pones completar el plato es, peris, va a el back, el back valida si siguen existiendo todos los platos que estan en el pedido y luego que tire un error de el back que ya no esta ese plato (luego que lo saque o te ponga que lo saques o nose algo de eso)
+
+    //!usar contex o local storage, o un service
+
 const StoreDetail = () => {
     const [value, setValue] = React.useState('1')
     const [open, setOpen] = React.useState(false)
@@ -85,6 +94,10 @@ const StoreDetail = () => {
     const [modalCounter, setmodalCounter] = React.useState(1)
     const [dishes, setDishes] = React.useState<dishType[]>(dishesMock)
     const navigate = useNavigate()
+
+    // React.useEffect(() => {
+    //     traerPlatosDelBakc().then(data => setDishes(data)) //algo asi ???
+    // }, [])
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue)
@@ -119,8 +132,10 @@ const StoreDetail = () => {
 
     return (
         <Box className="store-detail-container">
+        {/* ==================== Header ==================== */}
             <HeaderBack title='Restaurante Italiano' backTo='/' />
 
+            {/* ==================== Restaurant Info ==================== */}
             <Box
                 component='img'
                 src='https://images.unsplash.com/photo-1534650075489-3baecec1e8b1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170'
@@ -136,6 +151,7 @@ const StoreDetail = () => {
                     4.5 (1200+ reviews) · 546 pedidos
                 </Typography>
 
+                {/* ==================== Tabs ==================== */}
                 <TabContext value={value}>
                     <Box className="tabs-container">
                         <TabList 
@@ -147,6 +163,7 @@ const StoreDetail = () => {
                         </TabList>
                     </Box>
 
+                    {/* ==================== Items ==================== */}
                     <TabPanel value='1' className="tab-panel">
                         {dishes.map((dish) => (
                             <Card
@@ -179,6 +196,7 @@ const StoreDetail = () => {
                         ))}
                     </TabPanel>
 
+                    {/* ==================== Reviews ==================== */}
                     <TabPanel value='2'>
                         <Typography variant='body2' className="restaurant-stats"> {/*//! esto tiene que venir de el back */}
                             Reseñas de clientes...
@@ -189,6 +207,7 @@ const StoreDetail = () => {
 
             <Divider className="transparent-divider" />
 
+            {/* ==================== See Order ==================== */}
             <Box className="see-order-container">
                 <Button
                     fullWidth
@@ -201,6 +220,7 @@ const StoreDetail = () => {
                 </Button>
             </Box>
 
+            {/* ==================== Modal ==================== */}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -213,8 +233,9 @@ const StoreDetail = () => {
                         image={selectedDish?.img}
                         alt={selectedDish?.title}
                         className="modal-image"
-                    />
+                        />
                     <Box className="modal-content">
+                        {/* ==================== Dish description ==================== */}
                         <Typography id="modal-modal-title" variant="h6" component="h2" className="modal-title">
                             {selectedDish?.title}
                         </Typography>
@@ -231,6 +252,7 @@ const StoreDetail = () => {
                             </Typography>
                         </Box>
 
+                        {/* ==================== Quantity counter ==================== */}
                         <Box className="quantity-counter-container">
                             <Button
                                 variant="contained"
@@ -263,6 +285,7 @@ const StoreDetail = () => {
                             </Typography>
                         </Box>
 
+                        {/* ==================== Action buttons ==================== */}
                         <Box className="action-buttons-container">
                             <Button
                                 fullWidth
