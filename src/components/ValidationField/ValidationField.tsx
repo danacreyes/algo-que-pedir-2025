@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ValidationMessage } from '../../domain/validationMessage'
-import '../css/validationField.css'
+import './validationField.css'
 
 const ValidationField = ({field, errors} : {field: string, errors: ValidationMessage[]}) => {
   

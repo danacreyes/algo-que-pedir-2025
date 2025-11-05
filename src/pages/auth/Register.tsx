@@ -8,8 +8,8 @@ import { userService } from '../../services/UserService'
 import { ValidationMessage } from '../../domain/validationMessage'
 import ValidationField from '../../components/ValidationField/ValidationField'
 import { getErrorMessage } from '../../domain/errorHandler'
-import { Toast } from '../../components/ToastE/ToastContainer'
-import { useToast } from '../../components/ToastE/useToast'
+import { Toast } from '../../components/Toast/ToastContainer'
+import { useToast } from '../../components/Toast/useToast'
 import { CookingPot } from 'phosphor-react'
 
 const Register = () => {

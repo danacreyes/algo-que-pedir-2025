@@ -106,6 +106,7 @@ body {
 
 .app-wrapper {
   max-width: 430px;
+  height: 100vh;
 }
 
 button:hover {
