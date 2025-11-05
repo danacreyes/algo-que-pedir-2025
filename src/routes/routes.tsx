@@ -9,7 +9,7 @@ import StoreRatings from '../pages/store-ratings/StoreRatings'
 import StoreDetail from '../pages/store-detail/StoreDetail'
 import OrderCheckout from '../pages/order-checkout/OrderCheckout'
 import RateStore from '../pages/store-ratings/RateStore'
-import Profile from '../pages/profile/Profile'
+import Profile from '../pages/profileee/Profile'
 import SearchCriteria from '../pages/search-criteria/SearchCriteria'
 import IngredientCriteria from '../pages/ingredient-criteria/IngredientCriteria'
 
