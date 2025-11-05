@@ -6,12 +6,12 @@ import Register from '../pages/auth/Register'
 import Home from '../pages/home/Home'
 import OrderDetails from '../pages/order-detail/OrderDetails'
 import StoreRatings from '../pages/store-ratings/StoreRatings'
+import StoreDetail from '../pages/storeDetail/StoreDetail'
+import OrderCheckout from '../pages/orderCheckout/OrderCheckout'
 import RateStore from '../pages/store-ratings/RateStore'
 import Profile from '../pages/profile/Profile'
 import SearchCriteria from '../pages/search-criteria/SearchCriteria'
 import IngredientCriteria from '../pages/ingredient-criteria/IngredientCriteria'
-import StoreDetail from '../pages/StoreDetail'
-import OrderCheckout from '../pages/OrderCheckout'
 
 export const AppRouter = () => {
     return (
