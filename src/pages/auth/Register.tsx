@@ -6,10 +6,10 @@ import './login-register.css'
 import { UserJSONRegisterRequest, UserType } from '../../domain/user'
 import { userService } from '../../services/UserService'
 import { ValidationMessage } from '../../domain/validationMessage'
-import ValidationField from '../../components/ValidationField'
+import ValidationField from '../../components/ValidationField/ValidationField'
 import { getErrorMessage } from '../../domain/errorHandler'
-import { Toast } from '../../components/toast/ToastContainer'
-import { useToast } from '../../components/toast/useToast'
+import { Toast } from '../../components/Toast/ToastContainer'
+import { useToast } from '../../components/Toast/useToast'
 import { CookingPot } from 'phosphor-react'
 
 const Register = () => {
@@ -80,8 +80,8 @@ const Register = () => {
 
       <form
         onSubmit={handleSubmit}
-        id='login-form'
-        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '300px' }}
+        id='register-form'
+        className='auth-form'
       >
         <TextField
           id='email'
@@ -119,19 +119,13 @@ const Register = () => {
 
         <Button variant="contained" color="primary" 
           type="submit"
-          sx={{
-            backgroundColor: 'var(--primary-color)',
-            borderRadius: '2em',
-            '&:hover': {
-              backgroundColor: 'var(--button-hover-color)',
-            }
-          }}
+          className='auth-submit-btn'
         >
           Registrarme
         </Button>
       </form>
 
-          <span>Ya tengo cuenta. <Link to={'/login'}>Iniciar Sesión</Link></span>
+          <span>Ya tengo cuenta. <Link to={'/login'} className='auth-anchor'>Iniciar Sesión</Link></span>
 
       <div id="toast-container">
         <Toast toast={toast} />

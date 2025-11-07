@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../routes/auth/AuthContext'
 import { Button } from '@mui/material'
+import { userService } from '../services/UserService'
 
 function LogoutButton() {
-  const { logout } = useAuth()
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    logout()
+    userService.logout()
     navigate('/login', { replace: true })
   }
 

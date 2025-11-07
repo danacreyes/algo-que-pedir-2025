@@ -1,0 +1,73 @@
+.container-profile{
+    display: flex;
+    width: 100vw !important;
+    flex-direction: column; 
+    align-items: center;
+    padding: 1em; 
+    gap: 1em;
+    font-family: var(--primary-font);
+}
+
+.text-with-icon{
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+.icon-profile{
+    position: absolute;
+    top: 50%;
+    color: black;
+    transform: translateY(-50%);
+    margin-left: 0.5em;
+}
+
+.primary-title-profile{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.section-profile{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+form.group-section, div.group-section{
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5em;
+    padding: 0 0.2em;
+}
+
+.avatar-img{
+    display: flex;
+    justify-content: center;
+}
+
+.grid-section{
+    align-items: center;
+}
+
+.restaurant-section{
+    min-height: fit-content;
+}
+
+/* PREFERENCES */
+.preference-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* FORMULARIO */
+.form-field{
+    gap: 1em;
+}
+
+.checkbox-profile{
+    display: flex;
+    justify-content: end;
+    color: hsl(1, 77%, 35%)
+}
