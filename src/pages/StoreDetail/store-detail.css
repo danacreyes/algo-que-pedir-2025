@@ -91,7 +91,8 @@ p.dish-price {
 }
 
 img.dish-image {
-    width: 35%;
+    width: 38%;
+    height: 9.9em;
 }
 
 /* ==================== Divider ==================== */
@@ -103,12 +104,12 @@ hr.transparent-divider {
 /* ==================== See Order Button ==================== */
 div.see-order-container {
     position: fixed;
-    bottom: 56px;
+    bottom: var(--bottom-nav-height);
     left: 0;
     width: 100%;
     padding: 8px;
     background-color: white;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 button.see-order-button {

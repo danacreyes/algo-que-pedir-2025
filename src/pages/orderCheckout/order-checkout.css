@@ -154,7 +154,7 @@ div.payment-select .MuiOutlinedInput-notchedOutline {
 /* ==================== Fixed Bottom Buttons ==================== */
 div.bottom-buttons-container {
     position: fixed;
-    bottom: 56px;
+    bottom: var(--bottom-nav-height);
     left: 0;
     width: 100%;
     padding: 16px;
