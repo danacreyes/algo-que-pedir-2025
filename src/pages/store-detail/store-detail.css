@@ -1,6 +1,11 @@
 /* ==================== Main Container ==================== */
 div.store-detail-container {
-    padding-bottom: 80px;
+    /* padding-bottom: 80px; */
+    /* width: 100%;*/
+    
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     width: 100%;
 }
 
@@ -12,6 +17,11 @@ img.restaurant-image {
 /* ==================== Restaurant Info ==================== */
 div.restaurant-info-container {
     margin-top: 16px;
+    display: flex;
+    /* flex: 1; */
+    flex-direction: column;
+    /* background-color: lemonchiffon; */
+    min-height: 0; /* Le dice a el contenedor puedo ser mas chico que mi contenido */ 
 }
 
 h5.restaurant-title {
@@ -50,10 +60,20 @@ div.tabs-container .MuiTabs-indicator {
     border-radius: 2px;
 }
 
+div.tab-context-content {
+    overflow: scroll;  /* esto agrega la barra */
+    /* flex: 1; */
+    /* height: 100%; */
+    /* display: flex; */
+}
+
 div.tab-panel {
+    /* flex: 1; */
+    /* height: 100%; */
     padding-left: 0;
     padding-right: 0;
 }
+
 
 /* ==================== Dish Card ==================== */
 div.dish-card {
@@ -103,9 +123,9 @@ hr.transparent-divider {
 
 /* ==================== See Order Button ==================== */
 div.see-order-container {
-    position: fixed;
-    bottom: var(--bottom-nav-height);
-    left: 0;
+    /* position: fixed; */
+    /* bottom: var(--bottom-nav-height);
+    left: 0; */
     width: 100%;
     padding: 8px;
     background-color: white;

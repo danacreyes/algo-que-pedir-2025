@@ -186,52 +186,54 @@ const StoreDetail = () => {
                         </TabList>
                     </Box>
 
-                    {/* ==================== Items ==================== */}
-                    <TabPanel value='1' className="tab-panel">
-                        {dishes.map((dish) => (
-                            <Card
+                    <Box className="tab-context-content">
+                        {/* ==================== Items ==================== */}
+                        <TabPanel value='1' className="tab-panel">
+                            {dishes.map((dish) => (
+                                <Card
                                 key={dish.id}
                                 onClick={() => handleOpen(dish.id)}
                                 variant='outlined'
                                 className="dish-card"
-                            >
-                                <CardContent className="dish-card-content">
-                                    {dish.tag && (
-                                        <Typography variant='caption' color='error' className="dish-tag">
-                                            {dish.tag}
+                                >
+                                    <CardContent className="dish-card-content">
+                                        {dish.tag && (
+                                            <Typography variant='caption' color='error' className="dish-tag">
+                                                {dish.tag}
+                                            </Typography>
+                                        )} {/* si tiene tag le pone esto, es un if */}
+                                        <Typography className="dish-title">{dish.title}</Typography>
+                                        <Typography variant='body2' className="dish-description">
+                                            {dish.desc}
                                         </Typography>
-                                    )} {/* si tiene tag le pone esto, es un if */}
-                                    <Typography className="dish-title">{dish.title}</Typography>
-                                    <Typography variant='body2' className="dish-description">
-                                        {dish.desc}
-                                    </Typography>
-                                    <Typography className="dish-price">
-                                        ${dish.price.toFixed(2)}
-                                    </Typography>
-                                </CardContent>
-                                <CardMedia
-                                    component='img'
-                                    image={dish.img}
-                                    alt={dish.title}
-                                    className="dish-image"
-                                />
-                            </Card>
-                        ))}
-                    </TabPanel>
+                                        <Typography className="dish-price">
+                                            ${dish.price.toFixed(2)}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardMedia
+                                        component='img'
+                                        image={dish.img}
+                                        alt={dish.title}
+                                        className="dish-image"
+                                        />
+                                </Card>
+                            ))}
+                        </TabPanel>
 
-                    {/* ==================== Reviews ==================== */}
-                    <TabPanel value='2'>
-                        <Typography variant='body2' className="restaurant-stats"> {/*//! esto tiene que venir de el back */}
-                            Reseñas de clientes...
-                        </Typography>
-                    </TabPanel>
+                        {/* ==================== Reviews ==================== */}
+                        <TabPanel value='2'>
+                            <Typography variant='body2' className="restaurant-stats"> {/*//! esto tiene que venir de el back */}
+                                Reseñas de clientes...
+                            </Typography>
+                        </TabPanel>
+                    </Box>
                 </TabContext>
             </Container>
 
-            <Divider className="transparent-divider" />
+            {/* <Divider className="transparent-divider" /> */}
 
             {/* ==================== See Order ==================== */}
-            <Box className="see-order-container">
+            {/* <Box className="see-order-container">
                 <Button
                     fullWidth
                     variant='contained'
@@ -242,7 +244,7 @@ const StoreDetail = () => {
                 >
                     Ver pedido ({totalItems()})
                 </Button>
-            </Box>
+            </Box> */}
 
             {/* ==================== Modal ==================== */}
             <Modal
@@ -333,6 +335,20 @@ const StoreDetail = () => {
                     </Box>
                 </Box>
             </Modal>
+
+            <Box className="see-order-container">
+                <Button
+                    fullWidth
+                    variant='contained'
+                    color='error'
+                    onClick={() => navigate('/order-chekout')}
+                    className="see-order-button"
+                    disabled={totalItems() < 1}
+                >
+                    Ver pedido ({totalItems()})
+                </Button>
+            </Box>
+
         </Box>
     )
 }

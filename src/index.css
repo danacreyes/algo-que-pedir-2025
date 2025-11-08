@@ -106,8 +106,18 @@ body {
 }
 
 .app-wrapper {
-  max-width: 430px;
-  height: 100vh;
+    max-width: 430px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.outlet-wrapper {
+    /* flex: 1; */
+    /* min-height: 0; */
+    overflow: hidden; /* importante para que el hijo maneje su propio scroll, si no pone toda la pagina */
+    /* display: flex; */
+    /* flex-direction: column; */
 }
 
 button:hover {
