@@ -5,7 +5,31 @@
 }
 
 button.spaced-top {
-    margin-top: 1.15em;
+    margin-top: 0.7em;
     width: 8em;
-    left: 12em;
+    left: 10.3em;
+}
+
+.characters-counter {
+    width: 3em;
+    border: 0.01em solid black;
+    border-radius: 0.5em;
+    position: relative;
+    left: 21.8em;
+    bottom: 2.25em;
+}
+
+.safe {
+    border-color: green;
+    color: green;
+}
+
+.warning {
+    border-color: rgb(255, 196, 0);
+    color: rgb(255, 196, 0);
+}
+
+.exceeded {
+    border-color: red;
+    color: red;
 }

@@ -12,9 +12,13 @@ function RateStore() {
   const [rate, setRate] = useState<number>(3)
   const [experienceDesc, setExperienceDesc] = useState<string>('')
   const [charactersLeft, setCharactersLeft] = useState<number>(MAX_CHARACTERS)
+  const [counterState, setCounterState] = useState<string>('safe')
+
+  const submitStoreRate = async () => {
+    
+  }
 
   return (
-    // Esto es raro...no esta ni importado y lo toma igual. De donde?
     <div className='main-container'>
       <article className='go-back-and-title-section'>
         <button onClick={() => navigation.goTo('/store-ratings')} className='go-back-btn'>
@@ -59,6 +63,13 @@ function RateStore() {
             onChange={(e) => {
               setExperienceDesc(e.target.value)
               setCharactersLeft(MAX_CHARACTERS - e.target.value.length)
+              if (MAX_CHARACTERS - e.target.value.length <= 0) {
+                setCounterState('exceeded')
+              } else if (MAX_CHARACTERS - e.target.value.length <= 40) {
+                setCounterState('warning')
+              } else {
+                setCounterState('safe')
+              }
               console.info(e.target.value)
             }}
             placeholder='Describi tu experiencia'
@@ -66,26 +77,17 @@ function RateStore() {
               marginTop: '1em',
               padding: '0.5em',
               height: '15em', 
-              minWidth: '28em', 
-              maxWidth: '25em', 
+              minWidth: '25em', 
+              maxWidth: '23em', 
               resize: 'none', 
               borderRadius: '0.5em',
               background: 'none',
               border: '0.01em solid black'
           }}></textarea>
-          <div
-            style={{
-              width: '3em',
-              border: '0.01em solid black',
-              borderRadius: '0.5em',
-              position: 'relative',
-              left: '24.8em',
-              bottom: '2.25em'
-            }}
-          >{charactersLeft}</div>
+          <div className={`characters-counter ${counterState}`}>{charactersLeft}</div>
         </section>
 
-        <Button variant="contained" className='btn-primary spaced-top'>Guardar</Button>
+        <Button variant="contained" className='btn-primary spaced-top' onClick={submitStoreRate}>Guardar</Button>
       </article>
     </div>
   )
