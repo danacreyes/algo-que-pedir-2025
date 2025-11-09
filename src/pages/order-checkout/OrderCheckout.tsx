@@ -14,6 +14,10 @@ import CloseIcon from '@mui/icons-material/Close'
 import HeaderBack from '../../components/HeaderBack/HeaderBack'
 import './order-checkout.css'
 import { useCart } from '../../contexts/CartContext'
+import { StoreDetailJSON } from '../../domain/store'
+import { storeService } from '../../services/LocalesService'
+import { useLocation } from 'react-router-dom'
+import { useOnInit } from '../../customHooks/useOnInit'
 
 type OrderItemType = {
     id: number
@@ -75,11 +79,26 @@ const OrderCheckout = () => {
         console.log('Pedido confirmado')
     }
 
+        const [store, setStore] = React.useState<StoreDetailJSON>()
+        const location = useLocation()
+        // console.log(location)
+        // const id = location.state
+        const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
+    
+        const getStoreData = async () => {
+            const backStoreResponse = await storeService.getStore(id as number)
+            setStore(backStoreResponse)
+        }
+    
+        useOnInit(() => {
+            getStoreData()
+        })
+
     //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
 
     return (
         <Box className="order-checkout-container">
-            <HeaderBack title='Tu pedido' backTo='/store-detail' />
+            <HeaderBack title={'Tu pedido'} backTo={{ path: '/store-detail', state: { id: store?.id } }} />
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}

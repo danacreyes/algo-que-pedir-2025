@@ -10,7 +10,7 @@ div.order-checkout-container {
 div.order-content-container {
     padding-top: 16px;
     overflow-y: scroll;
-    /* flex: 1; */
+    flex: 1;
 }
 
 /* ==================== Restaurant Info ==================== */

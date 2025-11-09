@@ -14,10 +14,13 @@ import {
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import HeaderBack from '../../components/HeaderBack/HeaderBack'
 import './store-detail.css'
 import { useCart } from '../../contexts/CartContext'
+import { useOnInit } from '../../customHooks/useOnInit'
+import { storeService } from '../../services/LocalesService'
+import { StoreDetailJSON, StoreType } from '../../domain/store'
 
 type dishType = {
     id: number
@@ -153,25 +156,40 @@ const StoreDetail = () => {
         setOpen(false)
     }
 
+    const [store, setStore] = React.useState<StoreDetailJSON>()
+    const location = useLocation()
+    // console.log(location)
+    // const id = location.state
+    const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
+
+    const getStoreData = async () => {
+        const backStoreResponse = await storeService.getStore(id as number)
+        setStore(backStoreResponse)
+    }
+
+    useOnInit(() => {
+        getStoreData()
+    })
+
     return (
         <Box className="store-detail-container">
         {/* ==================== Header ==================== */}
-            <HeaderBack title='Restaurante Italiano' backTo='/' />
+            <HeaderBack title={store?.name as string} backTo='/' />
 
             {/* ==================== Restaurant Info ==================== */}
             <Box
                 component='img'
-                src='https://images.unsplash.com/photo-1534650075489-3baecec1e8b1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170'
+                src={store?.imageURL as string}
                 alt='Restaurant'
                 className="restaurant-image"
             />
 
             <Container className="restaurant-info-container">
                 <Typography variant='h5' className="restaurant-title">
-                    Restaurante Italiano
+                    {store?.name}
                 </Typography>
                 <Typography variant='body2' className="restaurant-info-stats">
-                    4.5 (1200+ reviews) · 546 pedidos
+                    {store?.gradePointAvg} ({store?.numberOfReviews}+ reviews) · {store?.numberOfOrders} pedidos
                 </Typography>
 
                 {/* ==================== Tabs ==================== */}
@@ -238,7 +256,7 @@ const StoreDetail = () => {
                     fullWidth
                     variant='contained'
                     color='error'
-                    onClick={() => navigate('/order-chekout')}
+                    onClick={() => navigate('/order-chekout', {state: {id: store?.id}})}
                     className="see-order-button"
                     disabled={totalItems() < 1}
                 >
