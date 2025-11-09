@@ -24,6 +24,17 @@ class StoreService {
       throw new Error('Error fetching stores')
     }
   }
+
+  async getStore(id: number) {
+    console.log(id)
+    // const response = await axios.get(`${REST_SERVER_URL} + '/store-profile/' ${id}`)
+    // console.log(`${REST_SERVER_URL}/store-profile-react/${id}`)
+    const response = await axios.get(`${REST_SERVER_URL}/store-profile-react/${id}`)
+    // console.log(response)
+    // console.log('tdfsaaaaaaa')
+    console.log(response.data)
+    return response.data
+  }
 }
 
 export const storeService = new StoreService()

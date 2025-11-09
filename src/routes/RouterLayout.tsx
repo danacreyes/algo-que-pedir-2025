@@ -6,7 +6,9 @@ export const RouterLayout = () => {
 
     return(
         <div className='app-wrapper'>
-            <Outlet />
+            <div className='outlet-wrapper'>
+                <Outlet />
+            </div>
             { !(location.pathname == '/login' || location.pathname == '/register') ? (
                 <SimpleBottomNavigation/>
             ) : null }

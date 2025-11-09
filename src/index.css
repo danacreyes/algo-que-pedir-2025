@@ -26,6 +26,7 @@
     --alternative-color: #FA954D;
     --icon-color: #898989;
     --error-text-color: red;
+    --bottom-nav-height: 3.5rem;
     
     --primary-color: #E82933;
     --button-hover-color: hsl(1, 77%, 45%);
@@ -105,8 +106,18 @@ body {
 }
 
 .app-wrapper {
-  max-width: 430px;
-  height: 100vh;
+    max-width: 430px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.outlet-wrapper {
+    flex: 1; /* esto es importante!!! asi ocupa toda la pagina */
+    /* min-height: 0; */
+    overflow-y: auto; /* importante para que el hijo maneje su propio scroll, si no pone toda la pagina */
+    display: flex;
+    /* flex-direction: column; */
 }
 
 button:hover {

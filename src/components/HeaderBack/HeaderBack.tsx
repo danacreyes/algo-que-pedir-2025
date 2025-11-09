@@ -5,8 +5,9 @@ import './header-back.css'
 
 type HeaderProps = {
     title: string
-    backTo: string 
+    backTo: string | { path: string; state?: unknown }
 }
+
 
 const HeaderBack = ({ title, backTo }: HeaderProps) => {
     const navigate = useNavigate()
@@ -15,7 +16,13 @@ const HeaderBack = ({ title, backTo }: HeaderProps) => {
         <Box className="header-container">
             <Box className="header-content">
                 <IconButton
-                    onClick={() => navigate(backTo)}
+                    onClick={() => {
+                        if (typeof backTo === 'string') {
+                        navigate(backTo)
+                        } else {
+                        navigate(backTo.path, { state: backTo.state })
+                        }
+                    }}
                     className="header-back-button"
                 >
                     <ArrowBackIcon />

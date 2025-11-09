@@ -13,6 +13,11 @@ import {
 import CloseIcon from '@mui/icons-material/Close'
 import HeaderBack from '../../components/HeaderBack/HeaderBack'
 import './order-checkout.css'
+import { useCart } from '../../contexts/CartContext'
+import { StoreDetailJSON } from '../../domain/store'
+import { storeService } from '../../services/LocalesService'
+import { useLocation } from 'react-router-dom'
+import { useOnInit } from '../../customHooks/useOnInit'
 
 type OrderItemType = {
     id: number
@@ -47,32 +52,53 @@ const ordersMock: OrderItemType[] = [
 ]
 
 const OrderCheckout = () => {
-    const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
+    // const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
     const [paymentMethod, setPaymentMethod] = React.useState('Efectivo')
 
-    const removeItem = (id: number) => {
-        setItems(items.filter(item => item.id !== id))
-    }
+    // const removeItem = (id: number) => {
+    //     setItems(items.filter(item => item.id !== id))
+    // }
+
+    const { items, removeItem, clearCart, getTotalPrice } = useCart()
 
     // estas variables sueltas se recalculan en cada render
-    const subtotal = items.reduce((sum, item) => sum + item.total, 0)
+    const subtotal = getTotalPrice()
     const serviceFee = 2.62 //? esto no se que onda
     const deliveryFee = 0.00
     const total = subtotal + serviceFee + deliveryFee
 
+    // const handleClearCart = () => {
+    //     setItems([])
+    // }
+
     const handleClearCart = () => {
-        setItems([])
+        clearCart()
     }
 
     const handleConfirmOrder = () => {
         console.log('Pedido confirmado')
     }
 
+        const [store, setStore] = React.useState<StoreDetailJSON>()
+        const location = useLocation()
+        // console.log(location)
+        // const id = location.state
+        const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
+    
+        const getStoreData = async () => {
+            const backStoreResponse = await storeService.getStore(id as number)
+            setStore(backStoreResponse)
+        }
+    
+        useOnInit(() => {
+            getStoreData()
+        })
+
     //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
 
     return (
         <Box className="order-checkout-container">
-            <HeaderBack title='Tu pedido' backTo='/store-detail' />
+            <HeaderBack title={'Tu pedido'} backTo={{ path: '/store-detail', state: { id: store?.id } }} />
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}
@@ -110,7 +136,7 @@ const OrderCheckout = () => {
                             <Box className="item-info">
                                 <Box className="item-name-container">
                                     <Typography className="item-name">
-                                        {item.name}
+                                        {item.title}
                                     </Typography>
                                 </Box>
                                 <Typography variant='body2' className="item-quantity">
@@ -123,7 +149,7 @@ const OrderCheckout = () => {
 
                             <Box className="item-price-actions">
                                 <Typography className="item-total">
-                                    ${item.total.toFixed(2)}
+                                    ${item.totalPrice.toFixed(2)}
                                 </Typography>
                                 <IconButton
                                     onClick={() => removeItem(item.id)}

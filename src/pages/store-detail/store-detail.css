@@ -1,7 +1,12 @@
 /* ==================== Main Container ==================== */
 div.store-detail-container {
-    padding-bottom: 80px;
-    width: 100vw;
+    /* padding-bottom: 80px; */
+    /* width: 100%;*/
+    
+    display: flex;
+    flex-direction: column;
+    /* height: 100%; */
+    width: 100%;
 }
 
 /* ==================== Restaurant Image ==================== */
@@ -12,6 +17,15 @@ img.restaurant-image {
 /* ==================== Restaurant Info ==================== */
 div.restaurant-info-container {
     margin-top: 16px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    /* background-color: lemonchiffon; */
+    min-height: 0; /* Le dice a el contenedor puedo ser mas chico que mi contenido */ 
+}
+
+p.restaurant-info-stats {
+    color: rgba(0, 0, 0, 0.6);
 }
 
 h5.restaurant-title {
@@ -20,6 +34,7 @@ h5.restaurant-title {
 
 p.restaurant-stats {
     color: rgba(0, 0, 0, 0.6);
+    /* min-height: 35vh; */
 }
 
 /* ==================== Tabs ==================== */
@@ -50,10 +65,20 @@ div.tabs-container .MuiTabs-indicator {
     border-radius: 2px;
 }
 
+div.tab-context-content {
+    overflow-y: auto;  /* esto agrega la barra */
+    flex: 1;
+    /* min-height: 37vh; */
+    /* display: flex; */
+}
+
 div.tab-panel {
+    /* flex: 1; */
+    /* height: 100%; */
     padding-left: 0;
     padding-right: 0;
 }
+
 
 /* ==================== Dish Card ==================== */
 div.dish-card {
@@ -91,7 +116,8 @@ p.dish-price {
 }
 
 img.dish-image {
-    width: 35%;
+    width: 38%;
+    height: 9.9em;
 }
 
 /* ==================== Divider ==================== */
@@ -102,13 +128,13 @@ hr.transparent-divider {
 
 /* ==================== See Order Button ==================== */
 div.see-order-container {
-    position: fixed;
-    bottom: 56px;
-    left: 0;
+    /* position: fixed; */
+    /* bottom: var(--bottom-nav-height);
+    left: 0; */
     width: 100%;
     padding: 8px;
     background-color: white;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 button.see-order-button {
