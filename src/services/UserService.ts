@@ -1,8 +1,9 @@
 import { UserType, type UserJSONLoginRequest, type UserJSONRegisterRequest, type UserJSONResponse } from '../domain/user'
+import { UserProfile, type UserProfileJSONResponse } from '../domain/userProfile'
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
-import { StoreCardJSON, StoreJSON } from '../domain/store'
+import { StoreCardJSON } from '../domain/store'
 
 class UserService {
   // USER CLIENTE
@@ -17,8 +18,11 @@ class UserService {
     // eslint-disable-next-line no-console
 
     // Guardar datos en sessionStorage son solo para cuando esta el navegador se borra al cerrar la pestaña supuestamente....
+    // eslint-disable-next-line no-undef
     localStorage.setItem('userName', response.data.name)
+    // eslint-disable-next-line no-undef
     localStorage.setItem('email', response.data.email)
+    // eslint-disable-next-line no-undef
     localStorage.setItem('id', response.data.id.toString())
 
     console.log(response.data)
@@ -39,6 +43,18 @@ class UserService {
       REST_SERVER_URL + '/userRegister', 
       userLocal
     )
+  }
+
+  async getProfile(id: number) {
+    const response = await axios.get<UserProfileJSONResponse>(
+      REST_SERVER_URL + `/perfil/${id}`
+    )
+    return UserProfile.fromJSON(response.data)
+  }
+
+  async updateProfile(profile: UserProfile) {
+    const response = await axios.put<UserProfileJSONResponse>(REST_SERVER_URL + '/actualizar-perfil/' + profile.id, profile.toJSON())
+    return UserProfile.fromJSON(response.data)
   }
 
   async getIngredientsByCriteria(id: number, criteria: string) {
@@ -70,7 +86,8 @@ class UserService {
   }
   
   isAuth() {
-    const email = localStorage.getItem("userName")
+    // eslint-disable-next-line no-undef
+    const email = localStorage.getItem('userName')
     if (email != null || email != undefined) {
       return true
     }
@@ -78,6 +95,7 @@ class UserService {
   }
 
   logout() {
+    // eslint-disable-next-line no-undef
     localStorage.clear()
   }
 }

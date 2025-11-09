@@ -1,10 +1,9 @@
-.box-section-criteria{
-    width: 100%;
+/* .box-section-criteria{
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 1em;
-}
+} */
 
 div.box-ingredients{
     display: flex;

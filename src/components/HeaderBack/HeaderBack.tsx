@@ -5,7 +5,7 @@ import './header-back.css'
 
 type HeaderProps = {
     title: string
-    backTo: string
+    backTo: string 
 }
 
 const HeaderBack = ({ title, backTo }: HeaderProps) => {

@@ -1,12 +1,12 @@
 /* ============= SEARCH SECTION ============= */
 .main-container-search{
     display: flex;
-    width: 100vw !important;
     flex-direction: column; 
     padding: 1.5em; 
     gap: 1em;
     font-family: var(--primary-font);
     height: 100%;
+    width: 100vw;
 }
 
 div.main-container-check{
@@ -15,7 +15,20 @@ div.main-container-check{
     border-radius: 15px;
     border: solid 1px lightgray;
     overflow: visible;
-    
+}
+
+div.box-counter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6em;
+}
+
+div.container-counter{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
 }
 
 /* TITLE SECTION */
@@ -47,3 +60,9 @@ button.btn-add{
     box-shadow: none;
 }
 
+@media (min-width: 600px) {
+    div.container-counter{
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

@@ -11,6 +11,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import '../../pages/Profile/profile.css'
 import './ingredient-criteria.css'
 import { userService } from '../../services/UserService'
+import HeaderBack from '../../components/HeaderBack/HeaderBack'
 
 
 sessionStorage.setItem('id', '1')
@@ -84,14 +85,17 @@ const IngredientCriteria = () => {
     }
 
     return(
-        <Container className='main-container-search'>
+        <>
+        <HeaderBack title={title} backTo="/profile" />
+
+        <Container className='main-container-search' sx={{ pb: 9 }}>
             <Box component="section" className='box-section-criteria'>
-                <Box component="section" className='title-box'>
+                {/* <Box component="section" className='title-box'>
                     <IconButton size='small' onClick={() => navigator(-1)}>
                         <ArrowBackIcon className='icon-profile'/>
                     </IconButton>
                     <Typography variant="h6" className='title-main-container'>{title}</Typography>
-                </Box>
+                </Box> */}
 
                 <Box className='box-ingredients' >
                     <Typography component="div" variant="body1" sx={{fontWeight: 600}}>
@@ -143,6 +147,7 @@ const IngredientCriteria = () => {
                 </Box>
             </Modal>
         </Container>
+        </>
     )
 }
 

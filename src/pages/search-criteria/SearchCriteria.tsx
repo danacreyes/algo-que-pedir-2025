@@ -1,5 +1,4 @@
 import { Box, Container, IconButton, Button, Card, Grid, Checkbox } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Typography from '@mui/material/Typography'
 import ClearIcon from '@mui/icons-material/Clear'
 import AddIcon from '@mui/icons-material/Add'
@@ -11,6 +10,7 @@ import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import '../Profile/profile.css'
 import './search-criteria.css'
 import { useNavigate } from 'react-router-dom'
+import HeaderBack from '../../components/HeaderBack/HeaderBack'
 
 const SearchCriteria = () => {
     const label = useState
@@ -24,14 +24,9 @@ const SearchCriteria = () => {
     
     return(
         <>
+        <HeaderBack title="Criterios de búsqueda" backTo="/profile" />
+        
         <Container className='main-container-search' sx={{ pb: 9 }}>
-            {/* ESTO SE PODRIA PONER EN OTRO COMPONENTE PARA QUE LO PODAMOS COMPARTIR TODOS */}
-            <Box component="section" className='title-box'>
-                <IconButton size='small' onClick={() => navigator(-1)}>
-                    <ArrowBackIcon className='icon-profile'/>
-                </IconButton>
-                <Typography variant="h6" className='title-main-container'>Selecciona tu criterio</Typography>
-            </Box>
 
             <Card className='main-container-check' variant='outlined'>
                 <Grid container spacing={2} className='grid-section'>
@@ -126,10 +121,10 @@ const SearchCriteria = () => {
                         <Checkbox sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
                     </Grid>
                 </Grid>
-                <Container sx={{display: 'flex', width: '100%', justifyContent: 'space-between', padding: 0}}>
+                <Container className='container-counter'>
                     <Typography variant="body2" color='gray'>Distancia (km)</Typography>
                     
-                    <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.6em'}}>
+                    <Box className='box-counter'>
                         <IconButton size='small' aria-label="remove" sx={{ backgroundColor: '#f7f4f4', width: 30, height: 30 }} onClick={rest} disabled={counter === 0}>
                             <RemoveCircleIcon fontSize='small' sx={{color: 'gray'}} />
                         </IconButton>
