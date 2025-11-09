@@ -113,10 +113,10 @@ body {
 }
 
 .outlet-wrapper {
-    /* flex: 1; */
+    flex: 1; /* esto es importante!!! asi ocupa toda la pagina */
     /* min-height: 0; */
-    overflow: hidden; /* importante para que el hijo maneje su propio scroll, si no pone toda la pagina */
-    /* display: flex; */
+    overflow-y: auto; /* importante para que el hijo maneje su propio scroll, si no pone toda la pagina */
+    display: flex;
     /* flex-direction: column; */
 }
 

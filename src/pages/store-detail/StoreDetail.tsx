@@ -170,7 +170,7 @@ const StoreDetail = () => {
                 <Typography variant='h5' className="restaurant-title">
                     Restaurante Italiano
                 </Typography>
-                <Typography variant='body2' className="restaurant-stats">
+                <Typography variant='body2' className="restaurant-info-stats">
                     4.5 (1200+ reviews) · 546 pedidos
                 </Typography>
 
@@ -233,7 +233,7 @@ const StoreDetail = () => {
             {/* <Divider className="transparent-divider" /> */}
 
             {/* ==================== See Order ==================== */}
-            {/* <Box className="see-order-container">
+            <Box className="see-order-container">
                 <Button
                     fullWidth
                     variant='contained'
@@ -244,7 +244,7 @@ const StoreDetail = () => {
                 >
                     Ver pedido ({totalItems()})
                 </Button>
-            </Box> */}
+            </Box>
 
             {/* ==================== Modal ==================== */}
             <Modal
@@ -336,7 +336,7 @@ const StoreDetail = () => {
                 </Box>
             </Modal>
 
-            <Box className="see-order-container">
+            {/* <Box className="see-order-container">
                 <Button
                     fullWidth
                     variant='contained'
@@ -347,7 +347,7 @@ const StoreDetail = () => {
                 >
                     Ver pedido ({totalItems()})
                 </Button>
-            </Box>
+            </Box> */}
 
         </Box>
     )
