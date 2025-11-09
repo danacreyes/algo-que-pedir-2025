@@ -22,6 +22,7 @@ export type MenuItemJSONReduced = {
   descripcion: string
   imagen: string
   precio: number
+  tag?: string
 }
 
 export class ValidationMessage { //esto pordriamos usar todos la misma

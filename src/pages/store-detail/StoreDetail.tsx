@@ -21,6 +21,8 @@ import { useCart } from '../../contexts/CartContext'
 import { useOnInit } from '../../customHooks/useOnInit'
 import { storeService } from '../../services/LocalesService'
 import { StoreDetailJSON, StoreType } from '../../domain/store'
+import { MenuItemJSONReduced } from '../../domain/menuItem'
+import { menuItemsService } from '../../services/MenuItemService'
 
 type dishType = {
     id: number
@@ -75,6 +77,18 @@ const dishesMock: dishType[] = [
     },
 ]
 
+const dishesReducedMock: MenuItemJSONReduced[] = [
+    {
+        id: 1,
+        nombre: 'Pizza Margherita',
+        descripcion: 'Classic pizza with tomato sauce, mozzarella, and basil',
+        precio: 12.99,
+        imagen: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.1.0&ixid'
+        + '=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1169',
+        tag: 'Popular',
+    },
+]
+
     //! arreglar el movimiento raro que hace el header
     //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation, esto es con lo que dijo el profe
     //! cambiar todo a porcentajes lo que sea vw y vh(este no tanto, igual ni lo uso)
@@ -87,6 +101,10 @@ const dishesMock: dishType[] = [
     // falta poner que en el modal cuando toques agregar al pedido se agregue --listo
     // la app no debe permitir a un usuario agregar dos veces el mismo plato. Puede solamente editar la cantidad. --listo (a mi manera)
 
+    //! falta que traiga las reviews y los pedidos
+    //! preguntar como se si es popular
+    //! te deja agregar platos de muchos locales no solo uno!
+
     //! que te traiga las cosas de el back y que cuando estes en inicio y toques un local te lleve a ese local
     //! con parrams de router de me devuleva el store id que hizo fernanda
     //! traer las cosas en dos partes, si entra a menu traer los platos, si entra a reseñas traer las reseñas, y armar otro DTO para que me traiga las cosas tipo reseñas, reviws, pedidos, eso se hace apenas carga la pagina
@@ -98,9 +116,11 @@ const dishesMock: dishType[] = [
 const StoreDetail = () => {
     const [value, setValue] = React.useState('1')
     const [open, setOpen] = React.useState(false)
-    const [selectedDish, setSelectedDish] = React.useState<dishType | null>(null)
+    // const [selectedDish, setSelectedDish] = React.useState<dishType | null>(null)
+    const [selectedDish, setSelectedDish] = React.useState<MenuItemJSONReduced | null>(null)
     const [modalCounter, setmodalCounter] = React.useState(1)
-    const [dishes, setDishes] = React.useState<dishType[]>(dishesMock)
+    // const [dishes, setDishes] = React.useState<dishType[]>(dishesMock)
+    const [dishes, setDishes] = React.useState<MenuItemJSONReduced[]>(dishesReducedMock)
     const navigate = useNavigate()
     
     // React.useEffect(() => {
@@ -135,7 +155,7 @@ const StoreDetail = () => {
 
     const calculateTotalPrice = () => {
         if (!selectedDish) return 0
-        return selectedDish.price * modalCounter
+        return selectedDish.precio * modalCounter
     }
 
     const { items, addItem, totalItems } = useCart()
@@ -143,13 +163,13 @@ const StoreDetail = () => {
     const handleAddToCart = () => {
         addItem({
             id: selectedDish!.id,
-            title: selectedDish!.title,
-            desc: selectedDish!.desc,
-            img: selectedDish!.img,
+            title: selectedDish!.nombre,
+            desc: selectedDish!.descripcion,
+            img: selectedDish!.imagen,
             tag: selectedDish!.tag,
             quantity: modalCounter,
-            unitPrice: selectedDish!.price,
-            totalPrice: selectedDish!.price * modalCounter,
+            unitPrice: selectedDish!.precio,
+            totalPrice: selectedDish!.precio * modalCounter,
         })
         setmodalCounter(1)
         console.log(items)
@@ -167,8 +187,19 @@ const StoreDetail = () => {
         setStore(backStoreResponse)
     }
 
+    const getStoreItems = async () => {
+        const backItemsResponse = await menuItemsService.getItemsByStore(id as number)
+        setDishes(backItemsResponse)
+    }
+
+    const getStoreReviews = async () => {
+        const backStoreResponse = await storeService.getStore(id as number)
+        setStore(backStoreResponse)
+    }
+
     useOnInit(() => {
         getStoreData()
+        getStoreItems()
     })
 
     return (
@@ -220,21 +251,49 @@ const StoreDetail = () => {
                                                 {dish.tag}
                                             </Typography>
                                         )} {/* si tiene tag le pone esto, es un if */}
-                                        <Typography className="dish-title">{dish.title}</Typography>
+                                        <Typography className="dish-title">{dish.nombre}</Typography>
                                         <Typography variant='body2' className="dish-description">
-                                            {dish.desc}
+                                            {dish.descripcion}
                                         </Typography>
                                         <Typography className="dish-price">
-                                            ${dish.price.toFixed(2)}
+                                            ${dish.precio.toFixed(2)}
                                         </Typography>
                                     </CardContent>
                                     <CardMedia
                                         component='img'
-                                        image={dish.img}
-                                        alt={dish.title}
+                                        image={dish.imagen}
+                                        alt={dish.nombre}
                                         className="dish-image"
                                         />
                                 </Card>
+                                //? =================================================
+                                // <Card
+                                // key={dish.id}
+                                // onClick={() => handleOpen(dish.id)}
+                                // variant='outlined'
+                                // className="dish-card"
+                                // >
+                                //     <CardContent className="dish-card-content">
+                                //         {dish.tag && (
+                                //             <Typography variant='caption' color='error' className="dish-tag">
+                                //                 {dish.tag}
+                                //             </Typography>
+                                //         )} {/* si tiene tag le pone esto, es un if */}
+                                //         <Typography className="dish-title">{dish.title}</Typography>
+                                //         <Typography variant='body2' className="dish-description">
+                                //             {dish.desc}
+                                //         </Typography>
+                                //         <Typography className="dish-price">
+                                //             ${dish.price.toFixed(2)}
+                                //         </Typography>
+                                //     </CardContent>
+                                //     <CardMedia
+                                //         component='img'
+                                //         image={dish.img}
+                                //         alt={dish.title}
+                                //         className="dish-image"
+                                //         />
+                                // </Card>
                             ))}
                         </TabPanel>
 
@@ -274,17 +333,17 @@ const StoreDetail = () => {
                 <Box className="modal-box">
                     <CardMedia
                         component='img'
-                        image={selectedDish?.img}
-                        alt={selectedDish?.title}
+                        image={selectedDish?.imagen}
+                        alt={selectedDish?.nombre}
                         className="modal-image"
                         />
                     <Box className="modal-content">
                         {/* ==================== Dish description ==================== */}
                         <Typography id="modal-modal-title" variant="h6" component="h2" className="modal-title">
-                            {selectedDish?.title}
+                            {selectedDish?.nombre}
                         </Typography>
                         <Typography id="modal-modal-description" variant="body2" className="modal-description">
-                            {selectedDish?.desc}
+                            {selectedDish?.descripcion}
                         </Typography>
 
                         <Box className="price-info-container">
@@ -292,7 +351,7 @@ const StoreDetail = () => {
                                 Precio unitario
                             </Typography>
                             <Typography className="price-value">
-                                ${selectedDish?.price.toFixed(2)}
+                                ${selectedDish?.precio.toFixed(2)}
                             </Typography>
                         </Box>
 

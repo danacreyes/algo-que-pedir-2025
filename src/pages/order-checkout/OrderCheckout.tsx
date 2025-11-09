@@ -94,6 +94,7 @@ const OrderCheckout = () => {
             getStoreData()
         })
 
+    //! falta terminar los endpoiunts aca
     //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
 
     return (
