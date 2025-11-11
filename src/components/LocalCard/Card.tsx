@@ -17,7 +17,7 @@ export default function MediaCard({ stores }: MediaCardProps) {
   const Navigate = useNavigate()
 
   const handleCardClick = (storeId: number) => {
-    Navigate('store-detail', {state: {id: storeId}})
+    Navigate(`store-detail/${storeId}`)
   }
 
   return (

@@ -14,7 +14,7 @@ import {
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import HeaderBack from '../../components/HeaderBack/HeaderBack'
 import './store-detail.css'
 import { useCart } from '../../contexts/CartContext'
@@ -114,6 +114,7 @@ const dishesReducedMock: MenuItemJSONReduced[] = [
     //! test end to end un test por end point
 
 const StoreDetail = () => {
+    const { id } = useParams()
     const [value, setValue] = React.useState('1')
     const [open, setOpen] = React.useState(false)
     // const [selectedDish, setSelectedDish] = React.useState<dishType | null>(null)
@@ -180,20 +181,19 @@ const StoreDetail = () => {
     const location = useLocation()
     // console.log(location)
     // const id = location.state
-    const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
 
     const getStoreData = async () => {
-        const backStoreResponse = await storeService.getStore(id as number)
+        const backStoreResponse = await storeService.getStore(Number(id))
         setStore(backStoreResponse)
     }
 
     const getStoreItems = async () => {
-        const backItemsResponse = await menuItemsService.getItemsByStore(id as number)
+        const backItemsResponse = await menuItemsService.getItemsByStore(Number(id))
         setDishes(backItemsResponse)
     }
 
     const getStoreReviews = async () => {
-        const backStoreResponse = await storeService.getStore(id as number)
+        const backStoreResponse = await storeService.getStore(Number(id))
         setStore(backStoreResponse)
     }
 
