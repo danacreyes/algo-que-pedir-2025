@@ -15,7 +15,6 @@ function OrderDetails () {
   const [orders, setOrders] = useState<Order[]>([])
   const [state, setState] = useState('PENDIENTE')
   const navigation = Navigator()
-  // const [errorMessage, setErrorMessage] = useState('')
 
   const handleStateChange = (newState: string) => {
     setState(newState)
@@ -28,12 +27,6 @@ function OrderDetails () {
         setOrders(newOrders)
     } catch (error) {
       console.info('Unexpected error', error)
-        // if (!toastLock) {
-        //     // toasts.push('Error cargando los pedidos', {type: 'error'})
-        //     showError('Error cargando los pedidos', error)
-        //     toastLock = true
-        //     setTimeout(releaseToast, 5000)
-        // }
     }
   }
 
@@ -53,7 +46,6 @@ function OrderDetails () {
       )
   }
 
-  
   useOnInit(() => handleStateChange(state))
 
   return (
@@ -67,7 +59,6 @@ function OrderDetails () {
         <Box sx={{ width: '100%', typography: 'body1'}}>
           <TabContext value={state}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              {/* Implicitly takes arguments */}
               <TabList onChange={(_, value) => handleStateChange(value)} aria-label='Tab-list'>
                 <Tab label='Pendientes' value='PENDIENTE'/>
                 <Tab label='Completados' value='ENTREGADO'/>

@@ -2,7 +2,8 @@ import { UserType, type UserJSONLoginRequest, type UserJSONRegisterRequest, type
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
-import { StoreCardJSON, storeRateJSON } from '../domain/store'
+import { StoreCardJSON } from '../domain/store'
+import { StoreRate, storeRateJSON } from '../domain/storeRate'
 
 class UserService {
   // USER CLIENTE
@@ -67,9 +68,16 @@ class UserService {
     return unratedStoresCardJson.data
   }
 
-  async rateStore(storeRate: storeRateJSON) {
+  async rateStore(storeRate: StoreRate) {
+
+    const storeRateJSON: storeRateJSON = {
+      id: String(storeRate.id),
+      rate: storeRate.rate,
+      text: storeRate.text
+    }
     const sessionID = Number(localStorage.getItem('id'))
-    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeRate.id}&userId=${sessionID}`, storeRate)
+
+    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeRateJSON.id}&userId=${sessionID}`, storeRateJSON)
   }
 
   isAuth() {

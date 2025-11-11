@@ -2,9 +2,12 @@ import { Button, Rating, Typography } from '@mui/material'
 import { Navigator } from '../../routes/Navigator'
 import './rate-store.css'
 import { useState } from 'react'
-import { storeRateJSON } from '../../domain/store'
+import { storeRateJSON } from '../../domain/storeRate'
 import { useParams } from 'react-router-dom'
 import { userService } from '../../services/UserService'
+import ValidationField from '../../components/ValidationField/ValidationField'
+import { ValidationMessage } from '../../domain/user'
+import { StoreRate } from '../../domain/storeRate'
 
 const MAX_CHARACTERS: number = 250 
 
@@ -16,6 +19,7 @@ function RateStore() {
   const [experienceDesc, setExperienceDesc] = useState<string>('')
   const [charactersLeft, setCharactersLeft] = useState<number>(MAX_CHARACTERS)
   const [counterState, setCounterState] = useState<string>('safe')
+  const [errors, setErrors] = useState<Array<ValidationMessage>>([])
 
   const generateAndSubmitFormData = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault()
@@ -25,38 +29,35 @@ function RateStore() {
     const storeRate = Number(formData.get('simple-controlled') ?? rate)
     const storeExperienceDesc = String(formData.get('experience-description') ?? experienceDesc)
 
-    const newRate: storeRateJSON = {
-      id: id as string,
-      rate: storeRate,
-      text: storeExperienceDesc
-    }
+    const newRate: StoreRate = new StoreRate(
+      Number(id),
+      storeRate,
+      storeExperienceDesc
+    )
 
     await submitStoreRate(newRate)
   }
 
-  const submitStoreRate = async (rateJSON: storeRateJSON) => {
+  const submitStoreRate = async (storeRate: StoreRate) => {
     try {
-      checkTextMaxLength(rateJSON.text)
-      await userService.rateStore(rateJSON)
-      console.info('calificado con exito!')
-      console.info(rateJSON.text)
-      console.info(rateJSON.rate)
+
+      storeRate.validate()
+      if (storeRate.errors.length > 0) {
+        setErrors(storeRate.errors)
+        return errors
+      }
+
+      await userService.rateStore(storeRate)
       navigation.goTo('/store-ratings')
+
     } catch {
       console.info('Algo fallo. No se pudo')
     }
   }
 
-  const checkTextMaxLength = (text: string, maxLength: number = MAX_CHARACTERS) => {
-    if (text.length > maxLength) {
-      console.info('El texto es muy largo')
-      throw Error()
-    }
-  }
-
   return (
     <div className='main-container'>
-      <article className='go-back-and-title-section'>
+      <section className='go-back-and-title-section'>
         <button onClick={() => navigation.goTo('/store-ratings')} className='go-back-btn'>
           X
         </button>
@@ -65,9 +66,9 @@ function RateStore() {
           className='section-title'>
             Calificar
         </Typography>
-      </article>
+      </section>
 
-      <article className='main-body-and-form'>
+      <section className='main-body-and-form'>
         <Typography 
           variant='h5' sx={{ fontSize: '1.9em'}}>
             ¿Cómo fue tu experiencia con {name}?
@@ -89,7 +90,6 @@ function RateStore() {
               name='simple-controlled'
               value={rate}
               onChange={(_, newRate) => {
-                // Podia ser null, asi que si es null conservamos el anterior
                 setRate(newRate === null ? rate : newRate as number)
               }}
               sx={{
@@ -125,23 +125,17 @@ function RateStore() {
                 }}
                 placeholder='Describi tu experiencia'
                 style={{ 
-                  marginTop: '1em',
-                  padding: '0.5em',
-                  height: '15em', 
-                  minWidth: '25em',  
-                  resize: 'none', 
-                  borderRadius: '0.5em',
-                  background: 'none',
-                  border: '0.01em solid black'
+                  
               }}></textarea>
               <div className={`characters-counter ${counterState}`}>{charactersLeft}</div>
             </section>
+            <ValidationField field='experience-description' errors={errors} />
           </fieldset>
           
           <Button variant='contained' type='submit' className='btn-primary spaced-top'>Guardar</Button>
         </form>
 
-      </article>
+      </section>
     </div>
   )
 }

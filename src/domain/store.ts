@@ -26,11 +26,6 @@ export type StoreCardJSON = {
   isExpensive: boolean
 }
 
-export type storeRateJSON = {
-  id: string,
-  rate: number,
-  text: string
-}
 export class StoreType {
   errors: ValidationMessage[] = []
 

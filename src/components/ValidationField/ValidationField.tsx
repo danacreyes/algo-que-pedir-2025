@@ -12,9 +12,16 @@ const ValidationField = ({field, errors} : {field: string, errors: ValidationMes
     const [errorMessage, setErrorMessage] = useState<string>('')
     
     useEffect(() => {
-        setErrorMessage(errorsFrom(errors, field))
+        const newMessage = errorsFrom(errors, field)
+        setErrorMessage(newMessage)
+
+        const timer = setTimeout(() => {
+            setErrorMessage('')
+        }, 4000)
+
+        return () => clearTimeout(timer)
     }, [errors])
-  
+
     return (
         <>
         {!!errorMessage && (
