@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { storeRateJSON } from '../../domain/store'
 import { useParams } from 'react-router-dom'
 import { userService } from '../../services/UserService'
-import { REST_CLIENT_URL, REST_SERVER_URL } from '../../services/configuration'
 
 const MAX_CHARACTERS: number = 250 
 

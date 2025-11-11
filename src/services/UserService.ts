@@ -2,7 +2,7 @@ import { UserType, type UserJSONLoginRequest, type UserJSONRegisterRequest, type
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
-import { StoreCardJSON, StoreJSON, storeRateJSON } from '../domain/store'
+import { StoreCardJSON, storeRateJSON } from '../domain/store'
 
 class UserService {
   // USER CLIENTE
@@ -14,8 +14,6 @@ class UserService {
     }
     const response = await axios.post<UserJSONResponse>( REST_SERVER_URL + '/userLogin', userCliente)
     
-    // eslint-disable-next-line no-console
-
     // Guardar datos en sessionStorage son solo para cuando esta el navegador se borra al cerrar la pestaña supuestamente....
     localStorage.setItem('userName', response.data.name)
     localStorage.setItem('email', response.data.email)
