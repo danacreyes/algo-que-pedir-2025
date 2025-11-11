@@ -2,7 +2,7 @@ import { UserType, type UserJSONLoginRequest, type UserJSONRegisterRequest, type
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
-import { StoreCardJSON, StoreJSON } from '../domain/store'
+import { StoreCardJSON, StoreJSON, storeRateJSON } from '../domain/store'
 
 class UserService {
   // USER CLIENTE
@@ -68,9 +68,14 @@ class UserService {
     const unratedStoresCardJson = await axios.get<StoreCardJSON[]>(REST_SERVER_URL + `/locales-puntuables/${sessionID}`)
     return unratedStoresCardJson.data
   }
-  
+
+  async rateStore(storeRate: storeRateJSON) {
+    const sessionID = Number(localStorage.getItem('id'))
+    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeRate.id}&userId=${sessionID}`, storeRate)
+  }
+
   isAuth() {
-    const email = localStorage.getItem("userName")
+    const email = localStorage.getItem('userName')
     if (email != null || email != undefined) {
       return true
     }
