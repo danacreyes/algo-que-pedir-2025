@@ -1,4 +1,4 @@
-import { Container, Typography } from '@mui/material'
+import { Container, Divider, Typography } from '@mui/material'
 import { useState } from 'react'
 import { StoreCardJSON } from '../../domain/store'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
@@ -47,6 +47,7 @@ const StoreRatings = () => {
                     variant='h5' sx={{margin: '2rem 0'}}>
                         Restaurantes a calificar
                     </Typography>
+                    <Divider />
                     {unratedStores.length != 0 ? 
                         showUnratedStores() : 
                         <Typography variant='subtitle1' sx={{margin: '2rem 0', color: 'text.secondary'}}>

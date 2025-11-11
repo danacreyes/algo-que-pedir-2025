@@ -2,7 +2,8 @@ import { UserType, type UserJSONLoginRequest, type UserJSONRegisterRequest, type
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
-import { StoreCardJSON, StoreJSON } from '../domain/store'
+import { StoreCardJSON } from '../domain/store'
+import { StoreRate, storeRateJSON } from '../domain/storeRate'
 
 class UserService {
   // USER CLIENTE
@@ -14,8 +15,6 @@ class UserService {
     }
     const response = await axios.post<UserJSONResponse>( REST_SERVER_URL + '/userLogin', userCliente)
     
-    // eslint-disable-next-line no-console
-
     // Guardar datos en sessionStorage son solo para cuando esta el navegador se borra al cerrar la pestaña supuestamente....
     localStorage.setItem('userName', response.data.name)
     localStorage.setItem('email', response.data.email)
@@ -68,9 +67,21 @@ class UserService {
     const unratedStoresCardJson = await axios.get<StoreCardJSON[]>(REST_SERVER_URL + `/locales-puntuables/${sessionID}`)
     return unratedStoresCardJson.data
   }
-  
+
+  async rateStore(storeRate: StoreRate) {
+
+    const storeRateJSON: storeRateJSON = {
+      id: String(storeRate.id),
+      rate: storeRate.rate,
+      text: storeRate.text
+    }
+    const sessionID = Number(localStorage.getItem('id'))
+
+    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeRateJSON.id}&userId=${sessionID}`, storeRateJSON)
+  }
+
   isAuth() {
-    const email = localStorage.getItem("userName")
+    const email = localStorage.getItem('userName')
     if (email != null || email != undefined) {
       return true
     }
