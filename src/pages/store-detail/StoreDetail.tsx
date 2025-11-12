@@ -180,6 +180,8 @@ const StoreDetail = () => {
     const [store, setStore] = React.useState<StoreDetailJSON>()
     const location = useLocation()
     // console.log(location)
+    // const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
+
     // const id = location.state
 
     const getStoreData = async () => {
@@ -315,7 +317,7 @@ const StoreDetail = () => {
                     fullWidth
                     variant='contained'
                     color='error'
-                    onClick={() => navigate('/order-chekout', {state: {id: store?.id}})}
+                    onClick={() => navigate('/order-checkout', {state: {id: store?.id, isNew: true}})}
                     className="see-order-button"
                     disabled={totalItems() < 1}
                 >

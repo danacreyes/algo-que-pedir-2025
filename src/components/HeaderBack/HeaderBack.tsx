@@ -5,7 +5,7 @@ import './header-back.css'
 
 type HeaderProps = {
     title: string
-    backTo: string | { path: string; state?: unknown }
+    backTo: string | { path: string; state?: unknown } | { path: string; state?: unknown, isNew: boolean }
 }
 
 

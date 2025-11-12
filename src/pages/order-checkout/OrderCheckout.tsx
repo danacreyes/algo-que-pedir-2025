@@ -84,6 +84,8 @@ const OrderCheckout = () => {
         // console.log(location)
         // const id = location.state
         const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
+
+        const { isNew } = location.state as { isNew: boolean }
     
         const getStoreData = async () => {
             const backStoreResponse = await storeService.getStore(id as number)
@@ -99,7 +101,7 @@ const OrderCheckout = () => {
 
     return (
         <Box className="order-checkout-container">
-            <HeaderBack title={'Tu pedido'} backTo={{ path: '/store-detail', state: { id: store?.id } }} />
+            <HeaderBack title={'Tu pedido'} backTo={{ path: `/store-detail/${id}` }} />
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}
@@ -232,7 +234,7 @@ const OrderCheckout = () => {
             </Container>
 
             {/* ==================== Fixed Bottom Buttons ==================== */}
-            <Box className="bottom-buttons-container">
+            {isNew && <Box className="bottom-buttons-container">
                 <Button
                     fullWidth
                     variant='contained'
@@ -241,7 +243,7 @@ const OrderCheckout = () => {
                     disabled={items.length === 0}
                     className="confirm-order-button"
                 >
-                    Confirmar pedido
+                    Reservar pedido
                 </Button>
                 <Button
                     fullWidth
@@ -253,7 +255,7 @@ const OrderCheckout = () => {
                 >
                     Limpiar carrito de compras
                 </Button>
-            </Box>
+            </Box>} 
         </Box>
     )
 }
