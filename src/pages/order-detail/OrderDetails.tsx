@@ -9,12 +9,12 @@ import { Order } from '../../domain/order'
 import { orderService } from '../../services/orderService'
 import { useOnInit } from '../../customHooks/useOnInit'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
-import { Navigator } from '../../routes/Navigator'
+import { useNavigate } from 'react-router-dom'
 
 function OrderDetails () {
   const [orders, setOrders] = useState<Order[]>([])
   const [state, setState] = useState('PENDIENTE')
-  const navigation = Navigator()
+  const navigate = useNavigate()
 
   const handleStateChange = (newState: string) => {
     setState(newState)
@@ -40,7 +40,7 @@ function OrderDetails () {
           detail={'Total: $' + order.precioTotal().toFixed(2)}
           detail2 = {order.fechaCreacionString + ' · ' + order.platos.length + ' productos'}
           icon='X'
-          cardOnClickFunction={() => navigation.goTo('/order-checkout/', {state: {id: order.local?.id, isNew: false, orderId: order.id}})}
+          cardOnClickFunction={() => navigate('/order-checkout', {state: {id: order.local?.id, isNew: false, orderId: order.id}})}
         />
       </Container>
       )

@@ -81,30 +81,34 @@ const OrderCheckout = () => {
         console.log('Pedido confirmado')
     }
 
-        const [store, setStore] = React.useState<StoreDetailJSON>()
-        const [order, setOrder] = React.useState<Order>()
+    const [store, setStore] = React.useState<StoreDetailJSON>()
+    const [order, setOrder] = React.useState<Order>()
 
-        const location = useLocation()
-        // console.log(location)
-        // const id = location.state
-        const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
+    const location = useLocation()
+    // console.log(location)
+    // const id = location.state
+    const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
 
-        const { isNew } = location.state as { isNew: boolean }
-        const { orderId } = location.state as { orderId: number}
+    const { isNew } = location.state as { isNew: boolean }
+    const { orderId } = location.state as { orderId: number }
     
-        const getStoreData = async () => {
-            const backStoreResponse = await storeService.getStore(id as number)
-            setStore(backStoreResponse)
-        }
+    console.info('ORDER ID: ', orderId)
+    console.info('IS NEW: ', isNew)
+    console.info('ID : ', id)
 
-        const getOrderData = async () => {
-            const backStoreResponse = await orderService.getOrderByID(orderId)
-            setOrder(backStoreResponse)   
-        }
-    
-        useOnInit(() => {
-            isNew ? getStoreData() : getOrderData()
-        })
+    const getStoreData = async () => {
+        const backStoreResponse = await storeService.getStore(id as number)
+        setStore(backStoreResponse)
+    }
+
+    const getOrderData = async () => {
+        const backStoreResponse = await orderService.getOrderByID(orderId)
+        setOrder(backStoreResponse)   
+    }
+
+    useOnInit(() => {
+        isNew ? getStoreData() : getOrderData()
+    })
 
     //! falta terminar los endpoiunts aca
     //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
@@ -174,10 +178,33 @@ const OrderCheckout = () => {
                             </Box>
                         </Box>
                     ))) : (order?.platos.map((item) => (
-                        <Box>
-                            <Typography>
-                                Ahre!
-                            </Typography>
+                        <Box key={item.id} className="item-row">
+                            <Box className="item-info">
+                                <Box className="item-name-container">
+                                    <Typography className="item-name">
+                                        {item.nombre}
+                                    </Typography>
+                                </Box>
+                                <Typography variant='body2' className="item-quantity">
+                                    Cantidad: {order.platos.filter((plato) => plato.nombre == item.nombre).length}
+                                </Typography>
+                                <Typography variant='body2' className="item-unit-price">
+                                    Precio unitario: ${}
+                                </Typography>
+                            </Box>
+
+                            <Box className="item-price-actions">
+                                <Typography className="item-total">
+                                    ${}
+                                </Typography>
+                                <IconButton
+                                    onClick={() => removeItem(item.id)}
+                                    size='small'
+                                    className="remove-item-button"
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </Box>
                         </Box>
                     )))}
                 </Box>

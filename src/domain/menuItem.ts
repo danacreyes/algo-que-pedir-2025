@@ -51,6 +51,10 @@ export class MenuItemType {
     public porcentajeDescuento: number = 0
   ) {}
 
+  valorVenta() {
+    
+  }
+
   static fromJson(menuItemJSON: MenuItemJSON): MenuItemType {
     return Object.assign(new MenuItemType(), menuItemJSON, {
       ingredientes: menuItemJSON.ingredientes.map(ingJson => IngredientType.fromJson(ingJson)),
