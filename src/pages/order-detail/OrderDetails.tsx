@@ -40,7 +40,7 @@ function OrderDetails () {
           detail={'Total: $' + order.precioTotal().toFixed(2)}
           detail2 = {order.fechaCreacionString + ' · ' + order.platos.length + ' productos'}
           icon='X'
-          cardOnClickFunction={() => navigation.goTo(`/order/${order.id}`)}
+          cardOnClickFunction={() => navigation.goTo('/order-checkout/', {state: {id: order.local?.id, isNew: false, orderId: order.id}})}
         />
       </Container>
       )

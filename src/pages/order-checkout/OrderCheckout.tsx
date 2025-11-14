@@ -18,6 +18,8 @@ import { StoreDetailJSON } from '../../domain/store'
 import { storeService } from '../../services/LocalesService'
 import { useLocation } from 'react-router-dom'
 import { useOnInit } from '../../customHooks/useOnInit'
+import { orderService } from '../../services/orderService'
+import { Order } from '../../domain/order'
 
 type OrderItemType = {
     id: number
@@ -80,20 +82,28 @@ const OrderCheckout = () => {
     }
 
         const [store, setStore] = React.useState<StoreDetailJSON>()
+        const [order, setOrder] = React.useState<Order>()
+
         const location = useLocation()
         // console.log(location)
         // const id = location.state
         const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
 
         const { isNew } = location.state as { isNew: boolean }
+        const { orderId } = location.state as { orderId: number}
     
         const getStoreData = async () => {
             const backStoreResponse = await storeService.getStore(id as number)
             setStore(backStoreResponse)
         }
+
+        const getOrderData = async () => {
+            const backStoreResponse = await orderService.getOrderByID(orderId)
+            setOrder(backStoreResponse)   
+        }
     
         useOnInit(() => {
-            getStoreData()
+            isNew ? getStoreData() : getOrderData()
         })
 
     //! falta terminar los endpoiunts aca
@@ -101,7 +111,7 @@ const OrderCheckout = () => {
 
     return (
         <Box className="order-checkout-container">
-            <HeaderBack title={'Tu pedido'} backTo={{ path: `/store-detail/${id}` }} />
+            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${id}` } : { path: '/order-details/'}} />
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}
@@ -134,7 +144,7 @@ const OrderCheckout = () => {
                     <Typography variant='h6' className="section-title-order-checkout">
                         Artículos
                     </Typography>
-                    {items.map((item) => (
+                    {isNew ? (items.map((item) => (
                         <Box key={item.id} className="item-row">
                             <Box className="item-info">
                                 <Box className="item-name-container">
@@ -163,7 +173,13 @@ const OrderCheckout = () => {
                                 </IconButton>
                             </Box>
                         </Box>
-                    ))}
+                    ))) : (order?.platos.map((item) => (
+                        <Box>
+                            <Typography>
+                                Ahre!
+                            </Typography>
+                        </Box>
+                    )))}
                 </Box>
 
                 <Divider className="section-divider" />
