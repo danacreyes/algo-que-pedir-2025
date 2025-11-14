@@ -3,9 +3,15 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useNavigate } from 'react-router-dom'
 import './header-back.css'
 
+type BackToRoute = string | {
+    path: string;
+    state?: unknown;
+    isNew?: boolean
+}
+
 type HeaderProps = {
     title: string
-    backTo: string | { path: string; state?: unknown } | { path: string; state?: unknown, isNew: boolean }
+    backTo: BackToRoute
 }
 
 
