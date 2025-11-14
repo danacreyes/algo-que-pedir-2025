@@ -24,9 +24,9 @@ const SearchCriteria = () => {
     
     return(
         <>
-        <HeaderBack title="Criterios de búsqueda" backTo="/profile" />
         
         <Container className='main-container-search' sx={{ pb: 9 }}>
+            <HeaderBack title="Criterios de búsqueda" backTo="/profile" />
 
             <Card className='main-container-check' variant='outlined'>
                 <Grid container spacing={2} className='grid-section'>

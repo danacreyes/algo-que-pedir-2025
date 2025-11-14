@@ -1,153 +1,178 @@
 import { Box, Button, Card, Container, IconButton, Modal, Typography } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useState } from 'react'
-import { useOnInit } from '../../customHooks/useOnInit'
-
-import { IngredientType } from '../../domain/ingredient'
-import React from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
-
-import '../../pages/Profile/profile.css'
-import './ingredient-criteria.css'
-import { userService } from '../../services/UserService'
 import HeaderBack from '../../components/HeaderBack/HeaderBack'
+import { IngredientType } from '../../domain/ingredient'
+import { useOnInit } from '../../customHooks/useOnInit'
+import { ingredientService } from '../../services/IngredientService'
+import { useUserProfile } from '../../customHooks/useUserProfile'
 
-
-sessionStorage.setItem('id', '1')
-sessionStorage.setItem('email', 'sofiamiller@gmail.com')
+import './ingredient-criteria.css'
 
 const IngredientCriteria = () => {
     const { criteria } = useParams()
-    const title = criteria == 'avoid' ? 'Ingrediente a evitar' : 'Ingrediente preferidos'
-    const id = Number(sessionStorage.getItem('id'))
+    const { profile, setProfile } = useUserProfile()
 
-    const [open, setOpen] = React.useState(false)
+    const title = criteria === 'avoid' ? 'Ingredientes a evitar' : 'Ingredientes preferidos'
 
-    const handleOpen = () => {
-        setOpen(true)
-        getAvailableIngredients()
-    }
+    const preferred = profile?.preferredIngredients || []
+    const avoided = profile?.ingredientsToAvoid || []
 
-    const handleClose = () => setOpen(false)
-    
-    const [ingredients, setIngredients] = useState<IngredientType[]>([]) 
-    const [availableIngredients, setAvailableIngredients] = useState<IngredientType[]>([])
+    const currentList =
+        criteria === 'avoid' ? avoided : preferred
 
-    const [selectedIngredients, setSelectedIngredients] = useState<IngredientType[]>([])
-    const [savedIngredients, setSavedIngredients] = useState<IngredientType[]>([])
+    const [allIngredients, setAllIngredients] = useState<IngredientType[]>([])
+    const [open, setOpen] = useState(false)
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
 
-    const navigator = useNavigate()
+    useOnInit(() => {
+        getAllIngredients()
+    })
 
-    const getIngredients = async () => {
+    const getAllIngredients = async () => {
         try {
-            const ingredients = await userService.getIngredientsByCriteria(id, criteria as string)
-            setIngredients([...ingredients])
-        } catch (error) {
-        console.info('Unexpected error', error)
+            const all = await ingredientService.getAllIngredients()
+            setAllIngredients(all)
+        } catch (err) {
+            console.error('Error loading ingredients', err)
         }
     }
 
-    const getAvailableIngredients = async () => {
-        try {
-            const available = await userService.getAvailableIngredients(id)
-            setAvailableIngredients([...available])
-            console.log('disponibles',available)            
-        } catch (error) {
-        console.info('Unexpected error', error)
-        } 
-    }
+    // ingredientes que no estan en ninguna de las dos listas
+    const availableIngredients = allIngredients.filter(
+        ing =>
+            !preferred.some(i => i.id === ing.id) &&
+            !avoided.some(i => i.id === ing.id)
+    )
 
-    const update = async () => {
-        try {
-            const selectedIngs = await userService.update(id, criteria as string, selectedIngredients)
-            console.log('agregados',selectedIngs)
-            setIngredients(prev => [...prev, ...selectedIngs])
-            setOpen(false)
-            setSelectedIngredients([])
-        } catch (error) {
-        console.info('Unexpected error', error)
-        }
-    }
-
-    useOnInit(() => getIngredients())
-
-    const handleSelect = (ingredient: IngredientType) => {
-        setSelectedIngredients(prevIngs =>
-            !prevIngs.every(prevIng => prevIng.id != ingredient.id)
-            ? prevIngs.filter(prevIng => prevIng.id !== ingredient.id)  // si ya estaba, lo saco
-            : [...prevIngs, ingredient]               // si no estaba, lo agrego
+    const handleSelect = (id: number) => {
+        setSelectedIds(prev =>
+            prev.includes(id)
+                ? prev.filter(x => x !== id)
+                : [...prev, id]
         )
     }
 
-    const handleRemove = (id: number) => {
-        setSavedIngredients(prev => prev.filter(i => i.id !== id))
+    const handleSave = () => {
+        const selected = availableIngredients.filter(i => selectedIds.includes(i.id!))
+        const updatedList = [...currentList, ...selected]
+
+        // actualizar el profile global directamente
+        setProfile(prev => {
+            const updated = Object.assign(
+                Object.create(Object.getPrototypeOf(prev)),
+                prev
+            )
+
+            if (criteria === 'prefers') {
+                updated.preferredIngredients = updatedList
+            } else {
+                updated.ingredientsToAvoid = updatedList
+            }
+
+            return updated
+        })
+
+        // if ( criteria == 'avoid' ){
+        //     avoided.push(...updatedList)
+        // } else {
+        //     preferred.push(...updatedList)
+        // }
+
+        setSelectedIds([])
+        setOpen(false)
     }
 
-    return(
-        <>
-        <HeaderBack title={title} backTo="/profile" />
+    const handleRemove = (id: number) => {
+        const updatedList = currentList.filter(i => i.id !== id)
 
-        <Container className='main-container-search' sx={{ pb: 9 }}>
-            <Box component="section" className='box-section-criteria'>
-                {/* <Box component="section" className='title-box'>
-                    <IconButton size='small' onClick={() => navigator(-1)}>
-                        <ArrowBackIcon className='icon-profile'/>
-                    </IconButton>
-                    <Typography variant="h6" className='title-main-container'>{title}</Typography>
-                </Box> */}
+        setProfile(prev => {
+            const updated = Object.assign(
+                Object.create(Object.getPrototypeOf(prev)),
+                prev
+            )
 
-                <Box className='box-ingredients' >
-                    <Typography component="div" variant="body1" sx={{fontWeight: 600}}>
-                        {ingredients.length > 0 ? (
-                            ingredients.map(ing => (
-                                <div key={ing.id} className='ingredient-item'>
-                                    <Typography component="div" variant='body2'>{ing.name}</Typography>
-                                    <IconButton size='small' className='icon-style' onClick={() => handleRemove(ing.id as number)}> 
-                                        <ClearIcon/>
-                                    </IconButton>  
-                                </div>
-                        ))) : (
-                            <Typography component="div" variant="body2" className='no-ingredients'>No seleccionaste ingrediente</Typography>
-                        )}
-                    </Typography>    
-                </Box>
+            if (criteria === 'prefers') {
+                updated.preferredIngredients = updatedList
+            } else {
+                updated.ingredientsToAvoid = updatedList
+            }
 
-            </Box>
-            
-            <Button variant="contained" className='btn-primary btn-add-ingredient' onClick={handleOpen}>Añadir ingrediente</Button>
+            return updated
+        })
+    }
+
+    return (
+        <Box className="box-preferences">
+            <Container className="main-container-search" sx={{ pb: 9 }}>
                 
-            {/* MODAL PARA AGREGAR LOS INGREDIENTES */}
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box className='modal'>
-                    <Card className='card-modal'>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">Seleccione</Typography>
-                        {availableIngredients.length != 0 ? (
-                            availableIngredients.map( ingredient =>
-                            <Box key={ingredient.id} className='modal-items'>
-                                <label className='label-item'>
-                                    <input type="checkbox" 
-                                    checked={selectedIngredients.includes(ingredient)}
-                                    onChange={() => handleSelect(ingredient)}
-                                    />
-                                    {ingredient.name}
-                                </label>
-                            </Box>
-                        )) : <Typography variant='subtitle1'> No hay ingredientes para mostrar </Typography>}
-                        <div className='btn-group'>
-                            <Button type='submit' variant="contained" className='btn-secondary' onClick={handleClose}>Descartar</Button>
-                            <Button type="button" variant="contained" className='btn-primary' onClick={update}>Guardar</Button>
-                        </div>
-                    </Card>
+                <HeaderBack title={title} backTo="/profile" />
+
+                <Box className="box-section-criteria">
+                    <Box className="box-ingredients ingredients-group">
+                        {currentList.length > 0 ? currentList.map(ing => (
+                            <div key={ing.id} className="ingredient-item">
+                                <Typography variant="body2">{ing.name}</Typography>
+                                <IconButton size="small" className="icon-style" onClick={() => handleRemove(ing.id!)}>
+                                    <ClearIcon />
+                                </IconButton>
+                            </div>
+                        )) : (
+                            <Typography variant="body2" className="no-ingredients">
+                                No seleccionaste ingredientes
+                            </Typography>
+                        )}
+                    </Box>
                 </Box>
-            </Modal>
-        </Container>
-        </>
+
+                {/* MODAL */}
+                <Modal open={open} onClose={() => setOpen(false)}>
+                    <Box className="modal">
+                        <Card className="card-modal">
+                            <Typography variant="h6">Seleccione</Typography>
+
+                            {availableIngredients.length > 0 ? (
+                                availableIngredients.map(ing => (
+                                    <Box key={ing.id} className="modal-items">
+                                        <label className="label-item">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedIds.includes(ing.id!)}
+                                                onChange={() => handleSelect(ing.id!)}
+                                            />
+                                            {ing.name}
+                                        </label>
+                                    </Box>
+                                ))
+                            ) : (
+                                <Typography variant="subtitle1">No hay ingredientes disponibles</Typography>
+                            )}
+
+                            <div className="btn-group">
+                                <Button variant="contained" className="btn-secondary" onClick={() => setOpen(false)}>
+                                    Cancelar
+                                </Button>
+                                <Button variant="contained" className="btn-primary" onClick={handleSave}>
+                                    Agregar
+                                </Button>
+                            </div>
+                        </Card>
+                    </Box>
+                </Modal>
+
+            </Container>
+
+            <Box className="see-order-container">
+                <Button
+                    variant="contained"
+                    className="btn-primary btn-add-ingredient"
+                    onClick={() => setOpen(true)}
+                >
+                    Añadir ingrediente
+                </Button>
+            </Box>
+        </Box>
     )
 }
 

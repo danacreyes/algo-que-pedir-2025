@@ -2,11 +2,11 @@
 .main-container-search{
     display: flex;
     flex-direction: column; 
-    padding: 1.5em; 
+    padding: 0; 
     gap: 1em;
     font-family: var(--primary-font);
     height: 100%;
-    width: 100vw;
+    /* width: 100vw; */
 }
 
 div.main-container-check{
@@ -15,6 +15,7 @@ div.main-container-check{
     border-radius: 15px;
     border: solid 1px lightgray;
     overflow: visible;
+    margin: 0 1em 0 1em;
 }
 
 div.box-counter{

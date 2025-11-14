@@ -12,6 +12,7 @@ import RateStore from '../pages/store-ratings/rateStore'
 import Profile from '../pages/profile/Profile'
 import SearchCriteria from '../pages/search-criteria/SearchCriteria'
 import IngredientCriteria from '../pages/ingredient-criteria/IngredientCriteria'
+import ProfileContext from '../pages/profile/ProfileContext'
 
 export const AppRouter = () => {
     return (
@@ -24,15 +25,17 @@ export const AppRouter = () => {
                 {/* protegidas */}
                 <Route element={<RequireAuth/>}>
                     <Route index element={<Home/>}/>
-                    <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/search-criteria" element={<SearchCriteria/>}/>
+                    <Route path="/profile" element={<ProfileContext/>}>                    
+                        <Route path="/profile" element={<Profile/>}/>
+                        <Route path="/profile/ingredient-criteria/:criteria" element={<IngredientCriteria/>}/>
+                        <Route path="/profile/search-criteria" element={<SearchCriteria/>}/>
+                    </Route>
                     <Route path="/store-detail" element={<StoreDetail/>}/>
                     <Route path="/order-chekout" element={<OrderCheckout/>}/>
                     <Route path="/order-details" element={<OrderDetails/>}/>
                     <Route path="/order/:id"/>
                     <Route path="/store-ratings/" element={<StoreRatings/>}/>
                     <Route path="/rate-store/:id" element={<RateStore/>}/>
-                    <Route path="/ingredient-criteria/:criteria" element={<IngredientCriteria/>}/>
                 </Route>
                 
                 {/* fallback */}

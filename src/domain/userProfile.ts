@@ -1,14 +1,17 @@
+import { IngredientJSON, IngredientType } from './ingredient'
 import { ValidationMessage } from './validationMessage'
 
 export interface UserProfileJSONResponse {
-  id?: number;
-  name: string;
-  email: string;
-  lastName: string;
-  address: string;
-  location: string;
-  latitude: number;
-  longitude: number;
+  id?: number,
+  name: string,
+  email: string,
+  lastName: string,
+  address: string,
+  location: string,
+  latitude: number,
+  longitude: number,
+  ingredientsToAvoid: IngredientJSON[], 
+  preferredIngredients: IngredientJSON[]
 }
 
 export class UserProfile {
@@ -22,13 +25,18 @@ export class UserProfile {
     public address: string = ''.trim(),
     public location: string = ''.trim(),
     public latitude: number = 0,
-    public longitude: number = 0
+    public longitude: number = 0,
+    public ingredientsToAvoid: IngredientType[] = [],
+    public preferredIngredients: IngredientType[] = []
   ) {
-
   }
 
   static fromJSON(userJSON: UserProfileJSONResponse): UserProfile {
-    return Object.assign(new UserProfile(), userJSON, {})
+    const profile = Object.assign(new UserProfile(), userJSON, {})
+    profile.ingredientsToAvoid = userJSON.ingredientsToAvoid.map(IngredientType.fromJson)
+    profile.preferredIngredients = userJSON.preferredIngredients.map(IngredientType.fromJson)
+
+    return profile
   }
 
   toJSON(): UserProfileJSONResponse {
@@ -40,7 +48,9 @@ export class UserProfile {
       address: this.address,
       location: this.location,
       latitude: this.latitude,
-      longitude: this.longitude
+      longitude: this.longitude,
+      ingredientsToAvoid: this.ingredientsToAvoid.map(i => i.toJSON()),
+      preferredIngredients: this.preferredIngredients.map(i => i.toJSON())
     }
   }
 

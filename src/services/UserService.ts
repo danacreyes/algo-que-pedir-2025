@@ -65,19 +65,19 @@ class UserService {
     return ingredients
   }
 
-  async getAvailableIngredients(id: Number) {
-    const response = await axios.get<IngredientJSON[]>(
-      REST_SERVER_URL + `/ingredientes-disponibles?id=${id}`
-    )
-    const availableIngredients = response.data.map(IngredientType.fromJson)
-    return availableIngredients
-  }
+  // async getAvailableIngredients(id: Number) {
+  //   const response = await axios.get<IngredientJSON[]>(
+  //     REST_SERVER_URL + `/ingredientes-disponibles?id=${id}`
+  //   )
+  //   const availableIngredients = response.data.map(IngredientType.fromJson)
+  //   return availableIngredients
+  // }
 
-  async update(id: Number, criteria: string, ingredients: IngredientType[]) {
-    const ingredientJSONs = ingredients.map(ingredient => ingredient.toJSON())
-    const ingredientesActualizados = await axios.put<IngredientJSON[]>(REST_SERVER_URL + `/actualizar-ingredientes/${criteria}?id=${id}`, ingredientJSONs)
-    return ingredientesActualizados.data.map(IngredientType.fromJson)
-  }
+  // async update(id: Number, criteria: string, ingredients: IngredientType[]) {
+  //   const ingredientJSONs = ingredients.map(ingredient => ingredient.toJSON())
+  //   const ingredientesActualizados = await axios.put<IngredientJSON[]>(REST_SERVER_URL + `/actualizar-ingredientes/${criteria}?id=${id}`, ingredientJSONs)
+  //   return ingredientesActualizados.data.map(IngredientType.fromJson)
+  // }
 
   async getUnratedStores() {
     const sessionID = Number(sessionStorage.getItem('id'))

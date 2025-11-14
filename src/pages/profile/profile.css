@@ -66,6 +66,12 @@ div.form-field-preferences{
     justify-content: space-between;
 }
 
+div.box-preferences{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 /* FORMULARIO */
 div.form-field{
     gap: 0.5em;
@@ -102,4 +108,16 @@ div.form-field{
 .input-wrapper-div{
     display: flex;
     gap: 0.5em;
+}
+
+/* INGREDIENT CRITERIA */
+div.main-box-preferences{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.icon-style{
+    color: black;
+    padding: 0;
 }

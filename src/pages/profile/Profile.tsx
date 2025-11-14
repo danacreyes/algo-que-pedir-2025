@@ -1,59 +1,37 @@
 import Typography from '@mui/material/Typography'
 import { Avatar, FormControl, Box, Container, Button, IconButton } from '@mui/material'
 import * as React from 'react'
-import PreferencesBox from '../../components/PreferencesBox/PreferencesBox'
+import { useNavigate } from 'react-router-dom'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-
-import '../search-criteria/search-criteria.css'
-import './profile.css'
-
 import LogoutButton from '../../components/LogoutButton'
 import { useState } from 'react'
 import { UserProfile } from '../../domain/userProfile'
 import { userService } from '../../services/UserService'
-import { useOnInit } from '../../customHooks/useOnInit'
 import ValidationField from '../../components/ValidationField/ValidationField'
 import { ValidationMessage } from '../../domain/validationMessage'
+import { useUserProfile } from '../../customHooks/useUserProfile'
 
-sessionStorage.setItem('id', '1')
-sessionStorage.setItem('email', 'sofiamiller@gmail.com')
+import '../search-criteria/search-criteria.css'
+import './profile.css'
 
 const Profile = () => {
-    const [profileOriginal, setProfileOriginal] = useState<UserProfile>(new UserProfile())
-    const [profileEditable, setProfileEditable] = useState<UserProfile>(new UserProfile())
+    const { profile, setProfile } = useUserProfile()
     const [errors, setErrors] = useState<Array<ValidationMessage>>([])
-    
-    const id = Number(sessionStorage.getItem('id'))
-
-    const getProfile = async () => {
-        try {
-            const profile = await userService.getProfile(id)
-            setProfileOriginal(profile) // se usa para mostrar
-            setProfileEditable(profile) // se usa para editar
-        } catch (error) {
-            console.info('Unexpected error', error)
-        }
-    }
-
-    useOnInit(() => getProfile())
 
     // eslint-disable-next-line no-undef
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        // profileEditable.validate()
+        // profile.validate()
 
-        // if (profileEditable.errors.length > 0) {
+        // if (profile.errors.length > 0) {
         //     setErrors(profileEditable.errors)
         //     return errors
         // }
 
         try {
-            const updatedProfile = await userService.updateProfile(profileEditable)
-            setProfileOriginal(updatedProfile)
-            setProfileEditable(updatedProfile)
-
-            console.log('Perfil actualizado con exito')
+            const updatedProfile = await userService.updateProfile(profile)
+            setProfile(updatedProfile)
         } catch (error) {
             console.error('Error al actualizar el perfil', error)
         } finally {
@@ -63,16 +41,25 @@ const Profile = () => {
 
     const updateInput = (field: keyof UserProfile, value: unknown) => {
         const updated = new UserProfile(
-            profileEditable.id,
-            field === 'name' ? String(value) : profileEditable.name,
-            field === 'email' ? String(value) : profileEditable.email,
-            field === 'lastName' ? String(value) : profileEditable.lastName,
-            field === 'address' ? String(value) : profileEditable.address,
-            field === 'location' ? String(value) : profileEditable.location,
-            field === 'latitude' ? Number(value) : profileEditable.latitude,
-            field === 'longitude' ? Number(value) : profileEditable.longitude
+            profile.id,
+            field === 'name' ? String(value) : profile.name,
+            field === 'email' ? String(value) : profile.email,
+            field === 'lastName' ? String(value) : profile.lastName,
+            field === 'address' ? String(value) : profile.address,
+            field === 'location' ? String(value) : profile.location,
+            field === 'latitude' ? Number(value) : profile.latitude,
+            field === 'longitude' ? Number(value) : profile.longitude,
+            profile.ingredientsToAvoid,
+            profile.preferredIngredients
         )
-        setProfileEditable(updated)
+        setProfile(updated)
+    }
+
+    const navigate = useNavigate()
+
+    // React Router navigation to Ingredient Criteria page
+    const handleNavigateToIngredients = (criteria: 'avoid' | 'prefers') => {
+        navigate(`/profile/ingredient-criteria/${criteria}`)
     }
 
     return(
@@ -90,8 +77,8 @@ const Profile = () => {
                     />
                 </Box>
                 <Box>
-                    <Typography variant="h5" className='primary-title-profile'>{`${profileOriginal?.name} ${profileOriginal?.lastName}`}</Typography>
-                    <Typography variant="body2" color='gray' align='center'>{profileOriginal?.email}</Typography>
+                    <Typography variant="h5" className='primary-title-profile'>{`${profile?.name} ${profile?.lastName}`}</Typography>
+                    <Typography variant="body2" color='gray' align='center'>{profile?.email}</Typography>
                 </Box>
             </Container>
 
@@ -107,7 +94,7 @@ const Profile = () => {
                                 type="text"
                                 id="user-name"
                                 name="user-name"
-                                value={profileEditable?.name}
+                                value={profile?.name}
                                 className='input-profile'
                                 onChange={(event) => updateInput('name', event.target.value)}
                             />
@@ -120,7 +107,7 @@ const Profile = () => {
                                 type="text"
                                 id="user-lastName"
                                 name="user-lastName"
-                                value={profileEditable?.lastName}
+                                value={profile?.lastName}
                                 className='input-profile'
                                 onChange={(event) => updateInput('lastName', event.target.value)}
                             />
@@ -133,7 +120,7 @@ const Profile = () => {
                                 type="text"
                                 id="user-address"
                                 name="user-address"
-                                value={profileEditable?.address}
+                                value={profile?.address}
                                 className='input-profile'
                                 onChange={(event) => updateInput('address', event.target.value)}
                             />
@@ -146,7 +133,7 @@ const Profile = () => {
                                 type="text"
                                 id="user-location"
                                 name="user-location"
-                                value={profileEditable?.location}
+                                value={profile?.location}
                                 className='input-profile'
                                 onChange={(event) => updateInput('location', event.target.value)}
                             />
@@ -160,7 +147,7 @@ const Profile = () => {
                                     type="text"
                                     id="user-latitude"
                                     name="user-latitude"
-                                    value={profileEditable?.latitude}
+                                    value={profile?.latitude}
                                     className='input-profile'
                                     onChange={(event) => updateInput('latitude', event.target.value)}
                                 />
@@ -172,7 +159,7 @@ const Profile = () => {
                                     type="text"
                                     id="user-longitude"
                                     name="user-longitude"
-                                    value={profileEditable?.longitude}
+                                    value={profile?.longitude}
                                     className='input-profile'
                                     onChange={(event) => updateInput('longitude', event.target.value)}
                                 />
@@ -182,34 +169,37 @@ const Profile = () => {
                     </FormControl>
                 </Box>
 
-            {/* PREFERENCES (podria hacer los Box otro componente) */}
-            <Container className='group-section'>
-                <Typography variant="h6" sx={{fontWeight: 700}}>Preferencias</Typography>
+                {/* PREFERENCES */}
+                <Container className='group-section'>
+                    <Typography variant="h6" sx={{fontWeight: 700}}>Preferencias</Typography>
 
-                <Box className='form-field-preferences' >
-                    <Box className='main-box-preferences' >
-                        <Typography variant="body1" sx={{fontWeight: 600}} >Criterios de Busqueda</Typography>
-                        <IconButton size='small' href='/search-criteria' className='icon-style'> 
-                            <KeyboardArrowRightIcon/>
-                        </IconButton>                            
+                    <Box className='form-field-preferences' >
+                        <Box className='main-box-preferences' >
+                            <Typography variant="body1" sx={{fontWeight: 600}} >Criterios de Busqueda</Typography>
+                            <IconButton size='small' href='/search-criteria' className='icon-style'> 
+                                <KeyboardArrowRightIcon/>
+                            </IconButton>                            
+                        </Box>
+
+                         <Box className='main-box-preferences' >
+                            <Typography variant="body1" sx={{fontWeight: 600}} >Ingredientes a evitar</Typography>
+                            <IconButton size='small' onClick={() => handleNavigateToIngredients('avoid')} className='icon-style'> 
+                                <KeyboardArrowRightIcon/>
+                            </IconButton>
+                        </Box> 
+
+                        <Box className='main-box-preferences' >
+                            <Typography variant="body1" sx={{fontWeight: 600}} >Ingredientes preferidos</Typography>
+                            <IconButton size='small' onClick={() => handleNavigateToIngredients('prefers')} className='icon-style'> 
+                                <KeyboardArrowRightIcon/>
+                            </IconButton>
+                        </Box>
                     </Box>
-                    
-                    <PreferencesBox
-                        title ='Ingredientes a evitar'
-                        link ='/ingredient-criteria/avoid'
-                        icon = {<KeyboardArrowRightIcon/>}
-                    />
-                    
-                    <PreferencesBox
-                        title ='Ingredientes preferidos'
-                        link ='/ingredient-criteria/prefers'
-                        icon = {<KeyboardArrowRightIcon/>}
-                    />
-                </Box>
 
-            </Container>
-            <Button type='submit' variant="contained" className='btn-primary'>Guardar</Button>
-            <LogoutButton/>
+                </Container>
+                
+                <Button type='submit' variant="contained" className='btn-primary'>Guardar</Button>
+                <LogoutButton/>
             </form>
 
         </Container>
