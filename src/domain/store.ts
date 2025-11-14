@@ -33,6 +33,12 @@ export type StoreDetailJSON = {
   numberOfReviews: number,
   numberOfOrders: number,
 }
+
+export type StoreReviewsJSON = {
+  puntaje: number,
+  comentario: string
+}
+
 export enum FoodGroupValue {
   EFECTIVO,
   QR,

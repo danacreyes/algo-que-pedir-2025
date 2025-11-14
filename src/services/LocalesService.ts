@@ -1,4 +1,4 @@
-import { StoreJSON, StoreType } from '../domain/store'
+import { StoreJSON, StoreReviewsJSON, StoreType } from '../domain/store'
 import { REST_SERVER_URL } from './configuration'
 import axios from 'axios'
 
@@ -33,6 +33,11 @@ class StoreService {
     // console.log(response)
     // console.log('tdfsaaaaaaa')
     console.log(response.data)
+    return response.data
+  }
+
+  async getReviewsByStore(id: number) {
+    const response = await axios.get(`${REST_SERVER_URL}/store-reviews/${id}`)
     return response.data
   }
 }

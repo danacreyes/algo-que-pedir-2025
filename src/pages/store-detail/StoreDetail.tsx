@@ -20,11 +20,13 @@ import './store-detail.css'
 import { useCart } from '../../contexts/CartContext'
 import { useOnInit } from '../../customHooks/useOnInit'
 import { storeService } from '../../services/LocalesService'
-import { StoreDetailJSON, StoreType } from '../../domain/store'
+import { StoreDetailJSON, StoreReviewsJSON, StoreType } from '../../domain/store'
 import { MenuItemJSONReduced } from '../../domain/menuItem'
 import { menuItemsService } from '../../services/MenuItemService'
 import { Toast } from '../../components/Toast/ToastContainer'
 import { useToast } from '../../components/Toast/useToast'
+import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
+import RateCard from '../../components/RateCard/RateCard'
 
 type dishType = {
     id: number
@@ -126,7 +128,10 @@ const StoreDetail = () => {
     const [modalCounter, setmodalCounter] = React.useState(1)
     // const [dishes, setDishes] = React.useState<dishType[]>(dishesMock)
     const [dishes, setDishes] = React.useState<MenuItemJSONReduced[]>(dishesReducedMock)
+    const [reviews, setReviews] = React.useState<StoreReviewsJSON[]>([])
     const navigate = useNavigate()
+
+    let reviewsInMemory = false
     
     // React.useEffect(() => {
     //     traerPlatosDelBakc().then(data => setDishes(data)) //algo asi ???
@@ -205,8 +210,11 @@ const StoreDetail = () => {
     }
 
     const getStoreReviews = async () => {
-        const backStoreResponse = await storeService.getStore(Number(id))
-        setStore(backStoreResponse)
+        if (!reviewsInMemory) {
+            const backStoreResponse: StoreReviewsJSON[] = await storeService.getReviewsByStore(Number(id))
+            setReviews(backStoreResponse)
+            reviewsInMemory = true
+        }
     }
 
     useOnInit(() => {
@@ -245,7 +253,7 @@ const StoreDetail = () => {
                             aria-label='menu tabs'
                         >
                             <Tab label='Menú' value='1' />
-                            <Tab label='Reseñas' value='2' />
+                            <Tab label='Reseñas' value='2' onClick={getStoreReviews}/>
                         </TabList>
                     </Box>
 
@@ -313,9 +321,9 @@ const StoreDetail = () => {
 
                         {/* ==================== Reviews ==================== */}
                         <TabPanel value='2'>
-                            <Typography variant='body2' className="restaurant-stats"> {/*//! esto tiene que venir de el back */}
-                                Reseñas de clientes...
-                            </Typography>
+                            {reviews.map((review) => (
+                                <RateCard key={review.comentario} calificacion={Number(review.puntaje)} comentario={review.comentario}/>
+                            ))}
                         </TabPanel>
                     </Box>
                 </TabContext>
