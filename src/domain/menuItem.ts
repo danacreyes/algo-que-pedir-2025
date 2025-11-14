@@ -22,6 +22,7 @@ export type MenuItemJSONReduced = {
   descripcion: string
   imagen: string
   precio: number
+  local: string
   tag?: string
 }
 

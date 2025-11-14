@@ -23,6 +23,8 @@ import { storeService } from '../../services/LocalesService'
 import { StoreDetailJSON, StoreReviewsJSON, StoreType } from '../../domain/store'
 import { MenuItemJSONReduced } from '../../domain/menuItem'
 import { menuItemsService } from '../../services/MenuItemService'
+import { Toast } from '../../components/Toast/ToastContainer'
+import { useToast } from '../../components/Toast/useToast'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import RateCard from '../../components/RateCard/RateCard'
 
@@ -88,6 +90,7 @@ const dishesReducedMock: MenuItemJSONReduced[] = [
         imagen: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.1.0&ixid'
         + '=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1169',
         tag: 'Popular',
+        local: 'sa'
     },
 ]
 
@@ -116,6 +119,7 @@ const dishesReducedMock: MenuItemJSONReduced[] = [
     //! test end to end un test por end point
 
 const StoreDetail = () => {
+    const { toast, showToast } = useToast()
     const { id } = useParams()
     const [value, setValue] = React.useState('1')
     const [open, setOpen] = React.useState(false)
@@ -167,19 +171,25 @@ const StoreDetail = () => {
     const { items, addItem, totalItems } = useCart()
 
     const handleAddToCart = () => {
-        addItem({
-            id: selectedDish!.id,
-            title: selectedDish!.nombre,
-            desc: selectedDish!.descripcion,
-            img: selectedDish!.imagen,
-            tag: selectedDish!.tag,
-            quantity: modalCounter,
-            unitPrice: selectedDish!.precio,
-            totalPrice: selectedDish!.precio * modalCounter,
-        })
-        setmodalCounter(1)
-        console.log(items)
-        setOpen(false)
+        try {
+            addItem({
+                id: selectedDish!.id,
+                title: selectedDish!.nombre,
+                desc: selectedDish!.descripcion,
+                img: selectedDish!.imagen,
+                tag: selectedDish!.tag,
+                quantity: modalCounter,
+                unitPrice: selectedDish!.precio,
+                totalPrice: selectedDish!.precio * modalCounter,
+                localName: selectedDish!.local,
+            })
+            
+            setmodalCounter(1)
+            setOpen(false)
+            showToast('Plato agregado al pedido', 'success')
+        } catch (error) {
+            showToast((error as Error).message, 'error')
+        }
     }
 
     const [store, setStore] = React.useState<StoreDetailJSON>()
@@ -218,12 +228,14 @@ const StoreDetail = () => {
             <HeaderBack title={store?.name as string} backTo='/' />
 
             {/* ==================== Restaurant Info ==================== */}
-            <Box
-                component='img'
-                src={store?.imageURL as string}
-                alt='Restaurant'
-                className="restaurant-image"
-            />
+            <Box className='restaurant-image-container'>
+                <Box
+                    component='img'
+                    src={store?.imageURL as string}
+                    alt='Restaurant'
+                    className="restaurant-image"
+                />
+            </Box>
 
             <Container className="restaurant-info-container">
                 <Typography variant='h5' className="restaurant-title">
@@ -422,6 +434,11 @@ const StoreDetail = () => {
                     </Box>
                 </Box>
             </Modal>
+
+            {/* ==================== Toast ==================== */}
+            <div id="toast-container">
+                <Toast toast={toast} />
+            </div>
 
             {/* <Box className="see-order-container">
                 <Button

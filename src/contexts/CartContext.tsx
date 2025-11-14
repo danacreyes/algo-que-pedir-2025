@@ -11,6 +11,7 @@ type CartItem = {
     quantity: number
     unitPrice: number
     totalPrice: number
+    localName: string
 }
 
 type CartContextType = {
@@ -30,17 +31,21 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
 
     const addItem = (item: CartItem) => {
         const itemInOrder = items.find(i => i.id == item.id)
-    
-    if (itemInOrder) {
-        setItems(items.map(i => i.id === item.id 
-                ? { ...i, quantity: i.quantity + item.quantity, total: (i.quantity + item.quantity) * i.unitPrice }
-                : i
-        ))
-    } else {
-        setItems([...items, item]) 
-    }
-    // en React no se puede modificar el estado original directamente, entonces por eso se hace un map o el spread operator (...), 
-    // se crea un nuevo array y se lo asigna a items, no se puede usar push porque no lo vuelve a renderizar al ser el mismo objeto en memorio
+
+        if (items.length > 0 && item.localName != items[0]?.localName) {
+            throw new Error('No puedes agregar platos de diferentes locales')
+        }
+
+        if (itemInOrder) {
+            setItems(items.map(i => i.id === item.id 
+                    ? { ...i, quantity: i.quantity + item.quantity, total: (i.quantity + item.quantity) * i.unitPrice }
+                    : i
+            ))
+        } else {
+            setItems([...items, item]) 
+        }
+        // en React no se puede modificar el estado original directamente, entonces por eso se hace un map o el spread operator (...), 
+        // se crea un nuevo array y se lo asigna a items, no se puede usar push porque no lo vuelve a renderizar al ser el mismo objeto en memorio
     }
 
     const removeItem = (id: number) => {
