@@ -16,46 +16,6 @@ export type StoreJSON ={
   searchName: string
 }
 
-export type StoreCardJSON = {
-  id: number,
-  name: string,
-  imageURL: string,
-  gradePointAvg: number,
-  deliveryTimeAvg: string,
-  isExpensive: boolean
-}
-//! este lo hice momentaniamente despeus cambiarlo
-export type StoreDetailJSON = {
-  id: number,
-  name: string,
-  imageURL: string,
-  gradePointAvg: number,
-  numberOfReviews: number,
-  numberOfOrders: number,
-}
-
-export type StoreReviewsJSON = {
-  puntaje: number,
-  comentario: string
-}
-
-export enum FoodGroupValue {
-  EFECTIVO,
-  QR,
-  TRANSFERENCIA_BANCARIA,
-}
-export type OrderCheckoutJSON = {
-  id: number,
-  name: string,
-  imageURL: string,
-  gradePointAvg: number,
-  km?: number, // no se que es esto
-  freeDelivery?: boolean,
-  deliveryFee: number,
-  typeOfPayment: FoodGroupValue[]
-}
-
-
 
 export class StoreType {
   errors: ValidationMessage[] = []

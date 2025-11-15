@@ -4,17 +4,14 @@ export class StoreRate {
   MAX_CHARACTERS: number = 250
 
   errors: ValidationMessage[] = []
-  id: number
   rate: number
   experienceDesc: string
 
   constructor(
-    id: number,
     rate: number,
     experienceDesc: string
 
   ) {
-    this.id = id
     this.rate = rate
     this.experienceDesc = experienceDesc
   }
@@ -34,7 +31,6 @@ export class StoreRate {
 }
 
 export type storeRateJSON = {
-  id: string,
   rate: number,
   experienceDesc: string
 }

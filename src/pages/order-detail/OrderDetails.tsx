@@ -61,7 +61,7 @@ function OrderDetails () {
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={(_, value) => handleStateChange(value)} aria-label='Tab-list'>
                 <Tab label='Pendientes' value='PENDIENTE'/>
-                <Tab label='Completados' value='ENTREGADO'/>
+                <Tab label='Completados' value='CONFIRMADO'/>
                 <Tab label='Cancelados' value='CANCELADO'/>
               </TabList>
             </Box>

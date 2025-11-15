@@ -14,12 +14,13 @@ import CloseIcon from '@mui/icons-material/Close'
 import HeaderBack from '../../components/HeaderBack/HeaderBack'
 import './order-checkout.css'
 import { useCart } from '../../contexts/CartContext'
-import { StoreDetailJSON } from '../../domain/store'
+// import { StoreDetailJSON } from '../../domain/store'
 import { storeService } from '../../services/LocalesService'
 import { useLocation } from 'react-router-dom'
 import { useOnInit } from '../../customHooks/useOnInit'
 import { orderService } from '../../services/orderService'
 import { Order } from '../../domain/order'
+import { StoreDetailJSON } from '../../domain/storeDom'
 
 type OrderItemType = {
     id: number
@@ -93,10 +94,6 @@ const OrderCheckout = () => {
 
     const { isNew } = location.state as { isNew: boolean }
     const { orderId } = location.state as { orderId: number }
-    
-    console.info('ORDER ID: ', orderId)
-    console.info('IS NEW: ', isNew)
-    console.info('ID : ', id)
 
     const getStoreData = async () => {
         const backStoreResponse = await storeService.getStore(id as number)
@@ -121,6 +118,7 @@ const OrderCheckout = () => {
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}
+                {isNew? (
                 <Box className="restaurant-section">
                     <Typography variant='h6' className="section-title-order-checkout">
                         Restaurante
@@ -142,6 +140,29 @@ const OrderCheckout = () => {
                         </Box>
                     </Box>
                 </Box>
+                ) : (
+                <Box>
+                    <Typography variant='h6' className="section-title-order-checkout">
+                        Restaurante
+                    </Typography>
+                    <Box className="restaurant-info-box">
+                        <Box
+                            component='img'
+                            src={order?.local.storeURL}
+                            alt='El Sabor Auténtico'
+                            className="restaurant-logo"
+                        />
+                        <Box>
+                            <Typography className="restaurant-name">
+                                {order?.local.name}
+                            </Typography>
+                            <Typography variant='body2' className="restaurant-details">
+                                {} · 5 km · Envío gratis (hardcoded!)
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Box>
+                    )}
 
                 <Divider className="section-divider" />
 

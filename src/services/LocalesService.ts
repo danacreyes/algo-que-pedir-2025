@@ -1,4 +1,4 @@
-import { StoreJSON, StoreReviewsJSON, StoreType } from '../domain/store'
+import { StoreJSON, StoreType } from '../domain/store'
 import { REST_SERVER_URL } from './configuration'
 import axios from 'axios'
 

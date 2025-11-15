@@ -17,12 +17,11 @@ import './store-detail.css'
 import { useCart } from '../../contexts/CartContext'
 import { useOnInit } from '../../customHooks/useOnInit'
 import { storeService } from '../../services/LocalesService'
-import { StoreDetailJSON, StoreReviewsJSON, StoreType } from '../../domain/store'
+import { StoreDetailJSON, StoreReviewsJSON } from '../../domain/storeDom'
 import { MenuItemJSONReduced } from '../../domain/menuItem'
 import { menuItemsService } from '../../services/MenuItemService'
 import { Toast } from '../../components/Toast/ToastContainer'
 import { useToast } from '../../components/Toast/useToast'
-import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import RateCard from '../../components/RateCard/RateCard'
 import DishCard from '../../components/DishCard/DishCard'
 
@@ -242,7 +241,7 @@ const StoreDetail = () => {
                     {store?.name}
                 </Typography>
                 <Typography variant='body2' className="restaurant-info-stats">
-                    {store?.gradePointAvg} ({store?.numberOfReviews}+ reviews) · {store?.numberOfOrders} pedidos
+                    {store?.gradePointAvg} ({store?.numberOfOrders}+ reviews) · {store?.numberOfOrders} pedidos
                 </Typography>
 
                 {/* ==================== Tabs ==================== */}
@@ -268,7 +267,7 @@ const StoreDetail = () => {
                         {/* ==================== Reviews ==================== */}
                         <TabPanel value='2'>
                             {reviews.map((review) => (
-                                <RateCard key={review.comentario} calificacion={Number(review.puntaje)} comentario={review.comentario}/>
+                                <RateCard key={review.experienceDesc} calificacion={Number(review.rate)} comentario={review.experienceDesc}/>
                             ))}
                         </TabPanel>
                     </Box>
