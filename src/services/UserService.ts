@@ -63,8 +63,8 @@ class UserService {
   }
 
   async getUnratedStores() {
-    const sessionID = Number(sessionStorage.getItem('id'))
-    const unratedStoresCardJson = await axios.get<StoreCardJSON[]>(REST_SERVER_URL + `/locales-puntuables/${sessionID}`)
+    const userSessionID = Number(sessionStorage.getItem('id'))
+    const unratedStoresCardJson = await axios.get<StoreCardJSON[]>(REST_SERVER_URL + `/locales-puntuables/${userSessionID}`)
     return unratedStoresCardJson.data
   }
 
@@ -73,11 +73,11 @@ class UserService {
     const storeRateJSON: storeRateJSON = {
       id: String(storeRate.id),
       rate: storeRate.rate,
-      text: storeRate.text
+      experienceDesc: storeRate.experienceDesc
     }
-    const sessionID = Number(localStorage.getItem('id'))
+    const userSessionID = Number(localStorage.getItem('id'))
 
-    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeRateJSON.id}&userId=${sessionID}`, storeRateJSON)
+    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeRateJSON.id}&userId=${userSessionID}`, storeRateJSON)
   }
 
   isAuth() {
