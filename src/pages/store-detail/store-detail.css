@@ -5,7 +5,7 @@ div.store-detail-container {
     display: flex;
     flex-direction: column;
     /* height: 100%; */
-    width: 100%;
+    width: 100vw; /*! por mas que le puse vw ocupa el 100% de 430px y no se deforma no se por que */
 }
 
 /* ==================== Restaurant Image ==================== */

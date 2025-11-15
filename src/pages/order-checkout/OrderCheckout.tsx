@@ -81,6 +81,8 @@ const OrderCheckout = () => {
         console.log('Pedido confirmado')
     }
 
+    //! nico fijate que esto esta mal tenes que ponerlo en lo mismo o usar operador ternario en todos los lugares en donde uses alguna propiedad 
+    //! de store, mira la linea 133 por ejemplo, ademas pones platos de un local salis, y vas a otro local y pones ver pedido te pone el otro restaurante y no el que pusiste los platos
     const [store, setStore] = React.useState<StoreDetailJSON>()
     const [order, setOrder] = React.useState<Order>()
 
@@ -126,16 +128,16 @@ const OrderCheckout = () => {
                     <Box className="restaurant-info-box">
                         <Box
                             component='img'
-                            src='https://i0.wp.com/foodandpleasure.com/wp-content/uploads/2024/07/restaurantegriegobosques2.jpg?fit=1500%2C1000&ssl=1'
+                            src={store?.imageURL}
                             alt='El Sabor Auténtico'
                             className="restaurant-logo"
                         />
                         <Box>
                             <Typography className="restaurant-name">
-                                El Sabor Auténtico
+                                {store?.name}
                             </Typography>
                             <Typography variant='body2' className="restaurant-details">
-                                4.8 · 5 km · Envío gratis
+                                {store?.gradePointAvg} · 5 km · Envío gratis (hardcoded!)
                             </Typography>
                         </Box>
                     </Box>
