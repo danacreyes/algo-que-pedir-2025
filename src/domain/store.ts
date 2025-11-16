@@ -15,6 +15,7 @@ export type StoreJSON ={
   storePaymentQR: boolean
   storePaymentTransferencia: boolean
   searchName: string
+  usuarioCercano: boolean
 }
 
 export type StoreCardJSON = {
@@ -43,14 +44,15 @@ export class StoreType {
     public storePaymentQR: boolean = true,
     public storePaymentTransferencia: boolean = true,
     public searchName: string = ''.trim(),
+    public usuarioCercano: boolean = false,
   ) {}
 
 
   static fromJson(storeJSON: StoreJSON): StoreType {
-    // Crear instancia pasando todos los parámetros
     return Object.assign(new StoreType(), storeJSON, {
       storeAppCommission: storeJSON.storeAppCommission*100,
       storeAuthorCommission: storeJSON.storeAuthorCommission*100,
+      usuarioCercano: storeJSON.usuarioCercano,
     })
   }
 
@@ -69,6 +71,7 @@ export class StoreType {
       storePaymentQR: this.storePaymentQR,
       storePaymentTransferencia: this.storePaymentTransferencia,
       searchName: this.searchName,
+      usuarioCercano: this.usuarioCercano,
     }
   }
 
