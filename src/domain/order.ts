@@ -18,7 +18,7 @@ export enum Pago {
 }
 
 export type OrderForBack = {
-  userID: number | null,
+  userID: number,
   localID: number,
   platosIDs: number[],
   medioDePago: string,

@@ -331,19 +331,21 @@ const OrderCheckout = () => {
                     <Typography variant='body2' className="payment-label">
                         Forma de pago
                     </Typography>
-                    <FormControl fullWidth>
-                        <Select
-                            value={paymentMethod}
-                            onChange={(e) => setPaymentMethod(e.target.value as Pago)}
-                            className="payment-select"
-                        >
-                            {store?.mediosDePago?.map((pago) => (
-                                <MenuItem key={pago} value={pago}>
-                                    {paymentLabels[pago]}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    {store?.mediosDePago?.length && (
+                        <FormControl fullWidth>
+                            <Select
+                                value={paymentMethod}
+                                onChange={(e) => setPaymentMethod(e.target.value as Pago)}
+                                className="payment-select"
+                                >
+                                {store?.mediosDePago?.map((pago) => (
+                                    <MenuItem key={pago} value={pago}>
+                                        {paymentLabels[pago]}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        )}
                 </Box>
             </Container>
 
