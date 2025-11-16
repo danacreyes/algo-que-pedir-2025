@@ -13,8 +13,11 @@ import './ingredient-criteria.css'
 import { userService } from '../../services/UserService'
 
 
-sessionStorage.setItem('id', '1')
-sessionStorage.setItem('email', 'sofiamiller@gmail.com')
+// sessionStorage.setItem('id', '1')
+// sessionStorage.setItem('email', 'sofiamiller@gmail.com')
+// Sacar esto
+sessionStorage.setItem('id', localStorage.getItem('id'))
+sessionStorage.setItem('email', localStorage.getItem('email'))
 
 const IngredientCriteria = () => {
     const { criteria } = useParams()
