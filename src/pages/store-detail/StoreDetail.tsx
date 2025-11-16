@@ -180,6 +180,7 @@ const StoreDetail = () => {
                 quantity: modalCounter,
                 unitPrice: selectedDish!.precio,
                 totalPrice: selectedDish!.precio * modalCounter,
+                localId: Number(id),
                 localName: selectedDish!.local,
             })
             

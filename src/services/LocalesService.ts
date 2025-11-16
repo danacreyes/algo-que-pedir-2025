@@ -25,7 +25,7 @@ class StoreService {
     }
   }
 
-  async getStore(id: number) {
+  async getStore(id: number | null) {
     // console.log(id)
     // const response = await axios.get(`${REST_SERVER_URL} + '/store-profile/' ${id}`)
     // console.log(`${REST_SERVER_URL}/store-profile-react/${id}`)

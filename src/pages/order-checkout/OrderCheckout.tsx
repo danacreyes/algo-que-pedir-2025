@@ -74,7 +74,8 @@ const OrderCheckout = () => {
     //     setItems(items.filter(item => item.id !== id))
     // }
 
-    const { items, removeItem, clearCart, getTotalPrice } = useCart()
+    const { items, removeItem, clearCart, getTotalPrice, currentLocalId } = useCart()
+
 
     // estas variables sueltas se recalculan en cada render
     const subtotal = getTotalPrice()
@@ -116,7 +117,7 @@ const OrderCheckout = () => {
             
             setTimeout(() => {
                 clearCart()
-                navigate('/home') // O a donde quieras redirigir
+                navigate('/home')
             }, 1500)
             
         } catch (error) {
@@ -126,7 +127,7 @@ const OrderCheckout = () => {
 
     }
 
-    //! medios de pagos estan hardcodeados
+    // medios de pagos estan hardcodeados
     //! guardar en el use context el nombre y las otras cosas para que no se rompa cuando cambias de local
 
     //! nico fijate que esto esta mal tenes que ponerlo en lo mismo o usar operador ternario en todos los lugares en donde uses alguna propiedad 
@@ -142,8 +143,11 @@ const OrderCheckout = () => {
     const { isNew } = location.state as { isNew: boolean }
     const { orderId } = location.state as { orderId: number }
 
+    const effectiveLocalId = isNew ? (currentLocalId || id) : null
+    console.log(effectiveLocalId)
+
     const getStoreData = async () => {
-        const backStoreResponse = await storeService.getStore(id as number)
+        const backStoreResponse = await storeService.getStore(effectiveLocalId)
         setStore(backStoreResponse)
     }
 
@@ -157,11 +161,10 @@ const OrderCheckout = () => {
     })
 
     //! falta terminar los endpoiunts aca
-    //! Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation
 
     return (
         <Box className="order-checkout-container">
-            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${id}` } : { path: '/order-details/'}} />
+            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${effectiveLocalId}` } : { path: '/order-details/'}} /> //! arreglar lo de ir para atras
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}
