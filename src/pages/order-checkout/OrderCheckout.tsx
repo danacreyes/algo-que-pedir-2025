@@ -107,7 +107,7 @@ const OrderCheckout = () => {
                 localID: id,
                 platosIDs: itemsIDs,
                 medioDePago: paymentMethod, 
-                estado: Estado.PREPARADO, 
+                estado: Estado.PENDIENTE, 
             }
 
             console.log('Enviando pedido:', orderData)
