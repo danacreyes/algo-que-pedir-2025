@@ -1,20 +1,28 @@
 import { es } from 'date-fns/locale'
 import type { MenuItemType } from '../domain/menuItem'
 import { StoreType } from './store'
-import { format } from 'date-fns'
+import { format, NormalizedInterval } from 'date-fns'
 // A MENU-ITEM LE FALTA: plato.cantidad
 
 export enum Estado {
-  PENDIENTE= 'PENDIENTE',
-  PREPARADO= 'PREPARADO',
-  ENTREGADO= 'ENTREGADO',
-  CANCELADO= 'CANCELADO',
+  PENDIENTE = 'PENDIENTE',
+  PREPARADO = 'PREPARADO',
+  ENTREGADO = 'ENTREGADO',
+  CANCELADO = 'CANCELADO',
 }
 
 export enum Pago {
   EFECTIVO = 'EFECTIVO',
-  TRANSFERENCIA = 'TRANSFERENCIA',
+  TRANSFERENCIA_BANCARIA = 'TRANSFERENCIA_BANCARIA',
   QR = 'QR',
+}
+
+export type OrderForBack = {
+  userID: number | null,
+  localID: number,
+  platosIDs: number[],
+  medioDePago: string,
+  estado: Estado,
 }
 
 export type ReducedOrderJSON = {

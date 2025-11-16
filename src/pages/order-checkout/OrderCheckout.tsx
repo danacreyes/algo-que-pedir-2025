@@ -19,8 +19,13 @@ import { storeService } from '../../services/LocalesService'
 import { useLocation } from 'react-router-dom'
 import { useOnInit } from '../../customHooks/useOnInit'
 import { orderService } from '../../services/orderService'
-import { Order } from '../../domain/order'
+import { Order, OrderForBack } from '../../domain/order'
 import { StoreDetailJSON } from '../../domain/storeDom'
+import { Estado, Pago } from '../../domain/order'
+import { useToast } from '../../components/Toast/useToast'
+import { Toast } from '../../components/Toast/ToastContainer'
+import { useNavigate } from 'react-router-dom'
+
 
 type OrderItemType = {
     id: number
@@ -56,8 +61,15 @@ const ordersMock: OrderItemType[] = [
 
 const OrderCheckout = () => {
     // const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
-    const [paymentMethod, setPaymentMethod] = React.useState('Efectivo')
+    const [paymentMethod, setPaymentMethod] = React.useState<Pago>(Pago.EFECTIVO)
+    const { toast, showToast } = useToast()
+    const navigate = useNavigate()
 
+    const paymentLabels: Record<Pago, string> = {
+    [Pago.EFECTIVO]: 'Efectivo',
+    [Pago.TRANSFERENCIA_BANCARIA]: 'Transferencia Bancaria',
+    [Pago.QR]: 'Código QR'
+}
     // const removeItem = (id: number) => {
     //     setItems(items.filter(item => item.id !== id))
     // }
@@ -78,9 +90,44 @@ const OrderCheckout = () => {
         clearCart()
     }
 
-    const handleConfirmOrder = () => {
-        console.log('Pedido confirmado')
+    const handleConfirmOrder = async () => {
+        try {
+            // console.log(items)
+            const itemsIDs = items.map( it => it.id )
+            // console.log(itemsIDs)
+            
+            const orderData: OrderForBack = {
+                // lo mejor es pasar las ids de 
+                // usuario
+                // local
+                // platos
+                // medio de pago
+                // y que el back se encargue de buscarlos
+                userID: Number(localStorage.getItem('id')),
+                localID: id,
+                platosIDs: itemsIDs,
+                medioDePago: paymentMethod, 
+                estado: Estado.PREPARADO, 
+            }
+
+            console.log('Enviando pedido:', orderData)
+            await orderService.createOrder(orderData)
+            showToast('Pedido confirmado', 'success')
+            
+            setTimeout(() => {
+                clearCart()
+                navigate('/home') // O a donde quieras redirigir
+            }, 1500)
+            
+        } catch (error) {
+            console.error('Error al crear pedido:', error)
+            showToast('Error al crear el pedido. Por favor intenta nuevamente.', 'error')
+        }
+
     }
+
+    //! medios de pagos estan hardcodeados
+    //! guardar en el use context el nombre y las otras cosas para que no se rompa cuando cambias de local
 
     //! nico fijate que esto esta mal tenes que ponerlo en lo mismo o usar operador ternario en todos los lugares en donde uses alguna propiedad 
     //! de store, mira la linea 133 por ejemplo, ademas pones platos de un local salis, y vas a otro local y pones ver pedido te pone el otro restaurante y no el que pusiste los platos
@@ -287,13 +334,14 @@ const OrderCheckout = () => {
                     <FormControl fullWidth>
                         <Select
                             value={paymentMethod}
-                            onChange={(e) => setPaymentMethod(e.target.value)}
+                            onChange={(e) => setPaymentMethod(e.target.value as Pago)}
                             className="payment-select"
                         >
-                            <MenuItem value='Efectivo'>Efectivo</MenuItem>
-                            <MenuItem value='Tarjeta de crédito'>Tarjeta de crédito</MenuItem>
-                            <MenuItem value='Tarjeta de débito'>Tarjeta de débito</MenuItem>
-                            <MenuItem value='Transferencia'>Transferencia</MenuItem>
+                            {store?.mediosDePago?.map((pago) => (
+                                <MenuItem key={pago} value={pago}>
+                                    {paymentLabels[pago]}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Box>
@@ -322,6 +370,12 @@ const OrderCheckout = () => {
                     Limpiar carrito de compras
                 </Button>
             </Box>} 
+
+            {/* ==================== Toast ==================== */}
+            <div id="toast-container">
+                <Toast toast={toast} />
+            </div>
+
         </Box>
     )
 }

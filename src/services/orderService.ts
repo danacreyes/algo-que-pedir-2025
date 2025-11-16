@@ -1,4 +1,4 @@
-import { Order, ReducedOrderJSON, type OrderJSON } from '../domain/order'
+import { Order, OrderForBack, ReducedOrderJSON, type OrderJSON } from '../domain/order'
 import { REST_SERVER_URL } from './configuration'
 import { getAxiosData } from './common'
 import axios from 'axios'
@@ -67,6 +67,11 @@ class OrderService {
   async updateOrderState(id: number) {
     return axios.put<OrderJSON>(REST_SERVER_URL + '/preparar_pedido/' + id)
   }
+
+  async createOrder(order: OrderForBack) {
+    return axios.post<OrderJSON>(REST_SERVER_URL + '/create-order/', order)
+  }
+
 }
 
 export const orderService = new OrderService()

@@ -1,3 +1,4 @@
+import { Pago } from './order'
 import { StoreRate } from './storeRate'
 
 export type StoreCardJSON = {
@@ -17,7 +18,8 @@ export type StoreDetailJSON = {
   gradePointAvg: number,
   deliveryTimeAvg: string,
   isExpensive: boolean,
-  numberOfOrders: number
+  numberOfOrders: number,
+  mediosDePago: Pago[]
 }
 
 export type StoreReviewsJSON = {

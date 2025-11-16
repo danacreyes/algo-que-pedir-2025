@@ -260,7 +260,7 @@ const StoreDetail = () => {
                         {/* ==================== Items ==================== */}
                         <TabPanel value='1' className="tab-panel">
                             {dishes.map((dish) => (
-                                <DishCard dish={dish} onOpen={() => handleOpen(dish.id)}/>
+                                <DishCard dish={dish} key={dish.id} onOpen={() => handleOpen(dish.id)}/>
                             ))}
                         </TabPanel>
 
