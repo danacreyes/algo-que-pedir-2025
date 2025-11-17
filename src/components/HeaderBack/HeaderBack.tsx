@@ -24,9 +24,11 @@ const HeaderBack = ({ title, backTo }: HeaderProps) => {
                 <IconButton
                     onClick={() => {
                         if (typeof backTo === 'string') {
-                        navigate(backTo)
-                        } else {
+                        // navigate(-1) -> 
+                        navigate(backTo)    
+                    } else {
                         navigate(backTo.path, { state: backTo.state })
+                        // navigate(-1) ->
                         }
                     }}
                     className="header-back-button"

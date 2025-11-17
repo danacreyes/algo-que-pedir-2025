@@ -1,4 +1,6 @@
 import { StoreJSON, StoreType } from '../domain/store'
+import { Store, StoreDomJSON } from '../domain/storeDom'
+import { StoreRate, StoreRateJSON } from '../domain/storeRate'
 import { REST_SERVER_URL } from './configuration'
 import axios from 'axios'
 
@@ -7,7 +9,7 @@ class StoreService {
     const storeInstance = new StoreType()
     storeInstance.setSearchValue(searchTerm?.trim() || '')
     
-    console.log('Enviando búsqueda:', storeInstance.searchName)
+    // console.log('Enviando búsqueda:', storeInstance.searchName)
 
     try {
       const result = await axios.post(`${REST_SERVER_URL}/store-profiles`, {
@@ -26,19 +28,15 @@ class StoreService {
   }
 
   async getStore(id: number | null) {
-    // console.log(id)
-    // const response = await axios.get(`${REST_SERVER_URL} + '/store-profile/' ${id}`)
-    // console.log(`${REST_SERVER_URL}/store-profile-react/${id}`)
-    const response = await axios.get(`${REST_SERVER_URL}/store-profile-react/${id}`)
-    // console.log(response)
-    // console.log('tdfsaaaaaaa')
-    console.log(response.data)
-    return response.data
+    const response = await axios.get<StoreDomJSON>(`${REST_SERVER_URL}/store-profile-react/${id}`)
+    const store = Store.fromJSON(response.data)
+    return store
   }
 
   async getReviewsByStore(id: number) {
-    const response = await axios.get(`${REST_SERVER_URL}/store-reviews/${id}`)
-    return response.data
+    const response = await axios.get<StoreRateJSON[]>(`${REST_SERVER_URL}/store-reviews/${id}`)
+    const reviews = response.data.map(it => StoreRate.fromJSON(it))
+    return reviews
   }
 }
 

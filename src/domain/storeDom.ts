@@ -1,25 +1,14 @@
-import { Pago } from './order'
-import { StoreRate } from './storeRate'
+import { StoreRate, StoreRateJSON } from './storeRate'
 
-export type StoreCardJSON = {
+export type StoreDomJSON = {
   id: number,
   name: string,
-  imageURL: string,
-  gradePointAvg: number,
+  storeURL: string,
   deliveryTimeAvg: string,
-  isExpensive: boolean,
+  deliveryFee: number,
   numberOfOrders: number,
-}
-//! este lo hice momentaniamente despeus cambiarlo
-export type StoreDetailJSON = {
-  id: number,
-  name: string,
-  imageURL: string,
-  gradePointAvg: number,
-  deliveryTimeAvg: string,
-  isExpensive: boolean,
-  numberOfOrders: number,
-  mediosDePago: Pago[]
+  paymentTypes: PaymentType[],
+  reviews: StoreRateJSON[],
 }
 
 export type StoreReviewsJSON = {
@@ -28,62 +17,69 @@ export type StoreReviewsJSON = {
 }
 
 export enum PaymentType {
-  EFECTIVO,
-  QR,
-  TRANSFERENCIA_BANCARIA,
-}
-
-export type OrderCheckoutJSON = {
-  id: number,
-  name: string,
-  imageURL: string,
-  gradePointAvg: number,
-  km?: number, // no se que es esto
-  freeDelivery?: boolean,
-  deliveryFee: number,
-  typeOfPayment: PaymentType[]
+  EFECTIVO = 'EFECTIVO',
+  QR = 'QR',
+  TRANSFERENCIA_BANCARIA = 'TRANSFERENCIA_BANCARIA',
 }
 
 export class Store {
     id: number
     name: string
-    imageURL: string
+    storeURL: string
     reviews: StoreRate[]
-    freeDelivery: boolean
     deliveryFee: number
     paymentTypes: PaymentType[]
+    numberOfOrders: number
+    deliveryTimeAvg: number
     // ubicacion: number // ahre
 
     constructor(
-        id: number,
-        name: string,
-        imageURL: string,
-        reviews: StoreRate[],
-        freeDelivery: boolean,
-        deliveryFee: number,
-        paymentTypes: PaymentType[],
+        id: number = -1,
+        name: string = '',
+        storeURL: string = '',
+        reviews: StoreRate[] = [],
+        deliveryFee: number = 0,
+        paymentTypes: PaymentType[] = [PaymentType.EFECTIVO],
+        numberOfOrders = 0,
+        deliveryTimeAvg = 0,
         // ubicacion: number
     ) {
         this.id = id
         this.name = name
-        this.imageURL = imageURL
+        this.storeURL = storeURL
         this.reviews = reviews
-        this.freeDelivery = freeDelivery
         this.deliveryFee = deliveryFee
         this.paymentTypes = paymentTypes
+        this.numberOfOrders = numberOfOrders
+        this.deliveryTimeAvg = deliveryTimeAvg
         // this.ubicacion = ubicacion
     }
 
     get gradePointAvg(): string {
-        return this.reviews.reduce((acc, rev) => acc + rev.rate, 0).toFixed(2)
+        return (this.reviews.reduce((acc, rev) => acc + rev.rate, 0) / this.reviews.length).toFixed(1)
     }
 
     get numberOfReviews(): string {
-        return `${this.reviews.length}+`
+        if(this.reviews.length >= 10) {
+          return '10+'
+        } else {
+          return `${this.reviews.length}`
+        }
     }
 
     get isExpensive(): boolean {
         return this.deliveryFee >= 5
+    }
+
+    offersFreeDelivery(): boolean {
+      return this.deliveryFee != 0
+    }
+
+    static fromJSON(storeJSON: StoreDomJSON) : Store {
+      const reviews = storeJSON.reviews.map(it => StoreRate.fromJSON(it))
+      const store = Object.assign(new Store(), storeJSON, {})
+      store.reviews = reviews
+      return store
     }
 
     // get kmsToUser(userPoint: number) {

@@ -2,8 +2,8 @@ import { UserType, type UserJSONLoginRequest, type UserJSONRegisterRequest, type
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
-import { StoreCardJSON } from '../domain/storeDom'
-import { StoreRate, storeRateJSON } from '../domain/storeRate'
+import { Store, StoreDomJSON } from '../domain/storeDom'
+import { StoreRate, StoreRateJSON } from '../domain/storeRate'
 
 class UserService {
   // USER CLIENTE
@@ -64,13 +64,13 @@ class UserService {
 
   async getUnratedStores() {
     const userSessionID = Number(sessionStorage.getItem('id'))
-    const unratedStoresCardJson = await axios.get<StoreCardJSON[]>(REST_SERVER_URL + `/locales-puntuables/${userSessionID}`)
-    return unratedStoresCardJson.data
+    const unratedStoresCardJson = await axios.get<StoreDomJSON[]>(REST_SERVER_URL + `/locales-puntuables/${userSessionID}`)
+    return unratedStoresCardJson.data.map(it => Store.fromJSON(it))
   }
 
   async rateStore(storeRate: StoreRate, storeId: number) {
 
-    const storeRateJSON: storeRateJSON = {
+    const storeRateJSON: StoreRateJSON = {
       rate: storeRate.rate,
       experienceDesc: storeRate.experienceDesc
     }

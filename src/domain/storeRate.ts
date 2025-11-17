@@ -8,8 +8,8 @@ export class StoreRate {
   experienceDesc: string
 
   constructor(
-    rate: number,
-    experienceDesc: string
+    rate: number = 0,
+    experienceDesc: string = ''
 
   ) {
     this.rate = rate
@@ -28,9 +28,13 @@ export class StoreRate {
       this.addError('experience-description', 'El texto es demasiado largo')
     }
   }
+
+  static fromJSON(storeRateJSON: StoreRateJSON): StoreRate {
+    return Object.assign(new StoreRate(), storeRateJSON, {})
+  }
 }
 
-export type storeRateJSON = {
+export type StoreRateJSON = {
   rate: number,
   experienceDesc: string
 }

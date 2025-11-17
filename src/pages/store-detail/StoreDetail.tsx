@@ -17,66 +17,13 @@ import './store-detail.css'
 import { useCart } from '../../contexts/CartContext'
 import { useOnInit } from '../../customHooks/useOnInit'
 import { storeService } from '../../services/LocalesService'
-import { StoreDetailJSON, StoreReviewsJSON } from '../../domain/storeDom'
+import { Store, StoreReviewsJSON } from '../../domain/storeDom'
 import { MenuItemJSONReduced } from '../../domain/menuItem'
 import { menuItemsService } from '../../services/MenuItemService'
 import { Toast } from '../../components/Toast/ToastContainer'
 import { useToast } from '../../components/Toast/useToast'
 import RateCard from '../../components/RateCard/RateCard'
 import DishCard from '../../components/DishCard/DishCard'
-
-type dishType = {
-    id: number
-    title: string
-    desc: string
-    price: number
-    img: string
-    tag?: string
-}
-
-// si lo pones aca tenes que ver como cambiar el tag
-const dishesMock: dishType[] = [
-    {
-        id: 1,
-        title: 'Pizza Margherita',
-        desc: 'Classic pizza with tomato sauce, mozzarella, and basil',
-        price: 12.99,
-        img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.1.0&ixid'
-        + '=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1169',
-        tag: 'Popular',
-    },
-    {
-        id: 2,
-        title: 'Pizza Pepperoni',
-        desc: 'Pizza with tomato sauce, mozzarella, and pepperoni',
-        price: 13.99,
-        img: 'https://images.unsplash.com/photo-1605478371310-a9f1e96b4ff4?ixlib=rb-4.1.0&ixid'
-        + '=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
-        tag: 'Popular',
-    },
-    {
-        id: 3,
-        title: 'Spaghetti Carbonara',
-        desc: 'Spaghetti with creamy sauce, bacon, and parmesan cheese',
-        price: 14.99,
-        img: 'https://assets.tmecosys.com/image/upload/t_web_rdp_recipe_584x480_1_5x/img/'
-        + 'recipe/ras/Assets/0346a29a89ef229b1a0ff9697184f944/Derivates/cb5051204f4a4525c8b013c16418ae2904e737b7.jpg',
-    },
-    {
-        id: 4,
-        title: 'Fettuccine Alfredo',
-        desc: 'Fettuccine with creamy Alfredo sauce',
-        price: 13.99,
-        img: 'https://www.modernhoney.com/wp-content/uploads/2018/08/Fettuccine-Alfredo-Recipe-1-500x500.jpg',
-    },
-    {
-        id: 5,
-        title: 'Lasagne alla Portofino',
-        desc: 'Lasagne with creamy besciamella and pesto genovese',
-        price: 16.99,
-        img: 'https://images.squarespace-cdn.com/content/v1/62422bb659ddd37045237686/0006ed59-9ec5-4858-b544-efb56b56d49b/8fe074b8-c1a4-4654-b6a4-3db060e8284c_4030x3024.jpeg',
-    },
-]
 
 const dishesReducedMock: MenuItemJSONReduced[] = [
     {
@@ -131,10 +78,6 @@ const StoreDetail = () => {
     const navigate = useNavigate()
 
     let reviewsInMemory = false
-    
-    // React.useEffect(() => {
-    //     traerPlatosDelBakc().then(data => setDishes(data)) //algo asi ???
-    // }, [])
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue)
@@ -192,7 +135,7 @@ const StoreDetail = () => {
         }
     }
 
-    const [store, setStore] = React.useState<StoreDetailJSON>()
+    const [store, setStore] = React.useState<Store>()
     const location = useLocation()
     // console.log(location)
     // const { id } = location.state as { id: number } // esto se tiene que hacer asi si no rompe porque....
@@ -231,7 +174,7 @@ const StoreDetail = () => {
             <Box className='restaurant-image-container'>
                 <Box
                     component='img'
-                    src={store?.imageURL as string}
+                    src={store?.storeURL as string}
                     alt='Restaurant'
                     className="restaurant-image"
                 />
@@ -242,7 +185,7 @@ const StoreDetail = () => {
                     {store?.name}
                 </Typography>
                 <Typography variant='body2' className="restaurant-info-stats">
-                    {store?.gradePointAvg} ({store?.numberOfOrders}+ reviews) · {store?.numberOfOrders} pedidos
+                    {store?.gradePointAvg} ({store?.numberOfReviews} reviews) · {store?.numberOfOrders} pedidos
                 </Typography>
 
                 {/* ==================== Tabs ==================== */}

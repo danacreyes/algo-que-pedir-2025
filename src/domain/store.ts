@@ -66,7 +66,7 @@ export class StoreType {
   setSearchValue(inputSearchName: string){
     this.searchName = inputSearchName
     var nombreabuscar = this.searchName
-    console.info('Buscando:', nombreabuscar)
+    // console.info('Buscando:', nombreabuscar)
   }
 
   addError(field: string, message: string) {
