@@ -2,21 +2,60 @@ import { Button, Rating, Typography } from '@mui/material'
 import { Navigator } from '../../routes/Navigator'
 import './rate-store.css'
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { userService } from '../../services/UserService'
+import ValidationField from '../../components/ValidationField/ValidationField'
+import { ValidationMessage } from '../../domain/user'
+import { StoreRate } from '../../domain/storeRate'
 
 const MAX_CHARACTERS: number = 250 
 
 function RateStore() {
-  // const { id } = useParams()
+  const { id } = useParams()
   const navigation = Navigator()
   const { name } = navigation.getStateData()
-  const [rate, setRate] = useState<number>(3)
+  const [rate, setRate] = useState<number>(1)
   const [experienceDesc, setExperienceDesc] = useState<string>('')
   const [charactersLeft, setCharactersLeft] = useState<number>(MAX_CHARACTERS)
+  const [counterState, setCounterState] = useState<string>('safe')
+  const [errors, setErrors] = useState<Array<ValidationMessage>>([])
+
+  const generateAndSubmitFormData = async (ev: React.FormEvent<HTMLFormElement>) => {
+    ev.preventDefault()
+    const form = ev.currentTarget as HTMLFormElement
+    const formData = new FormData(form)
+
+    const storeRate = Number(formData.get('simple-controlled') ?? rate)
+    const storeExperienceDesc = String(formData.get('experience-description') ?? experienceDesc)
+
+    const newRate: StoreRate = new StoreRate(
+      storeRate,
+      storeExperienceDesc
+    )
+
+    await submitStoreRate(newRate)
+  }
+
+  const submitStoreRate = async (storeRate: StoreRate) => {
+    try {
+
+      storeRate.validate()
+      if (storeRate.errors.length > 0) {
+        setErrors(storeRate.errors)
+        return errors
+      }
+
+      await userService.rateStore(storeRate, Number(id))
+      navigation.goTo('/store-ratings')
+
+    } catch {
+      console.info('Algo fallo. No se pudo')
+    }
+  }
 
   return (
-    // Esto es raro...no esta ni importado y lo toma igual. De donde?
     <div className='main-container'>
-      <article className='go-back-and-title-section'>
+      <section className='go-back-and-title-section'>
         <button onClick={() => navigation.goTo('/store-ratings')} className='go-back-btn'>
           X
         </button>
@@ -25,9 +64,9 @@ function RateStore() {
           className='section-title'>
             Calificar
         </Typography>
-      </article>
+      </section>
 
-      <article className='main-body-and-form'>
+      <section className='main-body-and-form'>
         <Typography 
           variant='h5' sx={{ fontSize: '1.9em'}}>
             ¿Cómo fue tu experiencia con {name}?
@@ -36,57 +75,65 @@ function RateStore() {
           variant='subtitle1' sx={{ margin: '1em 0em'}}>
             Tu opinión ayuda a otros a elegir el mejor lugar
         </Typography>
-        <Rating
-          name="simple-controlled"
-          value={rate}
-          onChange={(_, newRate) => {
-            // Podia ser null, asi que si es null conservamos el anterior
-            setRate(newRate === null ? rate : newRate as number)
-          }}
-          sx={{
-            margin: '0',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '1em',
-            left: '0.4em'
-          }}
-        />
-        <section>
-          <textarea 
-            className='experience-description-textarea'
-            name="experience-description"
-            value={experienceDesc}
-            onChange={(e) => {
-              setExperienceDesc(e.target.value)
-              setCharactersLeft(MAX_CHARACTERS - e.target.value.length)
-              console.info(e.target.value)
-            }}
-            placeholder='Describi tu experiencia'
-            style={{ 
-              marginTop: '1em',
-              padding: '0.5em',
-              height: '15em', 
-              minWidth: '28em', 
-              maxWidth: '25em', 
-              resize: 'none', 
-              borderRadius: '0.5em',
-              background: 'none',
-              border: '0.01em solid black'
-          }}></textarea>
-          <div
+        <form
+          onSubmit={generateAndSubmitFormData}
+          id='store-rate-form'
+        >
+          <fieldset
             style={{
-              width: '3em',
-              border: '0.01em solid black',
-              borderRadius: '0.5em',
-              position: 'relative',
-              left: '24.8em',
-              bottom: '2.25em'
+              all: 'unset',
             }}
-          >{charactersLeft}</div>
-        </section>
+          >
+            <Rating
+              name='simple-controlled'
+              value={rate}
+              onChange={(_, newRate) => {
+                setRate(newRate === null ? rate : newRate as number)
+              }}
+              sx={{
+                margin: '0',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '1em',
+                left: '0.4em'
+              }}
+            />
+          </fieldset>
+        
+          <fieldset
+            style={{
+              all: 'unset',
+            }}
+          >
+            <section className='experience-description-section'>
+              <textarea 
+                className='experience-description-textarea'
+                name='experience-description'
+                value={experienceDesc}
+                onChange={(e) => {
+                  setExperienceDesc(e.target.value)
+                  setCharactersLeft(MAX_CHARACTERS - e.target.value.length)
+                  if (MAX_CHARACTERS - e.target.value.length < 0) {
+                    setCounterState('exceeded')
+                  } else if (MAX_CHARACTERS - e.target.value.length <= 40) {
+                    setCounterState('warning')
+                  } else {
+                    setCounterState('safe')
+                  }
+                }}
+                placeholder='Describi tu experiencia'
+                style={{ 
+                  
+              }}></textarea>
+              <div className={`characters-counter ${counterState}`}>{charactersLeft}</div>
+            </section>
+            <ValidationField field='experience-description' errors={errors} />
+          </fieldset>
+          
+          <Button variant='contained' type='submit' className='btn-primary spaced-top'>Guardar</Button>
+        </form>
 
-        <Button variant="contained" className='btn-primary spaced-top'>Guardar</Button>
-      </article>
+      </section>
     </div>
   )
 }

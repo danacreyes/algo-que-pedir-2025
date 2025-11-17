@@ -2,7 +2,6 @@ import { Box,Typography} from '@mui/material'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import MediaCard from '../../components/LocalCard/Card'
 import ColorCheckboxes from '../../components/Checkbox'
-import { ShoppingCart } from 'phosphor-react'
 import {StoreType} from '../../domain/store'
 import { storeService } from '../../services/LocalesService'
 import {  useState } from 'react'
@@ -10,13 +9,28 @@ import { useOnInit } from '../../customHooks/useOnInit'
 
 const Home = () => {
   const [searchValue, setSearchValue] = useState('')
-  const [stores, setStores] = useState<StoreType[]>([])
+  const [allStores, setAllStores] = useState<StoreType[]>([]) 
+  const [isChecked, setIsChecked] = useState(false)
 
+ 
+  let stores: StoreType[]
+  if (isChecked === true) {
+    stores = allStores.filter((store: StoreType) => {
+    return store.usuarioCercano === true
+  })
+  } else {
+  stores = allStores
+  }
 
   const buscarStores = async (textoBusquedaNuevo: string) => {
     setSearchValue(textoBusquedaNuevo)
-    const nuevosStores = await storeService.getStores(textoBusquedaNuevo)
-    setStores(nuevosStores)
+    const userId = localStorage.getItem('id') || ''
+    const nuevosStores = await storeService.getStores(textoBusquedaNuevo, userId)
+    setAllStores(nuevosStores)
+  }
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setIsChecked(checked)
   }
 
   useOnInit(() => {
@@ -41,7 +55,6 @@ const Home = () => {
         <Typography style={{ fontSize: 18, fontWeight: 'bolder' }}>
           Delivery
         </Typography>
-        <ShoppingCart size={32} />
       </div>
       
       <div style={{ marginTop: 10 }}>
@@ -53,7 +66,17 @@ const Home = () => {
         padding: 3,
         marginTop: '10px', 
       }}>
-        <ColorCheckboxes />
+        <ColorCheckboxes 
+          isChecked={isChecked}
+          onCheckboxChange={handleCheckboxChange}
+        />
+        
+        {isChecked && (
+          <Typography variant="body2" sx={{ mt: 1, ml: 1, color: 'text.secondary' }}>
+            Mostrando {stores.length} locales cercanos
+          </Typography>
+        )}
+        
         <Box display={'flex'} width={'100%'}>
           <MediaCard stores={stores} />
         </Box>

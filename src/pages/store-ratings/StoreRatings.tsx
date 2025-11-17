@@ -1,20 +1,20 @@
-import { Container, Typography } from '@mui/material'
+import { Button, Container, Divider, Typography } from '@mui/material'
 import { useState } from 'react'
-import { StoreCardJSON } from '../../domain/store'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import { Navigator } from '../../routes/Navigator'
 import { userService } from '../../services/UserService'
 import { useOnInit } from '../../customHooks/useOnInit'
 import './store-ratings.css'
+import { Store } from '../../domain/storeDom'
 
 const StoreRatings = () => {
-    const [unratedStores, setUnratedStores] = useState<StoreCardJSON[]>([])
+    const [unratedStores, setUnratedStores] = useState<Store[]>([])
 
     const navigation = Navigator()
     
     const getUnratedStores = async () => {
         try {
-            const unratedStores: StoreCardJSON[] = await userService.getUnratedStores()
+            const unratedStores: Store[] = await userService.getUnratedStores()
             setUnratedStores(unratedStores)
         } catch (error) {
             console.info('An error has occurred',error)
@@ -28,11 +28,11 @@ const StoreRatings = () => {
         .map(store => 
             <Container sx={{padding: '0.5em'}} key={store.id}>
                 <RestaurantCard 
-                src={store.imageURL} 
+                src={store.storeURL} 
                 alt='Imagen de local' 
                 name={store.name} 
                 detail = {`${store.gradePointAvg} · ${store.deliveryTimeAvg} · ${store.isExpensive ? '$$' : '$'}`}
-                icon='CALIFICAR'
+                icon={<Button sx={{textAlign: 'center'}} variant="contained" color="success">CALIFICAR</Button>}
                 buttonOnClickFunction={() => navigation.goTo(`/rate-store/${store.id}`, { name : store.name })}
                 />
             </Container>
@@ -47,6 +47,7 @@ const StoreRatings = () => {
                     variant='h5' sx={{margin: '2rem 0'}}>
                         Restaurantes a calificar
                     </Typography>
+                    <Divider />
                     {unratedStores.length != 0 ? 
                         showUnratedStores() : 
                         <Typography variant='subtitle1' sx={{margin: '2rem 0', color: 'text.secondary'}}>

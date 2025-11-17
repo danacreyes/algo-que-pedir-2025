@@ -22,6 +22,8 @@ export type MenuItemJSONReduced = {
   descripcion: string
   imagen: string
   precio: number
+  local: string
+  tag?: string
 }
 
 export class ValidationMessage { //esto pordriamos usar todos la misma
@@ -48,6 +50,10 @@ export class MenuItemType {
     public fechaDeCreacion: Date = new Date(),
     public porcentajeDescuento: number = 0
   ) {}
+
+  valorVenta() {
+    
+  }
 
   static fromJson(menuItemJSON: MenuItemJSON): MenuItemType {
     return Object.assign(new MenuItemType(), menuItemJSON, {

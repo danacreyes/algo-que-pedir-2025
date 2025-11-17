@@ -30,8 +30,8 @@ export const AppRouter = () => {
                         <Route path="/profile/ingredient-criteria/:criteria" element={<IngredientCriteria/>}/>
                         <Route path="/profile/search-criteria" element={<SearchCriteria/>}/>
                     </Route>
-                    <Route path="/store-detail" element={<StoreDetail/>}/>
-                    <Route path="/order-chekout" element={<OrderCheckout/>}/>
+                    <Route path="/store-detail/:id" element={<StoreDetail/>}/>
+                    <Route path="/order-checkout" element={<OrderCheckout/>}/>
                     <Route path="/order-details" element={<OrderDetails/>}/>
                     <Route path="/order/:id"/>
                     <Route path="/store-ratings/" element={<StoreRatings/>}/>

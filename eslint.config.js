@@ -19,6 +19,7 @@ export default [
         window: 'readonly',
         document: 'readonly',
         sessionStorage: 'readonly', // Definir para traer del sessionStorage?
+        localStorage: 'readonly',
         console: 'readonly',
         navigator: 'readonly',
         setInterval: 'readonly',
@@ -29,6 +30,9 @@ export default [
         HTMLElement: 'readonly',
         HTMLDivElement: 'readonly',
         HTMLSelectElement: 'readonly',
+        React: 'readonly',
+        HTMLFormElement: 'readonly',
+        FormData: 'readonly'
       },
     },
     plugins: {

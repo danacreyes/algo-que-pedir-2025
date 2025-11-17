@@ -3,7 +3,9 @@ import { UserProfile, type UserProfileJSONResponse } from '../domain/userProfile
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
-import { StoreCardJSON } from '../domain/store'
+import { Store, StoreDomJSON } from '../domain/storeDom'
+import { StoreRate, StoreRateJSON } from '../domain/storeRate'
+import { OrderJSON } from '../domain/order'
 
 class UserService {
   // USER CLIENTE
@@ -15,8 +17,6 @@ class UserService {
     }
     const response = await axios.post<UserJSONResponse>( REST_SERVER_URL + '/userLogin', userCliente)
     
-    // eslint-disable-next-line no-console
-
     // Guardar datos en sessionStorage son solo para cuando esta el navegador se borra al cerrar la pestaña supuestamente....
     // eslint-disable-next-line no-undef
     localStorage.setItem('userName', response.data.name)
@@ -80,13 +80,33 @@ class UserService {
   // }
 
   async getUnratedStores() {
-    const sessionID = Number(sessionStorage.getItem('id'))
-    const unratedStoresCardJson = await axios.get<StoreCardJSON[]>(REST_SERVER_URL + `/locales-puntuables/${sessionID}`)
-    return unratedStoresCardJson.data
+    const userSessionID = Number(sessionStorage.getItem('id'))
+    const unratedStoresCardJson = await axios.get<StoreDomJSON[]>(REST_SERVER_URL + `/locales-puntuables/${userSessionID}`)
+    return unratedStoresCardJson.data.map(it => Store.fromJSON(it))
   }
-  
+
+  async rateStore(storeRate: StoreRate, storeId: number) {
+
+    const storeRateJSON: StoreRateJSON = {
+      rate: storeRate.rate,
+      experienceDesc: storeRate.experienceDesc
+    }
+    const userSessionID = Number(localStorage.getItem('id'))
+
+    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeId}&userId=${userSessionID}`, storeRateJSON)
+  }
+
+  async confirmOrder(id: number) {
+    const userId = Number(localStorage.getItem('id'))
+    return axios.post<OrderJSON>(REST_SERVER_URL + `/confirm-order/${id}?userId=${userId}`)
+  }
+
+  async cancelOrder(id: number) {
+    const userId = Number(localStorage.getItem('id'))
+    return axios.post<OrderJSON>(REST_SERVER_URL + `/cancel-order/${id}?userId=${userId}`)
+  }
+
   isAuth() {
-    // eslint-disable-next-line no-undef
     const email = localStorage.getItem('userName')
     if (email != null || email != undefined) {
       return true

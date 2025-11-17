@@ -14,41 +14,8 @@ export type StoreJSON ={
   storePaymentQR: boolean
   storePaymentTransferencia: boolean
   searchName: string
+  usuarioCercano: boolean
 }
-
-export type StoreCardJSON = {
-  id: number,
-  name: string,
-  imageURL: string,
-  gradePointAvg: number,
-  deliveryTimeAvg: string,
-  isExpensive: boolean
-}
-//! este lo hice momentaniamente despeus cambiarlo
-export type StoreDetailJSON = {
-  id: number,
-  name: string,
-  imageURL: string,
-  gradePointAvg: number,
-  numberOfReviews: number,
-  numberOfOrders: number,
-}
-export enum FoodGroupValue {
-  EFECTIVO,
-  QR,
-  TRANSFERENCIA_BANCARIA,
-}
-export type OrderCheckoutJSON = {
-  id: number,
-  name: string,
-  imageURL: string,
-  gradePointAvg: number,
-  km?: number, // no se que es esto
-  freeDelivery?: boolean,
-  deliveryFee: number,
-  typeOfPayment: FoodGroupValue[]
-}
-
 
 
 export class StoreType {
@@ -68,14 +35,15 @@ export class StoreType {
     public storePaymentQR: boolean = true,
     public storePaymentTransferencia: boolean = true,
     public searchName: string = ''.trim(),
+    public usuarioCercano: boolean = false,
   ) {}
 
 
   static fromJson(storeJSON: StoreJSON): StoreType {
-    // Crear instancia pasando todos los parámetros
     return Object.assign(new StoreType(), storeJSON, {
       storeAppCommission: storeJSON.storeAppCommission*100,
       storeAuthorCommission: storeJSON.storeAuthorCommission*100,
+      usuarioCercano: storeJSON.usuarioCercano,
     })
   }
 
@@ -94,13 +62,14 @@ export class StoreType {
       storePaymentQR: this.storePaymentQR,
       storePaymentTransferencia: this.storePaymentTransferencia,
       searchName: this.searchName,
+      usuarioCercano: this.usuarioCercano,
     }
   }
 
   setSearchValue(inputSearchName: string){
     this.searchName = inputSearchName
     var nombreabuscar = this.searchName
-    console.info('Buscando:', nombreabuscar)
+    // console.info('Buscando:', nombreabuscar)
   }
 
   addError(field: string, message: string) {

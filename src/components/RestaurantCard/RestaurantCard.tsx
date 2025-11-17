@@ -19,9 +19,9 @@ const RestaurantCard = ({src, alt, name, detail, detail2, icon, cardOnClickFunct
                 </Box>
             </Box>
             
-            <IconButton size="small" className='icon-custom' onClick={buttonOnClickFunction}>
+            <Box className='icon-custom' onClick={buttonOnClickFunction}>
                 {icon}
-            </IconButton>
+            </Box>
         </Box>
     )
 }
