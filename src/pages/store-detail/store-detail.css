@@ -89,6 +89,10 @@ div.tab-panel {
     padding-right: 0;
 }
 
+div.tab-panel.reviews {
+    text-align: center;
+}
+
 
 /* ==================== Dish Card ==================== */
 div.dish-card {
@@ -263,4 +267,10 @@ button.add-button {
     padding: 9.6px 0;
     text-transform: none;
     font-weight: bold;
+}
+
+button.pagination-button {
+    font-size: 0.8em;
+    color: #6b6b6b;
+    text-decoration: underline;
 }

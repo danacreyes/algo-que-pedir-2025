@@ -76,10 +76,23 @@ const StoreDetail = () => {
     const [dishes, setDishes] = React.useState<MenuItemJSONReduced[]>(dishesReducedMock)
     const [reviews, setReviews] = React.useState<StoreReviewsJSON[]>([])
     const navigate = useNavigate()
+    
+    const [hasMore, setHasMore] = React.useState<Boolean>(false)
+    const [page, setPage] = React.useState<number>(1)
+    const pageSize = 3
 
-    let reviewsInMemory = false
+    // let reviewsInMemory = false
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+        if (newValue == '1') {
+            reviews.length = 0
+        }
+
+        if (newValue == '2' && reviews.length == 0) {
+            setPage(1)
+            getStoreReviews(1, true)
+        }
+
         setValue(newValue)
     }
 
@@ -143,21 +156,44 @@ const StoreDetail = () => {
     // const id = location.state
 
     const getStoreData = async () => {
-        const backStoreResponse = await storeService.getStore(Number(id))
-        setStore(backStoreResponse)
+        try {
+            const backStoreResponse = await storeService.getStore(Number(id))
+            setStore(backStoreResponse)
+        } catch (error) {
+            console.info('An error has occurred: ', error)
+        }
     }
 
     const getStoreItems = async () => {
-        const backItemsResponse = await menuItemsService.getItemsByStore(Number(id))
-        setDishes(backItemsResponse)
+        try {
+            const backItemsResponse = await menuItemsService.getItemsByStore(Number(id))
+            setDishes(backItemsResponse)
+        } catch (error) {
+            console.info('An error has occurred: ', error)
+        }
     }
 
-    const getStoreReviews = async () => {
-        if (!reviewsInMemory) {
-            const backStoreResponse: StoreReviewsJSON[] = await storeService.getReviewsByStore(Number(id))
-            setReviews(backStoreResponse)
-            reviewsInMemory = true
+    const getStoreReviews = async (newPage: number, init = false) => {
+        try {
+            const { reviewsCut, hasMore } = await storeService.getReviewsByStore(Number(id), { page: newPage, limit: pageSize})
+            setHasMore(hasMore)
+            setReviews((oldReviews) => (init ? [] : oldReviews).concat(reviewsCut))
+        } catch (error) {
+            console.info('An error has occurred: ', error)
         }
+        // if (!reviewsInMemory) {
+        //     const backStoreResponse: StoreReviewsJSON[] = await storeService.getReviewsByStore(Number(id))
+        //     setReviews(backStoreResponse)
+        //     reviewsInMemory = true
+        // }
+    }
+
+    const getMoreStoreReviews = async () => {
+        if (!hasMore) return
+
+        const newPage = page + 1
+        await getStoreReviews(newPage)
+        setPage(newPage)
     }
 
     useOnInit(() => {
@@ -196,7 +232,7 @@ const StoreDetail = () => {
                             aria-label='menu tabs'
                         >
                             <Tab label='Menú' value='1' />
-                            <Tab label='Reseñas' value='2' onClick={getStoreReviews}/>
+                            <Tab label='Reseñas' value='2' />
                         </TabList>
                     </Box>
 
@@ -209,10 +245,11 @@ const StoreDetail = () => {
                         </TabPanel>
 
                         {/* ==================== Reviews ==================== */}
-                        <TabPanel value='2'>
+                        <TabPanel value='2' className='tab-panel reviews'>
                             {reviews.map((review) => (
                                 <RateCard key={review.experienceDesc} calificacion={Number(review.rate)} comentario={review.experienceDesc}/>
                             ))}
+                            {hasMore && <button className='pagination-button' onClick={getMoreStoreReviews}>Cargar mas</button>}
                         </TabPanel>
                     </Box>
                 </TabContext>

@@ -26,7 +26,7 @@ function RateStore() {
     const formData = new FormData(form)
 
     const storeRate = Number(formData.get('simple-controlled') ?? rate)
-    const storeExperienceDesc = String(formData.get('experience-description') ?? experienceDesc)
+    const storeExperienceDesc = String(formData.get('experience-description') ? formData.get('experience-description') : '...')
 
     const newRate: StoreRate = new StoreRate(
       storeRate,
