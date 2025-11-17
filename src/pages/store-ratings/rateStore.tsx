@@ -2,7 +2,6 @@ import { Button, Rating, Typography } from '@mui/material'
 import { Navigator } from '../../routes/Navigator'
 import './rate-store.css'
 import { useState } from 'react'
-import { storeRateJSON } from '../../domain/storeRate'
 import { useParams } from 'react-router-dom'
 import { userService } from '../../services/UserService'
 import ValidationField from '../../components/ValidationField/ValidationField'
@@ -30,7 +29,6 @@ function RateStore() {
     const storeExperienceDesc = String(formData.get('experience-description') ?? experienceDesc)
 
     const newRate: StoreRate = new StoreRate(
-      Number(id),
       storeRate,
       storeExperienceDesc
     )
@@ -47,7 +45,7 @@ function RateStore() {
         return errors
       }
 
-      await userService.rateStore(storeRate)
+      await userService.rateStore(storeRate, Number(id))
       navigation.goTo('/store-ratings')
 
     } catch {

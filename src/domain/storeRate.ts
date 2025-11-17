@@ -4,22 +4,19 @@ export class StoreRate {
   MAX_CHARACTERS: number = 250
 
   errors: ValidationMessage[] = []
-  id: number
   rate: number
-  text: string
+  experienceDesc: string
 
   constructor(
-    id: number,
-    rate: number,
-    text: string
+    rate: number = 0,
+    experienceDesc: string = ''
 
   ) {
-    this.id = id
     this.rate = rate
-    this.text = text
+    this.experienceDesc = experienceDesc
   }
   
-  checkTextMaxLength (maxLength: number = this.MAX_CHARACTERS): boolean { return this.text.length > maxLength }
+  checkTextMaxLength (maxLength: number = this.MAX_CHARACTERS): boolean { return this.experienceDesc.length > maxLength }
 
   addError(field: string, message: string) {
     this.errors.push(new ValidationMessage(field, message))
@@ -31,10 +28,13 @@ export class StoreRate {
       this.addError('experience-description', 'El texto es demasiado largo')
     }
   }
+
+  static fromJSON(storeRateJSON: StoreRateJSON): StoreRate {
+    return Object.assign(new StoreRate(), storeRateJSON, {})
+  }
 }
 
-export type storeRateJSON = {
-  id: string,
+export type StoreRateJSON = {
   rate: number,
-  text: string
+  experienceDesc: string
 }

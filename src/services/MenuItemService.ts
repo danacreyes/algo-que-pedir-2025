@@ -9,7 +9,11 @@ class MenuItemsService {
     const response = await axios.get<MenuItemJSONReduced[]>(REST_SERVER_URL + '/platos', { params: { mail: storeMail }})
     const menuItemReduced = response.data
     return menuItemReduced
+  }
 
+  async getItemsByStore(id: number) {
+    const response = await axios.get<MenuItemJSONReduced[]>(`${REST_SERVER_URL}/platos-react/${id}`)
+    return response.data
   }
 
   async getMenuItem(searchId: number) {
@@ -52,7 +56,6 @@ class MenuItemsService {
       menuItemJSON,
       { params: { mail: storeMail }}
     )
-
     return updateResponse
   }
 }

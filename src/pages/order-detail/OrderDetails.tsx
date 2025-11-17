@@ -1,4 +1,4 @@
-import { Box, Typography, Tab, Container} from '@mui/material'
+import { Box, Typography, Tab, Container, Button} from '@mui/material'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
@@ -9,12 +9,13 @@ import { Order } from '../../domain/order'
 import { orderService } from '../../services/orderService'
 import { useOnInit } from '../../customHooks/useOnInit'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
-import { Navigator } from '../../routes/Navigator'
+import { useNavigate } from 'react-router-dom'
+import { userService } from '../../services/UserService'
 
 function OrderDetails () {
   const [orders, setOrders] = useState<Order[]>([])
   const [state, setState] = useState('PENDIENTE')
-  const navigation = Navigator()
+  const navigate = useNavigate()
 
   const handleStateChange = (newState: string) => {
     setState(newState)
@@ -30,6 +31,15 @@ function OrderDetails () {
     }
   }
 
+  const cancelOrder = async (id: number) => {
+    try {
+      userService.cancelOrder(id)
+      setOrders(prev => prev.filter(order => order.id != id))
+    } catch (error) {
+      console.info('Unexpected error', error)
+    }
+  }
+
   const showOrders = () => {
     return orders.map(order => 
       <Container sx={{padding: '0.5em'}} key={order.id}>
@@ -39,8 +49,9 @@ function OrderDetails () {
           name={order.local.name} 
           detail={'Total: $' + order.precioTotal().toFixed(2)}
           detail2 = {order.fechaCreacionString + ' · ' + order.platos.length + ' productos'}
-          icon='X'
-          cardOnClickFunction={() => navigation.goTo(`/order/${order.id}`)}
+          icon={order.estado == 'CANCELADO' ? '' : <Button variant="outlined" color="error">CANCELAR</Button>}
+          cardOnClickFunction={() => navigate('/order-checkout', {state: {id: order.local.id, isNew: false, orderId: order.id}})}
+          buttonOnClickFunction={() => cancelOrder(order.id)}
         />
       </Container>
       )
@@ -61,7 +72,7 @@ function OrderDetails () {
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={(_, value) => handleStateChange(value)} aria-label='Tab-list'>
                 <Tab label='Pendientes' value='PENDIENTE'/>
-                <Tab label='Completados' value='ENTREGADO'/>
+                <Tab label='Completados' value='CONFIRMADO'/>
                 <Tab label='Cancelados' value='CANCELADO'/>
               </TabList>
             </Box>

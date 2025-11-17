@@ -2,8 +2,9 @@ import { UserType, type UserJSONLoginRequest, type UserJSONRegisterRequest, type
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
-import { StoreCardJSON } from '../domain/store'
-import { StoreRate, storeRateJSON } from '../domain/storeRate'
+import { Store, StoreDomJSON } from '../domain/storeDom'
+import { StoreRate, StoreRateJSON } from '../domain/storeRate'
+import { OrderJSON } from '../domain/order'
 
 class UserService {
   // USER CLIENTE
@@ -63,21 +64,30 @@ class UserService {
   }
 
   async getUnratedStores() {
-    const sessionID = Number(sessionStorage.getItem('id'))
-    const unratedStoresCardJson = await axios.get<StoreCardJSON[]>(REST_SERVER_URL + `/locales-puntuables/${sessionID}`)
-    return unratedStoresCardJson.data
+    const userSessionID = Number(sessionStorage.getItem('id'))
+    const unratedStoresCardJson = await axios.get<StoreDomJSON[]>(REST_SERVER_URL + `/locales-puntuables/${userSessionID}`)
+    return unratedStoresCardJson.data.map(it => Store.fromJSON(it))
   }
 
-  async rateStore(storeRate: StoreRate) {
+  async rateStore(storeRate: StoreRate, storeId: number) {
 
-    const storeRateJSON: storeRateJSON = {
-      id: String(storeRate.id),
+    const storeRateJSON: StoreRateJSON = {
       rate: storeRate.rate,
-      text: storeRate.text
+      experienceDesc: storeRate.experienceDesc
     }
-    const sessionID = Number(localStorage.getItem('id'))
+    const userSessionID = Number(localStorage.getItem('id'))
 
-    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeRateJSON.id}&userId=${sessionID}`, storeRateJSON)
+    return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeId}&userId=${userSessionID}`, storeRateJSON)
+  }
+
+  async confirmOrder(id: number) {
+    const userId = Number(localStorage.getItem('id'))
+    return axios.post<OrderJSON>(REST_SERVER_URL + `/confirm-order/${id}?userId=${userId}`)
+  }
+
+  async cancelOrder(id: number) {
+    const userId = Number(localStorage.getItem('id'))
+    return axios.post<OrderJSON>(REST_SERVER_URL + `/cancel-order/${id}?userId=${userId}`)
   }
 
   isAuth() {

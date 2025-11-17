@@ -26,8 +26,8 @@ export const AppRouter = () => {
                     <Route index element={<Home/>}/>
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/search-criteria" element={<SearchCriteria/>}/>
-                    <Route path="/store-detail" element={<StoreDetail/>}/>
-                    <Route path="/order-chekout" element={<OrderCheckout/>}/>
+                    <Route path="/store-detail/:id" element={<StoreDetail/>}/>
+                    <Route path="/order-checkout" element={<OrderCheckout/>}/>
                     <Route path="/order-details" element={<OrderDetails/>}/>
                     <Route path="/order/:id"/>
                     <Route path="/store-ratings/" element={<StoreRatings/>}/>

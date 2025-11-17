@@ -2,19 +2,28 @@ import { es } from 'date-fns/locale'
 import type { MenuItemType } from '../domain/menuItem'
 import { StoreType } from './store'
 import { format } from 'date-fns'
+import { Store } from './storeDom'
 // A MENU-ITEM LE FALTA: plato.cantidad
 
 export enum Estado {
-  PENDIENTE= 'PENDIENTE',
-  PREPARADO= 'PREPARADO',
-  ENTREGADO= 'ENTREGADO',
-  CANCELADO= 'CANCELADO',
+  PENDIENTE = 'PENDIENTE',
+  PREPARADO = 'PREPARADO',
+  ENTREGADO = 'ENTREGADO',
+  CANCELADO = 'CANCELADO',
 }
 
 export enum Pago {
   EFECTIVO = 'EFECTIVO',
-  TRANSFERENCIA = 'TRANSFERENCIA',
+  TRANSFERENCIA_BANCARIA = 'TRANSFERENCIA_BANCARIA',
   QR = 'QR',
+}
+
+export type OrderForBack = {
+  userID: number,
+  localID: number,
+  platosIDs: number[],
+  medioDePago: string,
+  estado: Estado,
 }
 
 export type ReducedOrderJSON = {
@@ -42,7 +51,7 @@ export type OrderJSON = {
   estado: Estado
   horarioEntrega: string
   fechaCreacion: Date
-  local: StoreType
+  local: Store
 }
 
 export class Order {
@@ -62,12 +71,15 @@ export class Order {
     public estado: Estado = Estado.PENDIENTE,
     public horarioEntrega: string = '',
     public fechaCreacion: Date = new Date(),
-    public local: StoreType = new StoreType()
+    public local: Store = new Store()
   ) {}
 
   // transforma json del back a una Order de ts
   static fromJSON(orderJSON: OrderJSON): Order {
-    return Object.assign(new Order(), orderJSON)
+    const order = Object.assign(new Order(), orderJSON, {})
+    const local = Object.assign(new Store(), orderJSON.local, {})
+    order.local = local
+    return order
   }
 
   // Suma de Precios de Platos
@@ -77,6 +89,13 @@ export class Order {
   //   }, 0)
   // }
   
+  aCobrarPorPedido(): number {
+    if (this.metodoDePago == 'EFECTIVO') {
+      return 0
+    } else {
+      return this.precioSubtotal * 0.1
+    }
+  }
   // Recargo del 10%, solo cuando no es EFVO
   recargoPago(): number { 
     if (this.metodoDePago == 'EFECTIVO') {
@@ -107,6 +126,20 @@ export class Order {
 
   get fechaCreacionString(): string {
     return format(this.fechaCreacion, 'dd \'de\' MMM', { locale: es })
+  }
+
+  aparicionesDe(nombrePlato: string): number {
+    return this.platos.filter(it => it.nombre == nombrePlato).length
+  }
+
+  platosSinRepetir(): MenuItemType[] {
+    const map = new Map<number, MenuItemType>()
+
+    for (const plato of this.platos) {
+      map.set(plato.id, plato)
+    }
+
+    return [...map.values()]
   }
 
   toJSON(): OrderJSON {
