@@ -50,6 +50,7 @@ div.modal{
     max-width: 500px;
     width: 90%;
     gap: 0.5em;
+    align-items: center;
 }
 
 .modal-items{
@@ -70,6 +71,7 @@ div.modal{
 .btn-group{
     display: flex;
     gap: 0.5em;
+    width: 100%;
 }
 
 button.btn-add-ingredient{
@@ -79,4 +81,9 @@ button.btn-add-ingredient{
     text-transform: none;
     /* font-weight: bold; */
     width: 100%;
+}
+
+.advise-icon{
+    font-size: xx-large;
+    color: var(--primary-color);
 }

@@ -57,13 +57,13 @@ class UserService {
     return UserProfile.fromJSON(response.data)
   }
 
-  async getIngredientsByCriteria(id: number, criteria: string) {
-    const response = await axios.get<IngredientJSON[]>(
-      REST_SERVER_URL + `/criterio-ingrediente/${criteria}?id=${id}`
-    )
-    const ingredients = response.data.map(IngredientType.fromJson)
-    return ingredients
-  }
+  // async getIngredientsByCriteria(id: number, criteria: string) {
+  //   const response = await axios.get<IngredientJSON[]>(
+  //     REST_SERVER_URL + `/criterio-ingrediente/${criteria}?id=${id}`
+  //   )
+  //   const ingredients = response.data.map(IngredientType.fromJson)
+  //   return ingredients
+  // }
 
   // async getAvailableIngredients(id: Number) {
   //   const response = await axios.get<IngredientJSON[]>(

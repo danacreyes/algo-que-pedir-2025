@@ -74,12 +74,6 @@ const IngredientCriteria = () => {
             return updated
         })
 
-        // if ( criteria == 'avoid' ){
-        //     avoided.push(...updatedList)
-        // } else {
-        //     preferred.push(...updatedList)
-        // }
-
         setSelectedIds([])
         setOpen(false)
     }

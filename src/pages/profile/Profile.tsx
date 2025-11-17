@@ -22,12 +22,12 @@ const Profile = () => {
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        // profile.validate()
+        profile.validate()
 
-        // if (profile.errors.length > 0) {
-        //     setErrors(profileEditable.errors)
-        //     return errors
-        // }
+        if (profile.errors.length > 0) {
+            setErrors(profile.errors)
+            return errors
+        }
 
         try {
             const updatedProfile = await userService.updateProfile(profile)
@@ -176,7 +176,7 @@ const Profile = () => {
                     <Box className='form-field-preferences' >
                         <Box className='main-box-preferences' >
                             <Typography variant="body1" sx={{fontWeight: 600}} >Criterios de Busqueda</Typography>
-                            <IconButton size='small' href='/search-criteria' className='icon-style'> 
+                            <IconButton size='small' href='/profile/search-criteria' className='icon-style'> 
                                 <KeyboardArrowRightIcon/>
                             </IconButton>                            
                         </Box>

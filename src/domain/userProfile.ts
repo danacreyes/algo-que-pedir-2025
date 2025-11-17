@@ -1,6 +1,16 @@
 import { IngredientJSON, IngredientType } from './ingredient'
 import { ValidationMessage } from './validationMessage'
 
+export interface Criterios {
+  Vegano: boolean
+  Exquisito: boolean
+  Conservador: boolean
+  Impaciente: number // Distancia
+  Fieles: Set<number> // Id del local
+  Consumista: string[] // Lista de palabras
+  Generalista: boolean
+}
+
 export interface UserProfileJSONResponse {
   id?: number,
   name: string,
@@ -10,13 +20,14 @@ export interface UserProfileJSONResponse {
   location: string,
   latitude: number,
   longitude: number,
-  ingredientsToAvoid: IngredientJSON[], 
-  preferredIngredients: IngredientJSON[]
+  ingredientsToAvoid: IngredientJSON[],
+  preferredIngredients: IngredientJSON[],
+  criteria: Criterios[]   
 }
 
 export class UserProfile {
   errors: ValidationMessage[] = []
-  
+
   constructor(
     public id?: number,
     public name: string = ''.trim(),
@@ -27,12 +38,13 @@ export class UserProfile {
     public latitude: number = 0,
     public longitude: number = 0,
     public ingredientsToAvoid: IngredientType[] = [],
-    public preferredIngredients: IngredientType[] = []
-  ) {
-  }
+    public preferredIngredients: IngredientType[] = [],
+    public criteria: Criterios[] = []
+  ) {}
 
   static fromJSON(userJSON: UserProfileJSONResponse): UserProfile {
     const profile = Object.assign(new UserProfile(), userJSON, {})
+
     profile.ingredientsToAvoid = userJSON.ingredientsToAvoid.map(IngredientType.fromJson)
     profile.preferredIngredients = userJSON.preferredIngredients.map(IngredientType.fromJson)
 
@@ -50,7 +62,8 @@ export class UserProfile {
       latitude: this.latitude,
       longitude: this.longitude,
       ingredientsToAvoid: this.ingredientsToAvoid.map(i => i.toJSON()),
-      preferredIngredients: this.preferredIngredients.map(i => i.toJSON())
+      preferredIngredients: this.preferredIngredients.map(i => i.toJSON()),
+      criteria: this.criteria 
     }
   }
 
@@ -58,28 +71,14 @@ export class UserProfile {
     this.errors.push(new ValidationMessage(field, message))
   }
 
-  validate(){
+  validate() {
     this.errors = []
-    if(!this.name){
-      this.addError('name', 'Debe ingresar un nombre')
-    }
-    if(!this.email){
-      this.addError('email', 'Debe ingresar un email')
-    }
-    if (!this.lastName){
-      this.addError('lastName', 'Debe ingresar un apellido')
-    }
-    if (!this.address){
-      this.addError('address', 'Debe ingresar una dirección')
-    }
-    if (!this.location){
-      this.addError('location', 'Debe ingresar una ubicación')
-    }
-    if (isNaN(this.latitude)){
-      this.addError('latitude', 'La latitud debe ser un número')
-    }
-    if (isNaN(this.longitude)){
-      this.addError('longitude', 'La longitud debe ser un número')
-    }
-}
+    if (!this.name) this.addError('name', 'Debe ingresar un nombre')
+    if (!this.email) this.addError('email', 'Debe ingresar un email')
+    if (!this.lastName) this.addError('lastName', 'Debe ingresar un apellido')
+    if (!this.address) this.addError('address', 'Debe ingresar una dirección')
+    if (!this.location) this.addError('location', 'Debe ingresar una ubicación')
+    if (isNaN(this.latitude)) this.addError('latitude', 'La latitud debe ser un número')
+    if (isNaN(this.longitude)) this.addError('longitude', 'La longitud debe ser un número')
+  }
 }
