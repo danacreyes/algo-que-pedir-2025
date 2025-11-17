@@ -25,6 +25,7 @@ import { Estado, Pago } from '../../domain/order'
 import { useToast } from '../../components/Toast/useToast'
 import { Toast } from '../../components/Toast/ToastContainer'
 import { useNavigate } from 'react-router-dom'
+import { userService } from '../../services/UserService'
 
 const OrderCheckout = () => {
     // const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
@@ -58,7 +59,7 @@ const OrderCheckout = () => {
         clearCart()
     }
 
-    const handleConfirmOrder = async () => {
+    const handleReserveOrder = async () => {
         try {
             const itemsIDs = items.map( it => it.id )
             
@@ -77,7 +78,7 @@ const OrderCheckout = () => {
             }
 
             await orderService.createOrder(orderData)
-            showToast('Pedido confirmado', 'success')
+            showToast('Pedido reservado', 'success')
             
             setTimeout(() => {
                 clearCart()
@@ -89,6 +90,21 @@ const OrderCheckout = () => {
             showToast('Error al crear el pedido. Por favor intenta nuevamente.', 'error')
         }
 
+    }
+
+    const handleConfirmOrder = async () => {
+        try {
+            userService.confirmOrder(Number(order?.id))
+
+            showToast('Pedido confirmado', 'success')
+            
+            setTimeout(() => {
+                clearCart()
+                navigate('/order-details')
+            }, 1500)
+        } catch (error) {
+            console.error('Unexpected error: ', error)
+        }
     }
 
     const [store, setStore] = React.useState<Store>()
@@ -129,7 +145,7 @@ const OrderCheckout = () => {
         <Box className="order-checkout-container">
             {/* Asi anda tambien */}
             {/* <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${id}` } : { path: '/order-details/'}} />  */}
-            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${effectiveLocalId}` } : { path: '/order-details/'}} /> //! arreglar lo de ir para atras
+            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${effectiveLocalId}` } : { path: '/order-details/'}} />
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}
@@ -295,28 +311,30 @@ const OrderCheckout = () => {
             </Container>
 
             {/* ==================== Fixed Bottom Buttons ==================== */}
-            {isNew && <Box className="bottom-buttons-container">
-                <Button
-                    fullWidth
-                    variant='contained'
-                    color='error'
-                    onClick={handleConfirmOrder}
-                    disabled={items.length === 0}
-                    className="confirm-order-button"
-                >
-                    Reservar pedido
-                </Button>
-                <Button
-                    fullWidth
-                    variant='outlined'
-                    color='error'
-                    onClick={handleClearCart}
-                    disabled={items.length === 0}
-                    className="clear-cart-button"
-                >
-                    Limpiar carrito de compras
-                </Button>
-            </Box>} 
+            { isNew || order?.estado === 'PENDIENTE' ? (
+                <Box className="bottom-buttons-container">
+                    <Button
+                        fullWidth
+                        variant='contained'
+                        color='error'
+                        onClick={isNew ? handleReserveOrder : handleConfirmOrder}
+                        disabled={isNew && items.length === 0}
+                        className="confirm-order-button"
+                    >
+                        {isNew ? 'Reservar pedido' : 'Confirmar Pedido'}
+                    </Button>
+                    { isNew ? <Button
+                        fullWidth
+                        variant='outlined'
+                        color='error'
+                        onClick={handleClearCart}
+                        disabled={items.length === 0}
+                        className="clear-cart-button"
+                    >
+                        Limpiar carrito de compras
+                    </Button> : ''}
+                </Box>
+            ) : ''}
 
             {/* ==================== Toast ==================== */}
             <div id="toast-container">

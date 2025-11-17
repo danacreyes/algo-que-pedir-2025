@@ -4,6 +4,7 @@ import { REST_SERVER_URL } from './configuration'
 import { IngredientJSON, IngredientType } from '../domain/ingredient'
 import { Store, StoreDomJSON } from '../domain/storeDom'
 import { StoreRate, StoreRateJSON } from '../domain/storeRate'
+import { OrderJSON } from '../domain/order'
 
 class UserService {
   // USER CLIENTE
@@ -77,6 +78,16 @@ class UserService {
     const userSessionID = Number(localStorage.getItem('id'))
 
     return axios.post(REST_SERVER_URL + `/puntuar-local?localId=${storeId}&userId=${userSessionID}`, storeRateJSON)
+  }
+
+  async confirmOrder(id: number) {
+    const userId = Number(localStorage.getItem('id'))
+    return axios.post<OrderJSON>(REST_SERVER_URL + `/confirm-order/${id}?userId=${userId}`)
+  }
+
+  async cancelOrder(id: number) {
+    const userId = Number(localStorage.getItem('id'))
+    return axios.post<OrderJSON>(REST_SERVER_URL + `/cancel-order/${id}?userId=${userId}`)
   }
 
   isAuth() {

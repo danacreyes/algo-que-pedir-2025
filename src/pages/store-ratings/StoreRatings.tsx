@@ -1,4 +1,4 @@
-import { Container, Divider, Typography } from '@mui/material'
+import { Button, Container, Divider, Typography } from '@mui/material'
 import { useState } from 'react'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import { Navigator } from '../../routes/Navigator'
@@ -32,7 +32,7 @@ const StoreRatings = () => {
                 alt='Imagen de local' 
                 name={store.name} 
                 detail = {`${store.gradePointAvg} · ${store.deliveryTimeAvg} · ${store.isExpensive ? '$$' : '$'}`}
-                icon='CALIFICAR'
+                icon={<Button sx={{textAlign: 'center'}} variant="contained" color="success">CALIFICAR</Button>}
                 buttonOnClickFunction={() => navigation.goTo(`/rate-store/${store.id}`, { name : store.name })}
                 />
             </Container>
