@@ -21,7 +21,7 @@ const StoreRatings = () => {
         }
     }
 
-    useOnInit(() => getUnratedStores())
+    useOnInit(getUnratedStores)
 
     const showUnratedStores = () => {
         return unratedStores

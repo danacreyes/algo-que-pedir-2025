@@ -11,12 +11,12 @@ class OrderService {
   }
 
   async getFilteredOrders(estado: string) {
-    const queryByState = () => axios.get<OrderJSON[]>(REST_SERVER_URL + '/pedidos/?estado=' + estado + '&local=' + sessionStorage.getItem('email'))
+    const queryByState = () => axios.get<OrderJSON[]>(REST_SERVER_URL + '/pedidos/?estado=' + estado + '&local=' + localStorage.getItem('email'))
     return (await getAxiosData(queryByState)).map((it) => Order.fromJSON(it))
   }
 
   async getFilteredUserOrders(estado: string) {
-    const queryByState = () => axios.get<OrderJSON[]>(REST_SERVER_URL + '/pedidos-usuario/?estado=' + estado + '&usuario=' + sessionStorage.getItem('email'))
+    const queryByState = () => axios.get<OrderJSON[]>(REST_SERVER_URL + '/pedidos-usuario/?estado=' + estado + '&usuario=' + localStorage.getItem('email'))
     return (await getAxiosData(queryByState)).map((it) => Order.fromJSON(it))
   }
 
