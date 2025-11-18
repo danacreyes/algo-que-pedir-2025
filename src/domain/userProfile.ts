@@ -1,15 +1,64 @@
 import { IngredientJSON, IngredientType } from './ingredient'
 import { ValidationMessage } from './validationMessage'
 
-export interface Criterios {
-  Vegano: boolean
-  Exquisito: boolean
-  Conservador: boolean
-  Impaciente: number // Distancia
-  Fieles: Set<number> // Id del local
-  Consumista: string[] // Lista de palabras
-  Generalista: boolean
+// export interface Criterios {
+//   Vegano: boolean
+//   Exquisito: boolean
+//   Conservador: boolean
+//   Impaciente: number // Distancia
+//   Fieles: Set<number> // Id del local
+//   Consumista: string[] // Lista de palabras
+//   Generalista: boolean
+// }
+// EN userProfile.ts - Agregar estas interfaces
+export interface CriterioClienteJSON{
+  type: string
 }
+
+export interface VeganoJSON extends CriterioClienteJSON{
+  type: 'vegano'
+}
+
+export interface ExquisitoJSON extends CriterioClienteJSON {
+  type: 'exquisito'
+}
+
+export interface ConservadorJSON extends CriterioClienteJSON {
+  type: 'conservador'
+}
+
+export interface FielesJSON extends CriterioClienteJSON {
+  type: 'fieles'
+  localesFavoritos: { id: number }[] 
+}
+
+export interface ConsumistaJSON extends CriterioClienteJSON {
+  type: 'consumista'
+  frasesFavoritas: string[]
+}
+
+export interface ImpacienteJSON extends CriterioClienteJSON {
+  type: 'impaciente'
+}
+
+export interface GeneralistaJSON extends CriterioClienteJSON {
+  type: 'generalista'
+}
+
+export interface CombinadoJSON extends CriterioClienteJSON {
+  type: 'combinado'
+  criterios: ClienteCriteria[]
+}
+
+export type ClienteCriteria = 
+  | VeganoJSON 
+  | ExquisitoJSON 
+  | ConservadorJSON 
+  | FielesJSON 
+  | ConsumistaJSON 
+  | ImpacienteJSON 
+  | GeneralistaJSON 
+  | CombinadoJSON
 
 export interface UserProfileJSONResponse {
   id?: number,
@@ -22,7 +71,8 @@ export interface UserProfileJSONResponse {
   longitude: number,
   ingredientsToAvoid: IngredientJSON[],
   preferredIngredients: IngredientJSON[],
-  criteria: Criterios[]   
+  maxDistance: number,
+  criteria: ClienteCriteria[]   
 }
 
 export class UserProfile {
@@ -39,7 +89,8 @@ export class UserProfile {
     public longitude: number = 0,
     public ingredientsToAvoid: IngredientType[] = [],
     public preferredIngredients: IngredientType[] = [],
-    public criteria: Criterios[] = []
+    public maxDistance: number = 5.0,
+    public criteria: ClienteCriteria[] = []
   ) {}
 
   static fromJSON(userJSON: UserProfileJSONResponse): UserProfile {
@@ -63,6 +114,7 @@ export class UserProfile {
       longitude: this.longitude,
       ingredientsToAvoid: this.ingredientsToAvoid.map(i => i.toJSON()),
       preferredIngredients: this.preferredIngredients.map(i => i.toJSON()),
+      maxDistance: this.maxDistance,
       criteria: this.criteria 
     }
   }
