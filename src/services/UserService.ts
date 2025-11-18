@@ -64,7 +64,7 @@ class UserService {
   }
 
   async getUnratedStores() {
-    const userSessionID = Number(sessionStorage.getItem('id'))
+    const userSessionID = Number(localStorage.getItem('id'))
     const unratedStoresCardJson = await axios.get<StoreDomJSON[]>(REST_SERVER_URL + `/locales-puntuables/${userSessionID}`)
     return unratedStoresCardJson.data.map(it => Store.fromJSON(it))
   }
