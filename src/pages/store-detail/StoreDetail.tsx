@@ -81,16 +81,13 @@ const StoreDetail = () => {
     const [page, setPage] = React.useState<number>(1)
     const pageSize = 3
 
-    // let reviewsInMemory = false
+    let reviewsInMemory = false
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-        if (newValue == '1') {
-            reviews.length = 0
-        }
 
         if (newValue == '2' && reviews.length == 0) {
             setPage(1)
-            getStoreReviews(1, true)
+            getStoreReviews(1, true, reviewsInMemory)
         }
 
         setValue(newValue)
@@ -173,26 +170,25 @@ const StoreDetail = () => {
         }
     }
 
-    const getStoreReviews = async (newPage: number, init = false) => {
+    const getStoreReviews = async (newPage: number, init = false, reviewsInMemory: boolean) => {
         try {
+            if (reviewsInMemory) {
+                return
+            }
             const { reviewsCut, hasMore } = await storeService.getReviewsByStore(Number(id), { page: newPage, limit: pageSize})
             setHasMore(hasMore)
             setReviews((oldReviews) => (init ? [] : oldReviews).concat(reviewsCut))
+            reviewsInMemory = true
         } catch (error) {
             console.info('An error has occurred: ', error)
         }
-        // if (!reviewsInMemory) {
-        //     const backStoreResponse: StoreReviewsJSON[] = await storeService.getReviewsByStore(Number(id))
-        //     setReviews(backStoreResponse)
-        //     reviewsInMemory = true
-        // }
     }
 
     const getMoreStoreReviews = async () => {
         if (!hasMore) return
 
         const newPage = page + 1
-        await getStoreReviews(newPage)
+        await getStoreReviews(newPage, false, reviewsInMemory)
         setPage(newPage)
     }
 
