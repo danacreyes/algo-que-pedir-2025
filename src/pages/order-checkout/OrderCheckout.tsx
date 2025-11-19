@@ -21,7 +21,7 @@ import { useOnInit } from '../../customHooks/useOnInit'
 import { orderService } from '../../services/orderService'
 import { Order, OrderForBack } from '../../domain/order'
 import { PaymentType, Store } from '../../domain/storeDom'
-import { Estado, Pago } from '../../domain/order'
+import { Estado } from '../../domain/order'
 import { useToast } from '../../components/Toast/useToast'
 import { Toast } from '../../components/Toast/ToastContainer'
 import { useNavigate } from 'react-router-dom'
@@ -29,14 +29,14 @@ import { userService } from '../../services/UserService'
 
 const OrderCheckout = () => {
     // const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
-    const [paymentMethod, setPaymentMethod] = React.useState<Pago>(Pago.EFECTIVO)
+    const [paymentMethod, setPaymentMethod] = React.useState<PaymentType>(PaymentType.EFECTIVO)
     const { toast, showToast } = useToast()
     const navigate = useNavigate()
 
     const paymentLabels: Record<PaymentType, string> = {
-    [Pago.EFECTIVO]: 'Efectivo',
-    [Pago.TRANSFERENCIA_BANCARIA]: 'Transferencia Bancaria',
-    [Pago.QR]: 'Código QR'
+    [PaymentType.EFECTIVO]: 'Efectivo',
+    [PaymentType.TRANSFERENCIA_BANCARIA]: 'Transferencia Bancaria',
+    [PaymentType.QR]: 'Código QR'
 }
     // const removeItem = (id: number) => {
     //     setItems(items.filter(item => item.id !== id))
@@ -73,9 +73,11 @@ const OrderCheckout = () => {
                 userID: Number(localStorage.getItem('id')),
                 localID: id,
                 platosIDs: itemsIDs,
-                medioDePago: paymentMethod, 
+                medioDePago: paymentMethod as PaymentType, 
                 estado: Estado.PENDIENTE, 
             }
+
+            console.info(orderData)
 
             await orderService.createOrder(orderData)
             showToast('Pedido reservado', 'success')
@@ -292,11 +294,11 @@ const OrderCheckout = () => {
                     <Typography variant='body2' className="payment-label">
                         Forma de pago
                     </Typography>
-                    {store?.paymentTypes?.length && (
-                        <FormControl fullWidth disabled={!isNew}>
+                    {isNew ? (
+                        <FormControl fullWidth>
                             <Select
                                 value={paymentMethod}
-                                onChange={(e) => setPaymentMethod(e.target.value as Pago)}
+                                onChange={(e) => setPaymentMethod(e.target.value as PaymentType)}
                                 className="payment-select"
                                 >
                                 {store?.paymentTypes?.map((pago) => (
@@ -305,7 +307,18 @@ const OrderCheckout = () => {
                                     </MenuItem>
                                 ))}
                             </Select>
-                        </FormControl>
+                        </FormControl>) : (
+                            <FormControl fullWidth disabled>
+                                <Select value={order?.metodoDePago ?? ''}>
+                                    {store?.paymentTypes
+                                    .filter((pago) => (pago == order?.metodoDePago))
+                                    .map((pago: PaymentType) => (
+                                        <MenuItem key={pago} value={pago}>
+                                            {paymentLabels[pago]}
+                                        </MenuItem>)
+                                )}
+                                </Select>
+                            </FormControl>
                         )}
                 </Box>
             </Container>
