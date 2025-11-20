@@ -9,7 +9,6 @@ import { userService } from '../../services/UserService'
 const ProfileContext = () => {
     const [profile, setProfile] = useState<UserProfile>(new UserProfile())
     
-    // eslint-disable-next-line no-undef
     const id = Number(localStorage.getItem('id'))
 
     const getProfile = async () => {

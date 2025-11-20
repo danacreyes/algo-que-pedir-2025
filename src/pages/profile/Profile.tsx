@@ -18,9 +18,8 @@ const Profile = () => {
     const { profile, setProfile } = useUserProfile()
     const [errors, setErrors] = useState<Array<ValidationMessage>>([])
 
-    const [criterios, setCriterios] = useState(profile.criteria || [])
+    const [criterios, setCriterios] = useState(profile.criteria)
 
-    // eslint-disable-next-line no-undef
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 

@@ -20,6 +20,7 @@ export interface UserProfileJSONResponse {
   lastName: string,
   address: string,
   location: string,
+  // location: number,
   latitude: number,
   longitude: number,
   ingredientsToAvoid: IngredientJSON[],
@@ -63,12 +64,13 @@ export class UserProfile {
       lastName: this.lastName,
       address: this.address,
       location: this.location,
+      // location: Number(this.location),
       latitude: this.latitude,
       longitude: this.longitude,
       ingredientsToAvoid: this.ingredientsToAvoid.map(i => i.toJSON()),
       preferredIngredients: this.preferredIngredients.map(i => i.toJSON()),
       maxDistance: this.maxDistance,
-      criteria: this.criteria 
+      criteria: this.criteria! 
     }
   }
 
