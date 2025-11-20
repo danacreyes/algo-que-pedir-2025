@@ -32,6 +32,7 @@ const Profile = () => {
         }
 
         try {
+            console.log(UserProfile.fromJSON(profile))
             const updatedProfile = await userService.updateProfile(profile)
             setProfile(updatedProfile)
         } catch (error) {

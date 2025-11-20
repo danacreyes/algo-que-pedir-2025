@@ -4,21 +4,25 @@ import { Store } from './storeDom'
 
 export interface CriterioCliente {
   puedePedir(plato: MenuItemType, usuario: UserProfile): boolean
+  type: string
 }
 
 export const Vegano: CriterioCliente = {
+  type: 'vegano',
   puedePedir(plato: MenuItemType): boolean {
     return plato.ingredientes.every(ing => !ing.esOrigenAnimal)
   }
 }
 
 export const Exquisito: CriterioCliente = {
+  type: 'exquisito',
   puedePedir(plato: MenuItemType): boolean {
     return plato.esDeAutor
   }
 }
 
 export const Conservador: CriterioCliente = {
+  type: 'conservador',
   puedePedir(plato: MenuItemType, usuario: UserProfile): boolean {
     const preferredIds = new Set(usuario.preferredIngredients.map(ing => ing.id))
     
@@ -27,6 +31,7 @@ export const Conservador: CriterioCliente = {
 }
 
 export const Impaciente: CriterioCliente = {
+  type: 'impaciente',
   puedePedir(plato: MenuItemType, usuario: UserProfile): boolean {
     // Lógica Placeholder: Simularía si usuario.latitude/longitude es cercano al plato.local.latitud/longitud
 
@@ -38,10 +43,13 @@ export const Impaciente: CriterioCliente = {
 }
 
 export const Generalista: CriterioCliente = {
+  type: 'generalista',
   puedePedir(): boolean { return true }
 }
 
 export class Fieles implements CriterioCliente {
+  public type = 'fieles'
+
   public localesFavoritos: Set<Store>
 
   constructor(locales: Store[] = []) {
@@ -63,14 +71,16 @@ export class Fieles implements CriterioCliente {
 }
 
 export class Consumista implements CriterioCliente {
-  public frasesFavoritas: Set<string>
+  public type = 'consumista'
+
+  public frasesFavoritas: string[] = []
 
   constructor(frases: string[] = []) {
-    this.frasesFavoritas = new Set(frases.map(f => f.toLowerCase()))
+    this.frasesFavoritas = frases
   }
 
   agregarFraseFavorita(frase: string) {
-    this.frasesFavoritas.add(frase.toLowerCase())
+    this.frasesFavoritas.push(frase.toLowerCase())
   }
 
   puedePedir(plato: MenuItemType): boolean {
@@ -87,8 +97,12 @@ export class Consumista implements CriterioCliente {
 }
 
 export class Combinado implements CriterioCliente {
+  public type = 'combinado'
+  
   // criterios: MutableSet<CriterioCliente> en Kotlin -> CriterioCliente[] en TS
-  constructor(public criterios: CriterioCliente[]) {}
+  constructor(public criterios: CriterioCliente[]) {
+
+  }
 
   puedePedir(plato: MenuItemType, usuario: UserProfile): boolean {
     return this.criterios.every(criterio => criterio.puedePedir(plato, usuario))

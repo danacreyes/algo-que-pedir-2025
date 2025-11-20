@@ -1,3 +1,4 @@
+import { Combinado, CriterioCliente, Generalista } from './criterioCliente'
 import { IngredientJSON, IngredientType } from './ingredient'
 import { ValidationMessage } from './validationMessage'
 
@@ -11,54 +12,6 @@ import { ValidationMessage } from './validationMessage'
 //   Generalista: boolean
 // }
 // EN userProfile.ts - Agregar estas interfaces
-export interface CriterioClienteJSON{
-  type: string
-}
-
-export interface VeganoJSON extends CriterioClienteJSON{
-  type: 'vegano'
-}
-
-export interface ExquisitoJSON extends CriterioClienteJSON {
-  type: 'exquisito'
-}
-
-export interface ConservadorJSON extends CriterioClienteJSON {
-  type: 'conservador'
-}
-
-export interface FielesJSON extends CriterioClienteJSON {
-  type: 'fieles'
-  localesFavoritos: { id: number }[] 
-}
-
-export interface ConsumistaJSON extends CriterioClienteJSON {
-  type: 'consumista'
-  frasesFavoritas: string[]
-}
-
-export interface ImpacienteJSON extends CriterioClienteJSON {
-  type: 'impaciente'
-}
-
-export interface GeneralistaJSON extends CriterioClienteJSON {
-  type: 'generalista'
-}
-
-export interface CombinadoJSON extends CriterioClienteJSON {
-  type: 'combinado'
-  criterios: ClienteCriteria[]
-}
-
-export type ClienteCriteria = 
-  | VeganoJSON 
-  | ExquisitoJSON 
-  | ConservadorJSON 
-  | FielesJSON 
-  | ConsumistaJSON 
-  | ImpacienteJSON 
-  | GeneralistaJSON 
-  | CombinadoJSON
 
 export interface UserProfileJSONResponse {
   id?: number,
@@ -72,7 +25,7 @@ export interface UserProfileJSONResponse {
   ingredientsToAvoid: IngredientJSON[],
   preferredIngredients: IngredientJSON[],
   maxDistance: number,
-  criteria: ClienteCriteria[]   
+  criteria: CriterioCliente
 }
 
 export class UserProfile {
@@ -90,7 +43,7 @@ export class UserProfile {
     public ingredientsToAvoid: IngredientType[] = [],
     public preferredIngredients: IngredientType[] = [],
     public maxDistance: number = 5.0,
-    public criteria: ClienteCriteria[] = []
+    public criteria: CriterioCliente = new Combinado([Generalista])
   ) {}
 
   static fromJSON(userJSON: UserProfileJSONResponse): UserProfile {
@@ -121,6 +74,11 @@ export class UserProfile {
 
   addError(field: string, message: string) {
     this.errors.push(new ValidationMessage(field, message))
+  }
+
+  agregarCriterios(criterios: CriterioCliente[]){
+    this.criteria = new Combinado(criterios)
+    return this
   }
 
   validate() {

@@ -1,8 +1,8 @@
-import { Box, Container, IconButton, Button, Card, Grid, Checkbox } from '@mui/material'
+import { Box, Container, IconButton, Button, Card, Grid, Checkbox, Input } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import ClearIcon from '@mui/icons-material/Clear'
 import AddIcon from '@mui/icons-material/Add'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import RemoveCircleIcon from '@mui/icons-material/Remove'
 import AddCircleIcon from '@mui/icons-material/Add'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
@@ -11,17 +11,99 @@ import '../Profile/profile.css'
 import './search-criteria.css'
 import { useNavigate } from 'react-router-dom'
 import HeaderBack from '../../components/HeaderBack/HeaderBack'
+import { useUserProfile } from '../../customHooks/useUserProfile'
+import { useOnInit } from '../../customHooks/useOnInit'
+import { Combinado, Conservador, Consumista, CriterioCliente, Exquisito, Fieles, Impaciente, Vegano } from '../../domain/criterioCliente'
+import { userService } from '../../services/UserService'
+import CheckIcon from '@mui/icons-material/Check'
+import { red } from '@mui/material/colors'
 
 const SearchCriteria = () => {
+    const { profile, setProfile } = useUserProfile()
+
+    const isInitializedRef = useRef(false)
+
+    let initialCriterios: CriterioCliente[] = []
+
+    const [criterios, setCriterios] = useState<CriterioCliente[]>(initialCriterios)
+
+    if (!isInitializedRef.current && profile.criteria && profile.criteria.type === 'combinado') {
+        const profileCriteria = profile.criteria as Combinado
+        
+        // Asumimos que si profile.id existe, los datos ya fueron cargados desde la API.
+        // O si el array de criterios cargados es diferente al array vacío inicial.
+        if (profile.id !== undefined && profileCriteria.criterios.length > 0) {
+             setCriterios(profileCriteria.criterios)
+             isInitializedRef.current = true // Detenemos futuras inicializaciones
+             console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
+        }
+    }
+    
+    const isCriterioActive = (type: string) => criterios.some(c => c.type === type)
+    
     const label = useState
+
     const [counter, setCounter] = useState(0)
-
+    
     const navigator = useNavigate()
-
+    
     const add = () => setCounter(counter + 1)
     
     const rest = () => setCounter(counter - 1)
+
+    const [showInput, setShowInput] = useState(false)
+    const [inputFrases, setInputFrases] = useState('')
+    const [frasesFavoritas, setFrasesFavoritas ] = useState<string[]>([])
+
+    const handleOpenInput = () => {
+        setShowInput(true) 
+    }
     
+    // useOnInit(() =>{
+    //     initialCriterios = (profile.criteria as Combinado)?.criterios
+    //     setCriterios(initialCriterios)
+    //     console.log('setCruterios', initialCriterios)
+    //     
+    //     console.log('perfil', profile)
+    // })
+    // NO FUNCIONA PORQUE -> array de dependencias vacío ([]), se ejecuta una sola vez cuando el componente se monta
+    
+    const toggleCriterio = (type: string, newCriteria: CriterioCliente) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked) {
+            setCriterios([ ...criterios, newCriteria ])
+            profile.agregarCriterios(criterios)
+        } else {
+            setCriterios(criterios.filter(c => c.type !== type))
+        }
+    }
+
+    const handleSave = async () => {
+        const nuevo = profile.agregarCriterios(criterios) 
+
+        console.log('nuevo perfil', nuevo)
+    }
+
+    const handleGuardarFrases = () => {
+        const listaDeFrases = inputFrases.split(',')
+        setFrasesFavoritas(listaDeFrases)
+
+        const crit = criterios.filter(c => c.type !== 'consumista')
+        setCriterios([ ...crit, new Consumista(listaDeFrases) ])
+
+        // console.log(listaDeFrases)
+        setInputFrases('')
+        setShowInput(false)
+    }
+
+    const handleEliminarFrases = (frase: string) => {
+        const updatedList = frasesFavoritas.filter(i => i !== frase)
+    }
+
+    const handleCerrarInput = () => {
+        setInputFrases('') // Limpiar el input al cancelar
+        setShowInput(false) 
+    }
+
     return(
         <>
         
@@ -35,7 +117,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos veganos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox defaultChecked sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
                     </Grid>
                 </Grid>
             </Card>
@@ -43,11 +125,11 @@ const SearchCriteria = () => {
             <Card className='main-container-check' variant='outlined'>
                 <Grid container spacing={2} className='grid-section'>
                     <Grid size={10}>
-                        <Typography variant="body2">Esquisitos</Typography>
+                        <Typography variant="body2">Exquisitos</Typography>
                         <Typography variant="body2" color='gray'>Solo platos de autor</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('exquisito')} onChange={toggleCriterio('exquisito', Exquisito)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
                     </Grid>
                 </Grid>
             </Card>
@@ -59,7 +141,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos con ingredientes preferidos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox defaultChecked sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('conservador')} onChange={toggleCriterio('conservador', Conservador)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
                     </Grid>
                 </Grid>
             </Card>
@@ -71,7 +153,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo los restaurantes preferidos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('fieles')} onChange={toggleCriterio('fieles', new Fieles([]))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
                     </Grid>
                 </Grid>
                 <div className='restaurant-section'>
@@ -103,11 +185,56 @@ const SearchCriteria = () => {
                     </Grid>
                     <Grid size={2}>
                         {/* <Checkbox/> */}
-                        <Checkbox sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('consumista')} onChange={toggleCriterio('consumista', new Consumista(frasesFavoritas))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
                     </Grid>
+                    {frasesFavoritas.map(
+                            (frase) => 
+                                <p key={`${frase}`} style={{backgroundColor: '#e57373'}}>
+                                    {frase}
+                                    {/* <Button onClick={handleEliminarFrases}>
+                                        <ClearIcon />
+                                    </Button> */}
+                                </p>
+                        )}
                 </Grid>
+                    { showInput && (
+                        <Grid container spacing={2} className='grid-section input-frases-wrapper' >
+                            <Grid size={10} className='input-frases-field'> 
+                                <Box>
+                                    <Typography variant="body2" className="input-frases-field label">Separar las frases con una ,</Typography>
+                                    <Input 
+                                        type="text" 
+                                        value={inputFrases} 
+                                        onChange={(event) => setInputFrases(event.target.value)} 
+                                        fullWidth
+                                        placeholder="Escribe tus palabras clave aquí..."
+                                        className="input-frases-field" 
+                                    /> 
+                                </Box>
+                            </Grid>
+                            
+                            <Grid size={2} className='input-frases-controls'>
+                                {/* Botón de Guardar/Añadir */}
+                                <Button 
+                                    onClick={handleGuardarFrases} 
+                                    size="small" 
+                                    className='icon-button-control'
+                                >
+                                    <CheckIcon/>
+                                </Button>
+                                {/* Botón de Cancelar/Cerrar */}
+                                <IconButton 
+                                    onClick={handleCerrarInput}
+                                    size="small"
+                                    className='icon-button-control'
+                                >
+                                    <ClearIcon /> 
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                    )}
                 <Box className='box-button'>
-                    <Button size='small' variant="contained" className='btn-add'><AddIcon fontSize='small'/></Button>
+                    <Button size='small' variant="contained" className='btn-add' onClick={handleOpenInput}><AddIcon fontSize='small'/></Button>
                 </Box>
             </Card>
 
@@ -118,7 +245,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Dentro de una distancia máxima</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('impaciente')} onChange={toggleCriterio('impaciente', Impaciente)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
                     </Grid>
                 </Grid>
                 <Container className='container-counter'>
@@ -138,7 +265,7 @@ const SearchCriteria = () => {
                 </Container>
             </Card>               
 
-            <Button variant="contained" className='btn-primary'>Guardar</Button>
+            <Button variant="contained" className='btn-primary' onClick={handleSave}>Guardar</Button>
         </Container>
         </>
     )
