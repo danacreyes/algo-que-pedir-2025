@@ -9,10 +9,15 @@ interface SearchBarProps {
 
 export default function SearchBar({ onSearch, searchValue }: SearchBarProps): JSX.Element {
   const [localSearchValue, setLocalSearchValue] = useState(searchValue)
+  const [oldSearchValue, setOldSearchValue] = useState('')
 
   const handleSearchClick = (): void => {
-    onSearch(localSearchValue)
-    console.info('buscando', localSearchValue)
+    if (oldSearchValue.trim().toLowerCase() != localSearchValue.trim().toLocaleLowerCase()){
+      
+      onSearch(localSearchValue)
+      console.info('buscando', localSearchValue)
+      setOldSearchValue(localSearchValue)
+    }    
   }
 
   const handleKeyPress = (event: React.KeyboardEvent): void => {
