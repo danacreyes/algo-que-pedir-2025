@@ -17,6 +17,7 @@ import { Combinado, Conservador, Consumista, CriterioCliente, Exquisito, Fieles,
 import { userService } from '../../services/UserService'
 import CheckIcon from '@mui/icons-material/Check'
 import { red } from '@mui/material/colors'
+import FraseConsumista from '../../components/FraseConsumista/FraseConsumista'
 
 const SearchCriteria = () => {
     const { profile, setProfile } = useUserProfile()
@@ -26,6 +27,9 @@ const SearchCriteria = () => {
     let initialCriterios: CriterioCliente[] = []
 
     const [criterios, setCriterios] = useState<CriterioCliente[]>(initialCriterios)
+    const [showInput, setShowInput] = useState(false)
+    const [inputFrases, setInputFrases] = useState('')
+    const [frasesFavoritas, setFrasesFavoritas ] = useState<string[]>([])
 
     if (!isInitializedRef.current && profile.criteria && profile.criteria.type === 'combinado') {
         const profileCriteria = profile.criteria as Combinado
@@ -36,7 +40,15 @@ const SearchCriteria = () => {
              setCriterios(profileCriteria.criterios)
              isInitializedRef.current = true // Detenemos futuras inicializaciones
              console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
+             
+             // Si es consumista, cargo sus frases
+             if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
+                 const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
+                 setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
+             }
         }
+
+
     }
     
     const isCriterioActive = (type: string) => criterios.some(c => c.type === type)
@@ -51,9 +63,6 @@ const SearchCriteria = () => {
     
     const rest = () => setCounter(counter - 1)
 
-    const [showInput, setShowInput] = useState(false)
-    const [inputFrases, setInputFrases] = useState('')
-    const [frasesFavoritas, setFrasesFavoritas ] = useState<string[]>([])
 
     const handleOpenInput = () => {
         setShowInput(true) 
@@ -85,24 +94,28 @@ const SearchCriteria = () => {
 
     const handleGuardarFrases = () => {
         const listaDeFrases = inputFrases.split(',')
-        setFrasesFavoritas(listaDeFrases)
-
-        const crit = criterios.filter(c => c.type !== 'consumista')
-        setCriterios([ ...crit, new Consumista(listaDeFrases) ])
-
         // console.log(listaDeFrases)
+        updateFrases(listaDeFrases)
         setInputFrases('')
         setShowInput(false)
     }
 
     const handleEliminarFrases = (frase: string) => {
         const updatedList = frasesFavoritas.filter(i => i !== frase)
+        // console.log(updatedList)
+        updateFrases(updatedList)
     }
 
     const handleCerrarInput = () => {
         setInputFrases('') // Limpiar el input al cancelar
         setShowInput(false) 
     }
+
+    const updateFrases = (listaDeFrases : string[]) => {
+        const crit = criterios.filter(c => c.type !== 'consumista')
+        setCriterios([ ...crit, new Consumista(listaDeFrases) ])
+        setFrasesFavoritas(listaDeFrases)
+    } 
 
     return(
         <>
@@ -189,12 +202,7 @@ const SearchCriteria = () => {
                     </Grid>
                     {frasesFavoritas.map(
                             (frase) => 
-                                <p key={`${frase}`} style={{backgroundColor: '#e57373'}}>
-                                    {frase}
-                                    {/* <Button onClick={handleEliminarFrases}>
-                                        <ClearIcon />
-                                    </Button> */}
-                                </p>
+                                <FraseConsumista frase={frase} eliminarFrase={handleEliminarFrases}/>
                         )}
                 </Grid>
                     { showInput && (
