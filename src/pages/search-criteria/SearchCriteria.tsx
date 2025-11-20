@@ -14,10 +14,11 @@ import HeaderBack from '../../components/HeaderBack/HeaderBack'
 import { useUserProfile } from '../../customHooks/useUserProfile'
 import { useOnInit } from '../../customHooks/useOnInit'
 import { Combinado, Conservador, Consumista, CriterioCliente, Exquisito, Fieles, Impaciente, Vegano } from '../../domain/criterioCliente'
-import { userService } from '../../services/UserService'
 import CheckIcon from '@mui/icons-material/Check'
-import { red } from '@mui/material/colors'
 import FraseConsumista from '../../components/FraseConsumista/FraseConsumista'
+import { Store } from '../../domain/storeDom'
+import { storeService } from '../../services/LocalesService'
+import ModalStores from '../../components/ModalStores/ModalStores.js'
 
 const SearchCriteria = () => {
     const { profile, setProfile } = useUserProfile()
@@ -30,6 +31,11 @@ const SearchCriteria = () => {
     const [showInput, setShowInput] = useState(false)
     const [inputFrases, setInputFrases] = useState('')
     const [frasesFavoritas, setFrasesFavoritas ] = useState<string[]>([])
+
+    const [openFieles, setOpenFieles] = useState(false)
+    const [allStores, setAllStores] = useState<Store[]>([])
+    const [selectedStoreIds, setSelectedStoreIds] = useState<number[]>([])
+    const [localesFavoritos, setLocalesFavoritos] = useState<Store[]>([])
 
     if (!isInitializedRef.current && profile.criteria && profile.criteria.type === 'combinado') {
         const profileCriteria = profile.criteria as Combinado
@@ -45,7 +51,15 @@ const SearchCriteria = () => {
              if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
                  const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
                  setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
+                 
              }
+             if (profileCriteria.criterios.some(c => c.type == 'fieles')){
+                const fieles = profileCriteria.criterios.find(c => c.type == 'fieles') as Fieles
+                setLocalesFavoritos((fieles as Fieles)?.localesFavoritos)
+                setSelectedStoreIds(fieles.localesFavoritos.map(s => s.id))
+                console.log('favoritos', localesFavoritos)
+            }
+
         }
 
 
@@ -92,6 +106,8 @@ const SearchCriteria = () => {
         console.log('nuevo perfil', nuevo)
     }
 
+    // ====== FRASES ======
+
     const handleGuardarFrases = () => {
         const listaDeFrases = inputFrases.split(',')
         // console.log(listaDeFrases)
@@ -116,6 +132,69 @@ const SearchCriteria = () => {
         setCriterios([ ...crit, new Consumista(listaDeFrases) ])
         setFrasesFavoritas(listaDeFrases)
     } 
+
+    // ====== LOCALES ======
+
+    useOnInit(() => {
+        gelAllStores()
+    })
+
+    const gelAllStores = async () => {
+        try {
+            const locales = await storeService.getStoresDom()
+            console.log('locales', locales)
+            setAllStores(locales)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    const handleOpenModal = async () => {
+        setOpenFieles(true)
+    }
+
+    const availableStores = allStores.filter(
+        s => !localesFavoritos.some(c => c.id === s.id)
+    )
+
+    const handleSelectStore = (id: number) => {
+        setSelectedStoreIds(prev =>
+            prev.includes(id)
+                ? prev.filter(x => x !== id)
+                : [...prev, id]
+        )
+    }
+
+    const handleRemoveStore = (id: number) => {
+        const updated = localesFavoritos.filter(s => s.id !== id)
+        setLocalesFavoritos(updated)
+
+        const nuevosCriterios = [
+            ...criterios.filter(c => c.type !== 'fieles'),
+            new Fieles(updated)
+        ]
+        setCriterios(nuevosCriterios)
+    }
+
+
+    const handleSaveStores = () => {
+        const seleccionados = allStores.filter(s => selectedStoreIds.includes(s.id!))
+
+        const crit = criterios.filter(c => c.type !== 'fieles')
+
+        const updated = [
+            ...localesFavoritos,
+            ...seleccionados.filter(s => !localesFavoritos.some(l => l.id === s.id))
+        ]
+
+        setLocalesFavoritos(updated)
+
+        setCriterios([ ...crit, new Fieles(seleccionados) ])
+
+        setSelectedStoreIds([])
+        setOpenFieles(false)
+    }
+
 
     return(
         <>
@@ -170,24 +249,41 @@ const SearchCriteria = () => {
                     </Grid>
                 </Grid>
                 <div className='restaurant-section'>
-                    <RestaurantCard
-                        src ='https://images.unsplash.com/photo-1534650075489-3baecec1e8b1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170'
-                        alt ='Restaurant'
-                        name ='La pizzeria'
-                        detail ='4.2 • 25-35 min • $'
-                        icon ={<ClearIcon />}
-                    />
-                    <RestaurantCard
-                        src='https://images.unsplash.com/photo-1605478371310-a9f1e96b4ff4?ixlib=rb-4.1.0&ixid'
-                        alt='Restaurant'
-                        name='El Gran Sabor'
-                        detail='4.5 • 30-40 min • $$'
-                        icon={<ClearIcon />}
-                    />
+                    {localesFavoritos.length > 0 ? (
+                        localesFavoritos.map(local => (
+                            <RestaurantCard
+                                key={local.id}
+                                src={local.storeURL}
+                                alt={local.name}
+                                name={local.name}
+                                detail={`${local.gradePointAvg} · ${local.deliveryTimeAvg} · ${local.isExpensive ? '$$' : '$'}`}
+                                icon={
+                                    <ClearIcon
+                                        onClick={() => handleRemoveStore(local.id)}
+                                        className="remove-icon"
+                                    />
+                                }
+                            />
+                        ))
+                    ) : (
+                        <Typography variant='body2' className='empty-msg'>
+                            No agregaste restaurantes aún
+                        </Typography>
+                    )}
                 </div>
                 <Box className='box-button'>
-                    <Button size='small' variant="contained" className='btn-add'><AddIcon fontSize='small'/></Button>
+                    <Button size='small' variant="contained" className='btn-add' onClick={handleOpenModal}><AddIcon fontSize='small'/></Button>
                 </Box>
+                {openFieles && (
+                    <ModalStores
+                        open={openFieles}
+                        onClose={() => setOpenFieles(false)}
+                        stores={availableStores}
+                        selectedIds={selectedStoreIds}
+                        onToggle={handleSelectStore}
+                        onConfirm={handleSaveStores}
+                    />
+                )}
             </Card>
 
             <Card className='main-container-check' variant='outlined'>
@@ -197,15 +293,14 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Filtrar platos por palabras buscadas</Typography>
                     </Grid>
                     <Grid size={2}>
-                        {/* <Checkbox/> */}
                         <Checkbox checked={isCriterioActive('consumista')} onChange={toggleCriterio('consumista', new Consumista(frasesFavoritas))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
                     </Grid>
                     {frasesFavoritas.map(
-                            (frase) => 
-                                <FraseConsumista frase={frase} eliminarFrase={handleEliminarFrases}/>
+                            (frase) =>
+                                <FraseConsumista key={frase} frase={frase} eliminarFrase={handleEliminarFrases}/>
                         )}
                 </Grid>
-                    { showInput && (
+                { showInput && (
                         <Grid container spacing={2} className='grid-section input-frases-wrapper' >
                             <Grid size={10} className='input-frases-field'> 
                                 <Box>

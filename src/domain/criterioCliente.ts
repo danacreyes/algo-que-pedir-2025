@@ -50,14 +50,14 @@ export const Generalista: CriterioCliente = {
 export class Fieles implements CriterioCliente {
   public type = 'fieles'
 
-  public localesFavoritos: Set<Store>
+  public localesFavoritos: Store[]
 
   constructor(locales: Store[] = []) {
-    this.localesFavoritos = new Set(locales)
+    this.localesFavoritos = locales
   }
 
   agregarLocalFavorito(local: Store) {
-    this.localesFavoritos.add(local)
+    this.localesFavoritos.push(local)
   }
 
   puedePedir(plato: MenuItemType, usuario: UserProfile): boolean {

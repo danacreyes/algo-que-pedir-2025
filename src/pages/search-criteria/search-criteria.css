@@ -118,6 +118,12 @@ button.btn-add{
     color: gray;
 }
 
+.empty-msg{
+    color:#333;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 @media (min-width: 600px) {
     div.container-counter{
         padding-left: 0;

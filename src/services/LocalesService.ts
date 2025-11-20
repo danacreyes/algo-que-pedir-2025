@@ -29,6 +29,11 @@ class StoreService {
     const reviews = response.data.map(it => StoreRate.fromJSON(it))
     return reviews
   }
+
+  async getStoresDom() {
+    const response = await axios.get(`${REST_SERVER_URL}/stores`)
+    return response.data.map(Store.fromJSON)
+  }
 }
 
 export const storeService = new StoreService()
