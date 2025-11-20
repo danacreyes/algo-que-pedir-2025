@@ -19,9 +19,10 @@ import FraseConsumista from '../../components/FraseConsumista/FraseConsumista'
 import { Store } from '../../domain/storeDom'
 import { storeService } from '../../services/LocalesService'
 import ModalStores from '../../components/ModalStores/ModalStores.js'
+import { UserProfile } from '../../domain/userProfile'
 
 const SearchCriteria = () => {
-    const { profile, setProfile } = useUserProfile()
+    const { profile, setProfile, profileOG, checkChanges } = useUserProfile()
 
     const isInitializedRef = useRef(false)
 
@@ -36,6 +37,7 @@ const SearchCriteria = () => {
     const [allStores, setAllStores] = useState<Store[]>([])
     const [selectedStoreIds, setSelectedStoreIds] = useState<number[]>([])
     const [localesFavoritos, setLocalesFavoritos] = useState<Store[]>([])
+    const [counter, setCounter] = useState(0)
 
     if (!isInitializedRef.current && profile.criteria && profile.criteria.type === 'combinado') {
         const profileCriteria = profile.criteria as Combinado
@@ -43,17 +45,21 @@ const SearchCriteria = () => {
         // Asumimos que si profile.id existe, los datos ya fueron cargados desde la API.
         // O si el array de criterios cargados es diferente al array vacío inicial.
         if (profile.id !== undefined && profileCriteria.criterios.length > 0) {
-             setCriterios(profileCriteria.criterios)
-             isInitializedRef.current = true // Detenemos futuras inicializaciones
-             console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
-             
-             // Si es consumista, cargo sus frases
-             if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
-                 const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
-                 setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
+            setCriterios(profileCriteria.criterios)
+            isInitializedRef.current = true // Detenemos futuras inicializaciones
+            console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
+            
+            // Si es consumista, cargo sus frases
+            if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
+                const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
+                setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
                  
-             }
-             if (profileCriteria.criterios.some(c => c.type == 'fieles')){
+            }
+
+            // Seteamos su distancia maxima
+            setCounter(profile.maxDistance || 0)
+
+            if (profileCriteria.criterios.some(c => c.type == 'fieles')){
                 const fieles = profileCriteria.criterios.find(c => c.type == 'fieles') as Fieles
                 setLocalesFavoritos((fieles as Fieles)?.localesFavoritos)
                 setSelectedStoreIds(fieles.localesFavoritos.map(s => s.id))
@@ -66,10 +72,6 @@ const SearchCriteria = () => {
     }
     
     const isCriterioActive = (type: string) => criterios.some(c => c.type === type)
-    
-    const label = useState
-
-    const [counter, setCounter] = useState(0)
     
     const navigator = useNavigate()
     
@@ -102,14 +104,30 @@ const SearchCriteria = () => {
 
     const handleSave = async () => {
         const nuevo = profile.agregarCriterios(criterios) 
-
+        
+        // Si es impaciente, cargo su distancia maxima
+        if ((nuevo.criteria as Combinado).criterios?.some(c => c.type == 'impaciente')) {
+          // Esto es una locura
+          setProfile(prev =>
+            UserProfile.fromJSON({
+              ...prev.toJSON(),
+              maxDistance: counter
+            })
+          )
+        }
+            
         console.log('nuevo perfil', nuevo)
+        console.log('perfil viejo', profileOG)
     }
 
     // ====== FRASES ======
 
     const handleGuardarFrases = () => {
-        const listaDeFrases = inputFrases.split(',')
+        const frasesNuevas = inputFrases.split(',')
+        .map(f => f.trim()) // elimino espacios
+        .filter(f => f.length > 0) // elimino strings vacíos
+
+        const listaDeFrases = [...frasesFavoritas,...frasesNuevas]
         // console.log(listaDeFrases)
         updateFrases(listaDeFrases)
         setInputFrases('')
@@ -128,9 +146,10 @@ const SearchCriteria = () => {
     }
 
     const updateFrases = (listaDeFrases : string[]) => {
-        const crit = criterios.filter(c => c.type !== 'consumista')
-        setCriterios([ ...crit, new Consumista(listaDeFrases) ])
-        setFrasesFavoritas(listaDeFrases)
+      listaDeFrases = [...new Set(listaDeFrases)]
+      const crit = criterios.filter(c => c.type !== 'consumista')
+      setCriterios([ ...crit, new Consumista(listaDeFrases) ])
+      setFrasesFavoritas(listaDeFrases)
     } 
 
     // ====== LOCALES ======
@@ -200,7 +219,7 @@ const SearchCriteria = () => {
         <>
         
         <Container className='main-container-search' sx={{ pb: 9 }}>
-            <HeaderBack title="Criterios de búsqueda" backTo="/profile" />
+            <HeaderBack title="Criterios de búsqueda" backTo="/profile" onClickCustom={checkChanges} />
 
             <Card className='main-container-check' variant='outlined'>
                 <Grid container spacing={2} className='grid-section'>
@@ -209,7 +228,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos veganos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
             </Card>
@@ -221,7 +240,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos de autor</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('exquisito')} onChange={toggleCriterio('exquisito', Exquisito)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('exquisito')} onChange={toggleCriterio('exquisito', Exquisito)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
             </Card>
@@ -233,7 +252,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos con ingredientes preferidos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('conservador')} onChange={toggleCriterio('conservador', Conservador)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('conservador')} onChange={toggleCriterio('conservador', Conservador)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
             </Card>
@@ -245,7 +264,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo los restaurantes preferidos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('fieles')} onChange={toggleCriterio('fieles', new Fieles([]))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('fieles')} onChange={toggleCriterio('fieles', new Fieles([]))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
                 <div className='restaurant-section'>
@@ -293,7 +312,8 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Filtrar platos por palabras buscadas</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('consumista')} onChange={toggleCriterio('consumista', new Consumista(frasesFavoritas))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        {/* <Checkbox/> */}
+                        <Checkbox checked={isCriterioActive('consumista')} onChange={toggleCriterio('consumista', new Consumista(frasesFavoritas))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                     {frasesFavoritas.map(
                             (frase) =>
@@ -348,7 +368,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Dentro de una distancia máxima</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('impaciente')} onChange={toggleCriterio('impaciente', Impaciente)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('impaciente')} onChange={toggleCriterio('impaciente', Impaciente)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
                 <Container className='container-counter'>

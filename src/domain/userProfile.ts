@@ -93,4 +93,22 @@ export class UserProfile {
     if (isNaN(this.latitude)) this.addError('latitude', 'La latitud debe ser un número')
     if (isNaN(this.longitude)) this.addError('longitude', 'La longitud debe ser un número')
   }
+
+  // Funcion para chequear si dos perfiles son iguales (por el guardado)
+  isEqual(other: UserProfile): boolean {
+    return (
+    this.id === other.id &&
+    this.name === other.name &&
+    this.email === other.email &&
+    this.lastName === other.lastName &&
+    this.address === other.address &&
+    this.location === other.location &&
+    this.latitude === other.latitude &&
+    this.longitude === other.longitude &&
+    this.maxDistance === other.maxDistance &&
+    JSON.stringify(this.ingredientsToAvoid) === JSON.stringify(other.ingredientsToAvoid) &&
+    JSON.stringify(this.preferredIngredients) === JSON.stringify(other.preferredIngredients) &&
+    JSON.stringify(this.criteria) === JSON.stringify(other.criteria)
+  );
+}
 }

@@ -15,12 +15,12 @@ import { userService } from '../../services/UserService'
 // sessionStorage.setItem('id', '1')
 // sessionStorage.setItem('email', 'sofiamiller@gmail.com')
 // Sacar esto
-sessionStorage.setItem('id', localStorage.getItem('id'))
-sessionStorage.setItem('email', localStorage.getItem('email'))
+// sessionStorage.setItem('id', localStorage.getItem('id'))
+// sessionStorage.setItem('email', localStorage.getItem('email'))
 
 const IngredientCriteria = () => {
     const { criteria } = useParams()
-    const { profile, setProfile } = useUserProfile()
+    const { profile, setProfile, checkChanges } = useUserProfile()
 
     const title = criteria === 'avoid' ? 'Ingredientes a evitar' : 'Ingredientes preferidos'
 
@@ -109,7 +109,7 @@ const IngredientCriteria = () => {
         <Box className="box-preferences">
             <Container className="main-container-search" sx={{ pb: 9 }}>
                 
-                <HeaderBack title={title} backTo="/profile" />
+                <HeaderBack title={title} backTo="/profile" onClickCustom={checkChanges}/>
 
                 <Box className="box-section-criteria">
                     <Box className="box-ingredients ingredients-group">

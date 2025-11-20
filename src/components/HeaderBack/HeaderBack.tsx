@@ -12,10 +12,11 @@ type BackToRoute = string | {
 type HeaderProps = {
     title: string
     backTo: BackToRoute
+    onClickCustom?: () => void
 }
 
 
-const HeaderBack = ({ title, backTo }: HeaderProps) => {
+const HeaderBack = ({ title, backTo, onClickCustom = () => {} }: HeaderProps) => {
     const navigate = useNavigate()
 
     return (
@@ -23,6 +24,7 @@ const HeaderBack = ({ title, backTo }: HeaderProps) => {
             <Box className="header-content">
                 <IconButton
                     onClick={() => {
+                      onClickCustom() // funcion que quieras en el onClick (opcional)
                         if (typeof backTo === 'string') {
                         // navigate(-1) -> 
                         navigate(backTo)    

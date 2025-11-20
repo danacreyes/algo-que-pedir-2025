@@ -15,7 +15,7 @@ import '../search-criteria/search-criteria.css'
 import './profile.css'
 
 const Profile = () => {
-    const { profile, setProfile } = useUserProfile()
+    const { profile, setProfile, setProfileOG } = useUserProfile()
     const [errors, setErrors] = useState<Array<ValidationMessage>>([])
 
     const [criterios, setCriterios] = useState(profile.criteria)
@@ -34,6 +34,7 @@ const Profile = () => {
             console.log(UserProfile.fromJSON(profile))
             const updatedProfile = await userService.updateProfile(profile)
             setProfile(updatedProfile)
+            setProfileOG(updatedProfile)
         } catch (error) {
             console.error('Error al actualizar el perfil', error)
         } finally {
@@ -60,8 +61,8 @@ const Profile = () => {
     const navigate = useNavigate()
 
     // React Router navigation to Ingredient Criteria page
-    const handleNavigateToIngredients = (criteria: 'avoid' | 'prefers') => {
-        navigate(`/profile/ingredient-criteria/${criteria}`)
+    const handleNavigateTo = (link: string) => {
+        navigate(link)
     }
 
     return(
@@ -178,21 +179,21 @@ const Profile = () => {
                     <Box className='form-field-preferences' >
                         <Box className='main-box-preferences' >
                             <Typography variant="body1" sx={{fontWeight: 600}} >Criterios de Busqueda</Typography>
-                            <IconButton size='small' href='/profile/search-criteria' className='icon-style'> 
+                            <IconButton size='small' onClick={() => handleNavigateTo('/profile/search-criteria')} className='icon-style'> 
                                 <KeyboardArrowRightIcon/>
                             </IconButton>                            
                         </Box>
 
                          <Box className='main-box-preferences' >
                             <Typography variant="body1" sx={{fontWeight: 600}} >Ingredientes a evitar</Typography>
-                            <IconButton size='small' onClick={() => handleNavigateToIngredients('avoid')} className='icon-style'> 
+                            <IconButton size='small' onClick={() => handleNavigateTo('/profile/ingredient-criteria/avoid')} className='icon-style'> 
                                 <KeyboardArrowRightIcon/>
                             </IconButton>
                         </Box> 
 
                         <Box className='main-box-preferences' >
                             <Typography variant="body1" sx={{fontWeight: 600}} >Ingredientes preferidos</Typography>
-                            <IconButton size='small' onClick={() => handleNavigateToIngredients('prefers')} className='icon-style'> 
+                            <IconButton size='small' onClick={() => handleNavigateTo('/profile/ingredient-criteria/prefers')} className='icon-style'> 
                                 <KeyboardArrowRightIcon/>
                             </IconButton>
                         </Box>
