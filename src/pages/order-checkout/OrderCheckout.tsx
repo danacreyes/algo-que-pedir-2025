@@ -44,13 +44,6 @@ const OrderCheckout = () => {
 
     const { items, removeItem, clearCart, getTotalPrice, currentLocalId } = useCart()
 
-    // estas variables sueltas se recalculan en cada render
-    const subtotal = getTotalPrice()
-    const serviceFee = 2.62 //? esto no se que onda
-    const deliveryFee = 0.00
-    const storeCharges = 0.00
-    const total = subtotal + serviceFee + deliveryFee + storeCharges
-
     // const handleClearCart = () => {
     //     setItems([])
     // }
@@ -111,6 +104,12 @@ const OrderCheckout = () => {
 
     const [store, setStore] = React.useState<Store>()
     const [order, setOrder] = React.useState<Order>()
+
+    // estas variables sueltas se recalculan en cada render
+    const subtotal = getTotalPrice()
+    // const serviceFee = 2.62 //? esto no se que onda
+    let serviceFee = paymentMethod == 'EFECTIVO' ? 0 : subtotal * 0.1
+    const total = subtotal + serviceFee + (store?.deliveryFee as number)
 
     const location = useLocation()
 
@@ -254,7 +253,7 @@ const OrderCheckout = () => {
                             Recargo por tipo de pago
                         </Typography>
                         <Typography variant='body2' className="summary-value">
-                            ${isNew ? serviceFee : order?.aCobrarPorPedido().toFixed(2)}
+                            ${isNew ? serviceFee.toFixed(2) : order?.aCobrarPorPedido().toFixed(2)}
                         </Typography>
                     </Box>
                     <Box className="summary-row">
@@ -262,15 +261,7 @@ const OrderCheckout = () => {
                             Tarifa de entrega
                         </Typography>
                         <Typography variant='body2' className="summary-value">
-                            ${store?.deliveryFee}
-                        </Typography>
-                    </Box>
-                    <Box className="summary-row">
-                        <Typography variant='body2' className="summary-label">
-                            Costos de Local
-                        </Typography>
-                        <Typography variant='body2' className="summary-value">
-                            ${isNew ? storeCharges : order?.deliveryComission.toFixed(2)}
+                            ${isNew ? store?.deliveryFee.toFixed(2) : order?.local.deliveryFee.toFixed(2)}
                         </Typography>
                     </Box>
                 </Box>
