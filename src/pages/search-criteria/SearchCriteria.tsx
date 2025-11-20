@@ -20,7 +20,7 @@ import { red } from '@mui/material/colors'
 import FraseConsumista from '../../components/FraseConsumista/FraseConsumista'
 
 const SearchCriteria = () => {
-    const { profile, setProfile } = useUserProfile()
+    const { profile, setProfile, profileOG, checkChanges } = useUserProfile()
 
     const isInitializedRef = useRef(false)
 
@@ -37,15 +37,15 @@ const SearchCriteria = () => {
         // Asumimos que si profile.id existe, los datos ya fueron cargados desde la API.
         // O si el array de criterios cargados es diferente al array vacío inicial.
         if (profile.id !== undefined && profileCriteria.criterios.length > 0) {
-             setCriterios(profileCriteria.criterios)
-             isInitializedRef.current = true // Detenemos futuras inicializaciones
-             console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
-             
-             // Si es consumista, cargo sus frases
-             if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
-                 const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
-                 setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
-             }
+            setCriterios(profileCriteria.criterios)
+            isInitializedRef.current = true // Detenemos futuras inicializaciones
+            console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
+            
+            // Si es consumista, cargo sus frases
+            if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
+                const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
+                setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
+            }
         }
 
 
@@ -88,12 +88,17 @@ const SearchCriteria = () => {
 
     const handleSave = async () => {
         const nuevo = profile.agregarCriterios(criterios) 
-
+        // profileOG.agregarCriterios(criterios) 
         console.log('nuevo perfil', nuevo)
+        console.log('perfil viejo', profileOG)
     }
 
     const handleGuardarFrases = () => {
-        const listaDeFrases = inputFrases.split(',')
+        const frasesNuevas = inputFrases.split(',')
+        .map(f => f.trim()) // elimino espacios
+        .filter(f => f.length > 0) // elimino strings vacíos
+
+        const listaDeFrases = [...frasesFavoritas,...frasesNuevas]
         // console.log(listaDeFrases)
         updateFrases(listaDeFrases)
         setInputFrases('')
@@ -112,16 +117,17 @@ const SearchCriteria = () => {
     }
 
     const updateFrases = (listaDeFrases : string[]) => {
-        const crit = criterios.filter(c => c.type !== 'consumista')
-        setCriterios([ ...crit, new Consumista(listaDeFrases) ])
-        setFrasesFavoritas(listaDeFrases)
+      listaDeFrases = [...new Set(listaDeFrases)]
+      const crit = criterios.filter(c => c.type !== 'consumista')
+      setCriterios([ ...crit, new Consumista(listaDeFrases) ])
+      setFrasesFavoritas(listaDeFrases)
     } 
 
     return(
         <>
         
         <Container className='main-container-search' sx={{ pb: 9 }}>
-            <HeaderBack title="Criterios de búsqueda" backTo="/profile" />
+            <HeaderBack title="Criterios de búsqueda" backTo="/profile" onClickCustom={checkChanges} />
 
             <Card className='main-container-check' variant='outlined'>
                 <Grid container spacing={2} className='grid-section'>
@@ -202,7 +208,7 @@ const SearchCriteria = () => {
                     </Grid>
                     {frasesFavoritas.map(
                             (frase) => 
-                                <FraseConsumista frase={frase} eliminarFrase={handleEliminarFrases}/>
+                                <FraseConsumista frase={frase} eliminarFrase={handleEliminarFrases} key={`${frase}`}/>
                         )}
                 </Grid>
                     { showInput && (

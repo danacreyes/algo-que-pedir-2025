@@ -8,7 +8,7 @@ const FraseConsumista = ({ frase, eliminarFrase }: {frase: string, eliminarFrase
     }
 
   return (
-    <Stack key={`${frase}`} direction="row" spacing={1}>
+    <Stack direction="row" spacing={1}>
       {/* <Chip label={frase} onDelete={handleDelete} /> */}
       <Chip label={frase} variant="outlined" onDelete={handleDelete} />
       {/* <Chip label={frase} variant="outlined" onDelete={handleDelete} />

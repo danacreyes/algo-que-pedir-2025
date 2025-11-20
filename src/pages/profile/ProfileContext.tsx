@@ -4,10 +4,14 @@ import { useState } from 'react'
 import { UserProfile } from '../../domain/userProfile'
 import { useOnInit } from '../../customHooks/useOnInit'
 import { userService } from '../../services/UserService'
+import { Toast } from '../../components/Toast/ToastContainer'
+import { useToast } from '../../components/Toast/useToast'
 
 //  Para compartir estado entre componentes, una opcion CONTEXT
 const ProfileContext = () => {
     const [profile, setProfile] = useState<UserProfile>(new UserProfile())
+    const [profileOG, setProfileOG] = useState<UserProfile>(new UserProfile())
+    const { toast, showToast } = useToast()
     
     const id = Number(localStorage.getItem('id'))
 
@@ -15,6 +19,7 @@ const ProfileContext = () => {
         try {
             const userProfile = await userService.getProfile(id)
             setProfile(userProfile)
+            setProfileOG(UserProfile.fromJSON(userProfile.toJSON())) // ... es una copia!
 
             console.log('Perfil obtenido con exito', userProfile)
         } catch (error) {
@@ -22,9 +27,25 @@ const ProfileContext = () => {
         }
     }
 
+    const checkChanges = () => {
+      // console.log("nuevo: ", profile)
+      // console.log("viejo: ", profileOG)
+      if (!profile.isEqual(profileOG) ) {
+        // console.log("Hay cambios sin guardar!")
+        showToast("Hay cambios sin guardar!", 'error')
+      }
+    }
+
     useOnInit(() => getProfile())
         
-  return <Outlet context={ {profile, setProfile} satisfies ContextType}/>
+  return (
+  <>
+    <Outlet context={ {profile, setProfile, profileOG, setProfileOG, checkChanges} satisfies ContextType}/>
+    <div id="toast-container">
+      <Toast toast={toast} />
+    </div>
+  </>
+)
 }
 
 export default ProfileContext

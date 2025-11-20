@@ -4,7 +4,10 @@ import { UserProfile } from '../domain/userProfile'
 
 export type ContextType = { 
   profile: UserProfile,
-  setProfile: Dispatch<SetStateAction<UserProfile>>
+  setProfile: Dispatch<SetStateAction<UserProfile>>,
+  profileOG: UserProfile,
+  setProfileOG: Dispatch<SetStateAction<UserProfile>>,
+  checkChanges: () => void
 }
 
 export function useUserProfile() {
