@@ -24,7 +24,7 @@ const Home = () => {
 
   const buscarStores = async (textoBusquedaNuevo: string) => {
     setSearchValue(textoBusquedaNuevo)
-    const userId = localStorage.getItem('id') || ''
+    const userId = localStorage.getItem('id')!! 
     const nuevosStores = await storeService.getStores(textoBusquedaNuevo, userId)
     setAllStores(nuevosStores)
   }
