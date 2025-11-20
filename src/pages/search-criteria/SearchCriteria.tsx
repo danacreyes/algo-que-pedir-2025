@@ -18,6 +18,7 @@ import { userService } from '../../services/UserService'
 import CheckIcon from '@mui/icons-material/Check'
 import { red } from '@mui/material/colors'
 import FraseConsumista from '../../components/FraseConsumista/FraseConsumista'
+import { UserProfile } from '../../domain/userProfile'
 
 const SearchCriteria = () => {
     const { profile, setProfile, profileOG, checkChanges } = useUserProfile()
@@ -30,6 +31,7 @@ const SearchCriteria = () => {
     const [showInput, setShowInput] = useState(false)
     const [inputFrases, setInputFrases] = useState('')
     const [frasesFavoritas, setFrasesFavoritas ] = useState<string[]>([])
+    const [counter, setCounter] = useState(0)
 
     if (!isInitializedRef.current && profile.criteria && profile.criteria.type === 'combinado') {
         const profileCriteria = profile.criteria as Combinado
@@ -46,16 +48,15 @@ const SearchCriteria = () => {
                 const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
                 setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
             }
+
+            // Seteamos su distancia maxima
+            setCounter(profile.maxDistance || 0)
         }
 
 
     }
     
     const isCriterioActive = (type: string) => criterios.some(c => c.type === type)
-    
-    const label = useState
-
-    const [counter, setCounter] = useState(0)
     
     const navigator = useNavigate()
     
@@ -88,7 +89,18 @@ const SearchCriteria = () => {
 
     const handleSave = async () => {
         const nuevo = profile.agregarCriterios(criterios) 
-        // profileOG.agregarCriterios(criterios) 
+        
+        // Si es impaciente, cargo su distancia maxima
+        if ((nuevo.criteria as Combinado).criterios?.some(c => c.type == 'impaciente')) {
+          // Esto es una locura
+          setProfile(prev =>
+            UserProfile.fromJSON({
+              ...prev.toJSON(),
+              maxDistance: counter
+            })
+          )
+        }
+            
         console.log('nuevo perfil', nuevo)
         console.log('perfil viejo', profileOG)
     }
@@ -136,7 +148,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos veganos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
             </Card>
@@ -148,7 +160,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos de autor</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('exquisito')} onChange={toggleCriterio('exquisito', Exquisito)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('exquisito')} onChange={toggleCriterio('exquisito', Exquisito)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
             </Card>
@@ -160,7 +172,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos con ingredientes preferidos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('conservador')} onChange={toggleCriterio('conservador', Conservador)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('conservador')} onChange={toggleCriterio('conservador', Conservador)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
             </Card>
@@ -172,7 +184,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo los restaurantes preferidos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('fieles')} onChange={toggleCriterio('fieles', new Fieles([]))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('fieles')} onChange={toggleCriterio('fieles', new Fieles([]))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
                 <div className='restaurant-section'>
@@ -204,7 +216,7 @@ const SearchCriteria = () => {
                     </Grid>
                     <Grid size={2}>
                         {/* <Checkbox/> */}
-                        <Checkbox checked={isCriterioActive('consumista')} onChange={toggleCriterio('consumista', new Consumista(frasesFavoritas))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('consumista')} onChange={toggleCriterio('consumista', new Consumista(frasesFavoritas))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                     {frasesFavoritas.map(
                             (frase) => 
@@ -259,7 +271,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Dentro de una distancia máxima</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('impaciente')} onChange={toggleCriterio('impaciente', Impaciente)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} {...label} />
+                        <Checkbox checked={isCriterioActive('impaciente')} onChange={toggleCriterio('impaciente', Impaciente)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
                     </Grid>
                 </Grid>
                 <Container className='container-counter'>
