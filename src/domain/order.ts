@@ -2,7 +2,7 @@ import { es } from 'date-fns/locale'
 import type { MenuItemType } from '../domain/menuItem'
 import { StoreType } from './store'
 import { format } from 'date-fns'
-import { Store } from './storeDom'
+import { PaymentType, Store } from './storeDom'
 // A MENU-ITEM LE FALTA: plato.cantidad
 
 export enum Estado {
@@ -10,12 +10,6 @@ export enum Estado {
   PREPARADO = 'PREPARADO',
   ENTREGADO = 'ENTREGADO',
   CANCELADO = 'CANCELADO',
-}
-
-export enum Pago {
-  EFECTIVO = 'EFECTIVO',
-  TRANSFERENCIA_BANCARIA = 'TRANSFERENCIA_BANCARIA',
-  QR = 'QR',
 }
 
 export type OrderForBack = {
@@ -47,7 +41,7 @@ export type OrderJSON = {
   platos: MenuItemType[] // Lista de Platos
   precioSubtotal: number
   deliveryComission: number
-  metodoDePago: Pago
+  metodoDePago: String
   estado: Estado
   horarioEntrega: string
   fechaCreacion: Date
@@ -67,7 +61,7 @@ export class Order {
     public platos: MenuItemType[] = [], // Lista de Platos
     public precioSubtotal: number = 0.0,
     public deliveryComission: number = 0.0,
-    public metodoDePago: Pago = Pago.EFECTIVO,
+    public metodoDePago: PaymentType = PaymentType.EFECTIVO,
     public estado: Estado = Estado.PENDIENTE,
     public horarioEntrega: string = '',
     public fechaCreacion: Date = new Date(),
