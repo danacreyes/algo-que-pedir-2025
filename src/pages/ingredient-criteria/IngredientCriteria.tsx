@@ -105,8 +105,7 @@ const IngredientCriteria = () => {
     }
 
     return (
-        <Box className="box-preferences">
-            <Container className="main-container-search" sx={{ pb: 9 }}>
+            <Container className="main-container-search" sx={{ pb: 9}}>
                 
                 <HeaderBack title={title} backTo="/profile" onClickCustom={checkChanges}/>
 
@@ -133,22 +132,24 @@ const IngredientCriteria = () => {
                         <Card className="card-modal">
                             <Typography variant="h6">Seleccione</Typography>
 
-                            {availableIngredients.length > 0 ? (
-                                availableIngredients.map(ing => (
-                                    <Box key={ing.id} className="modal-items">
-                                        <label className="label-item">
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedIds.includes(ing.id!)}
-                                                onChange={() => handleSelect(ing.id!)}
-                                            />
-                                            {ing.name}
-                                        </label>
-                                    </Box>
-                                ))
-                            ) : (
-                                <Typography variant="subtitle1">No hay ingredientes disponibles</Typography>
-                            )}
+                            <div className='div-scroll-ingredients'>
+                                {availableIngredients.length > 0 ? (
+                                    availableIngredients.map(ing => (
+                                        <Box key={ing.id} className="modal-items">
+                                            <label className="label-item">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedIds.includes(ing.id!)}
+                                                    onChange={() => handleSelect(ing.id!)}
+                                                />
+                                                {ing.name}
+                                            </label>
+                                        </Box>
+                                    ))
+                                ) : (
+                                    <Typography variant="subtitle1">No hay ingredientes disponibles</Typography>
+                                )}
+                            </div>
 
                             <div className="btn-group">
                                 <Button variant="contained" className="btn-secondary" onClick={() => setOpen(false)}>
@@ -162,9 +163,7 @@ const IngredientCriteria = () => {
                     </Box>
                 </Modal>
 
-            </Container>
-
-            <Box className="see-order-container">
+            <Box className="see-order-container" sx={{ mt: 'auto' }}>
                 <Button
                     variant="contained"
                     className="btn-primary btn-add-ingredient"
@@ -173,7 +172,8 @@ const IngredientCriteria = () => {
                     Añadir ingrediente
                 </Button>
             </Box>
-        </Box>
+            
+        </Container>
     )
 }
 

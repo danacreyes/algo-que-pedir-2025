@@ -7,7 +7,8 @@ export type ContextType = {
   setProfile: Dispatch<SetStateAction<UserProfile>>,
   profileOG: UserProfile,
   setProfileOG: Dispatch<SetStateAction<UserProfile>>,
-  checkChanges: () => void
+  checkChanges: () => void,
+  showToast: (message: string, type: 'success' | 'error' | 'info' | 'warning', duration?: number) => void
 }
 
 export function useUserProfile() {

@@ -32,7 +32,7 @@ const ProfileContext = () => {
       // console.log("viejo: ", profileOG)
       if (!profile.isEqual(profileOG) ) {
         // console.log("Hay cambios sin guardar!")
-        showToast("Hay cambios sin guardar!", 'error', 5000)
+        showToast('Hay cambios sin guardar!', 'error', 5000)
       }
     }
 
@@ -40,7 +40,7 @@ const ProfileContext = () => {
         
   return (
   <>
-    <Outlet context={ {profile, setProfile, profileOG, setProfileOG, checkChanges} satisfies ContextType}/>
+    <Outlet context={ {profile, setProfile, profileOG, setProfileOG, checkChanges, showToast} satisfies ContextType}/>
     <div id="toast-container">
       <Toast toast={toast} />
     </div>

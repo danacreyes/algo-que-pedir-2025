@@ -147,7 +147,6 @@ button.btn-primary{
   width: 100%;
   border-radius: 6px;
   text-transform: none;
-  font-weight: 300;
   box-shadow: none;
 }
 
@@ -157,8 +156,8 @@ button.btn-secondary{
   background-color: #fff;
   border-color: #E82933;
   border: 1px solid;
-  padding: .5em;
-  border-radius: .5rem;
+  padding: 0.6em;
+  border-radius: 6px;
   text-transform: none;
   box-shadow: none;
 }

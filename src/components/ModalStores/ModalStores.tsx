@@ -1,6 +1,9 @@
 import { Modal, Box, Card, Typography, Button } from '@mui/material'
 import RestaurantCard from '../RestaurantCard/RestaurantCard'
+
+import '../../pages/search-criteria/search-criteria.css'
 import './modal-stores.css'
+
 import { Store } from '../../domain/storeDom'
 
 const ModalStores = ({open, onClose, stores, selectedIds, onToggle, onConfirm}: {open: boolean, onClose: () => void, stores: Store[], selectedIds: number[], onToggle: (id: number) => void, onConfirm: () => void}) => {
@@ -37,6 +40,10 @@ const ModalStores = ({open, onClose, stores, selectedIds, onToggle, onConfirm}: 
                                                 className="checkbox-selector"
                                             />
                                         }
+                                        classNameCard='restaurant-card'
+                                        classNameImage='restaurant-image-left-profile'
+                                        classNameContent='restaurant-card-content'
+                                        classNameIcon='restaurant-icon'
                                     />
                                 </div>
                             ))
