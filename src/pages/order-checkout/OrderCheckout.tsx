@@ -141,7 +141,8 @@ const OrderCheckout = () => {
 
     const getOrderandStoreData = async () => {
         const backOrderResponse = await orderService.getOrderByID(orderId)
-        setOrder(backOrderResponse)   
+        setOrder(backOrderResponse)
+        console.info(backOrderResponse)   
         const backStoreResponse = await storeService.getStore(id)
         setStore(backStoreResponse)
     }
@@ -274,7 +275,7 @@ const OrderCheckout = () => {
                             Tarifa de entrega
                         </Typography>
                         <Typography variant='body2' className="summary-value">
-                            ${isNew ? store?.deliveryFee.toFixed(2) : order?.local.deliveryFee.toFixed(2)}
+                            ${store?.deliveryFee.toFixed(2)}
                         </Typography>
                     </Box>
                 </Box>

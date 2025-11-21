@@ -39,13 +39,16 @@ export type OrderJSON = {
   lat: string
   long: string
   platos: MenuItemType[] // Lista de Platos
-  precioSubtotal: number
   deliveryComission: number
   metodoDePago: String
   estado: Estado
   horarioEntrega: string
   fechaCreacion: Date
   local: Store
+  
+  precioSubtotal: number
+  serviceFee: number
+  deliveryFee: number
 }
 
 export class Order {
@@ -59,13 +62,16 @@ export class Order {
     public lat: string = '',
     public long: string = '',
     public platos: MenuItemType[] = [], // Lista de Platos
-    public precioSubtotal: number = 0.0,
     public deliveryComission: number = 0.0,
     public metodoDePago: PaymentType = PaymentType.EFECTIVO,
     public estado: Estado = Estado.PENDIENTE,
     public horarioEntrega: string = '',
     public fechaCreacion: Date = new Date(),
-    public local: Store = new Store()
+    public local: Store = new Store(),
+    
+    public precioSubtotal: number = 0.0,
+    public serviceFee: number = 0.0,
+    public deliveryFee: number = 0.0,
   ) {}
 
   // transforma json del back a una Order de ts
@@ -110,7 +116,7 @@ export class Order {
   }
 
   precioTotal(): number { 
-    return this.precioSubtotal * this.recargoPago()  + this.deliveryComission  
+    return this.precioSubtotal + this.deliveryFee + this.serviceFee 
   }
 
   get horarioEntregaString(): string {
@@ -153,7 +159,9 @@ export class Order {
       estado: this.estado,
       horarioEntrega: this.horarioEntrega,
       fechaCreacion: this.fechaCreacion,
-      local: this.local
+      local: this.local,
+      serviceFee: this.serviceFee,
+      deliveryFee: this.deliveryFee
     }
   }
 }
