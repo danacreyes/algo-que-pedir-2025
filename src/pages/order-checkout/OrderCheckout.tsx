@@ -29,7 +29,7 @@ import { userService } from '../../services/UserService'
 
 const OrderCheckout = () => {
     // const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
-    const [paymentMethod, setPaymentMethod] = React.useState<PaymentType>(PaymentType.EFECTIVO)
+    const [paymentMethod, setPaymentMethod] = React.useState<PaymentType>()
     const { toast, showToast } = useToast()
     const navigate = useNavigate()
 
@@ -54,7 +54,13 @@ const OrderCheckout = () => {
 
     const handleReserveOrder = async () => {
         try {
-            const itemsIDs = items.map( it => it.id )
+            // const itemsIDs = items.map( it => it.id )
+            const itemsIDs = items.flatMap(plato =>
+              Array(plato.quantity).fill(plato.id)
+            );
+
+            // console.log(itemsIDs)
+            // console.log(items)
             
             const orderData: OrderForBack = {
                 // lo mejor es pasar las ids de 
@@ -124,6 +130,8 @@ const OrderCheckout = () => {
     const getStoreData = async () => {
         const backStoreResponse = await storeService.getStore(effectiveLocalId)
         setStore(backStoreResponse)
+        // console.log(backStoreResponse.paymentTypes)
+        setPaymentMethod(backStoreResponse?.paymentTypes[0] as PaymentType)
     }
 
     const getOrderandStoreData = async () => {
@@ -285,7 +293,7 @@ const OrderCheckout = () => {
                     <Typography variant='body2' className="payment-label">
                         Forma de pago
                     </Typography>
-                    {isNew ? (
+                    {isNew ? (store?.paymentTypes.length ? (
                         <FormControl fullWidth>
                             <Select
                                 value={paymentMethod}
@@ -298,11 +306,12 @@ const OrderCheckout = () => {
                                     </MenuItem>
                                 ))}
                             </Select>
-                        </FormControl>) : (
+                        </FormControl>) : (null)) : (
                             <FormControl fullWidth disabled>
                                 <Select value={order?.metodoDePago ?? ''}>
+                                  <MenuItem value={order?.metodoDePago}>{paymentLabels[order?.metodoDePago!]}</MenuItem>
                                     {store?.paymentTypes
-                                    .filter((pago) => (pago == order?.metodoDePago))
+                                    // .filter((pago) => (pago == order?.metodoDePago))
                                     .map((pago: PaymentType) => (
                                         <MenuItem key={pago} value={pago}>
                                             {paymentLabels[pago]}
