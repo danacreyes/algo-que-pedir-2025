@@ -42,7 +42,7 @@ const OrderCheckout = () => {
     //     setItems(items.filter(item => item.id !== id))
     // }
 
-    const { items, removeItem, clearCart, getTotalPrice, currentLocalId } = useCart()
+    const { items, removeItem, clearCart, getTotalPrice, currentLocalId, setCurrentPayment, currentPaymentMethod } = useCart()
 
     // const handleClearCart = () => {
     //     setItems([])
@@ -56,8 +56,8 @@ const OrderCheckout = () => {
         try {
             // const itemsIDs = items.map( it => it.id )
             const itemsIDs = items.flatMap(plato =>
-              Array(plato.quantity).fill(plato.id)
-            );
+                Array(plato.quantity).fill(plato.id)
+            )
 
             // console.log(itemsIDs)
             // console.log(items)
@@ -110,6 +110,11 @@ const OrderCheckout = () => {
 
     const [store, setStore] = React.useState<Store>()
     const [order, setOrder] = React.useState<Order>()
+
+    const setPayment = (payment: PaymentType) => {
+        setPaymentMethod(payment)
+        setCurrentPayment(payment)
+    }
 
     // estas variables sueltas se recalculan en cada render
     const subtotal = getTotalPrice()
@@ -296,8 +301,8 @@ const OrderCheckout = () => {
                     {isNew ? (store?.paymentTypes.length ? (
                         <FormControl fullWidth>
                             <Select
-                                value={paymentMethod}
-                                onChange={(e) => setPaymentMethod(e.target.value as PaymentType)}
+                                value={currentPaymentMethod == null ? paymentMethod : currentPaymentMethod}
+                                onChange={(e) => setPayment(e.target.value as PaymentType)}
                                 className="payment-select"
                                 >
                                 {store?.paymentTypes?.map((pago) => (
@@ -309,7 +314,7 @@ const OrderCheckout = () => {
                         </FormControl>) : (null)) : (
                             <FormControl fullWidth disabled>
                                 <Select value={order?.metodoDePago ?? ''}>
-                                  <MenuItem value={order?.metodoDePago}>{paymentLabels[order?.metodoDePago!]}</MenuItem>
+                                    <MenuItem value={order?.metodoDePago}>{paymentLabels[order?.metodoDePago!]}</MenuItem>
                                     {store?.paymentTypes
                                     // .filter((pago) => (pago == order?.metodoDePago))
                                     .map((pago: PaymentType) => (
