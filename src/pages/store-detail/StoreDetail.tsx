@@ -238,7 +238,7 @@ const StoreDetail = () => {
                             {dishes.length != 0 ? (
                                 dishes.map((dish) => 
                                     (<DishCard dish={dish} key={dish.id} onOpen={() => handleOpen(dish.id)}/>))
-                            ) : (
+                            ) : ( 
                             <Typography>No hay platos para pedir</Typography>
                             )}
                         </TabPanel>
