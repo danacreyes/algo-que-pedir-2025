@@ -2,7 +2,7 @@ import { Box, Container, IconButton, Button, Card, Grid, Checkbox, Input } from 
 import Typography from '@mui/material/Typography'
 import ClearIcon from '@mui/icons-material/Clear'
 import AddIcon from '@mui/icons-material/Add'
-import { useRef, useState } from 'react'
+import { ReactNode, useRef, useState } from 'react'
 import RemoveCircleIcon from '@mui/icons-material/Remove'
 import AddCircleIcon from '@mui/icons-material/Add'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
@@ -39,114 +39,105 @@ const SearchCriteria = () => {
     const [localesFavoritos, setLocalesFavoritos] = useState<Store[]>([])
     const [counter, setCounter] = useState(0)
 
+    /* ===== INICIALIZAR LOCALES ===== */
+    const initLocalesFavoritos = (locales: Store[]) => {
+      // inicializo los localesFavoritos en cada first render
+      const fieles = (profile.criteria as Combinado).criterios.find(c => c.type == 'fieles') as Fieles
+      const favs = locales.filter(
+        store => fieles?.localesFavoritos.some(fav => fav.id == store.id)
+      )
+      setLocalesFavoritos(favs)
+    }
+
+    /* ===== INICIALIZAR PERFIL Y CRITERIOS ===== */
     if (!isInitializedRef.current && profile.criteria && profile.criteria.type === 'combinado') {
-        const profileCriteria = profile.criteria as Combinado
+      const profileCriteria = profile.criteria as Combinado
+      
+      // Asumimos que si profile.id existe, los datos ya fueron cargados desde la API.
+      // O si el array de criterios cargados es diferente al array vacío inicial.
+      if (profile.id !== undefined && profileCriteria.criterios.length > 0) {
+        setCriterios(profileCriteria.criterios)
+        isInitializedRef.current = true // Detenemos futuras inicializaciones
+        // console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
         
-        // Asumimos que si profile.id existe, los datos ya fueron cargados desde la API.
-        // O si el array de criterios cargados es diferente al array vacío inicial.
-        if (profile.id !== undefined && profileCriteria.criterios.length > 0) {
-            setCriterios(profileCriteria.criterios)
-            isInitializedRef.current = true // Detenemos futuras inicializaciones
-            console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
-            
-            // Si es consumista, cargo sus frases
-            if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
-                const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
-                setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
-            }
-
-            // Seteamos su distancia maxima
-            setCounter(profile.maxDistance || 0)
-
-            if (profileCriteria.criterios.some(c => c.type == 'fieles')){
-                const fieles = profileCriteria.criterios.find(c => c.type == 'fieles') as Fieles
-                // setLocalesFavoritos((fieles as Fieles)?.localesFavoritos)
-                const favs = allStores.filter(
-                    store => fieles.localesFavoritos.some(fav => fav.id == store.id)
-                )
-                // console.log('favs en REF: ', favs)
-                setLocalesFavoritos(favs)
-                setSelectedStoreIds(fieles.localesFavoritos.map(s => s.id))
-                console.log('favoritos', (fieles as Fieles)?.localesFavoritos)
-            }
-
+        // Si es consumista, cargo sus frases
+        if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
+          const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
+          setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
         }
 
+        // Seteamos su distancia maxima
+        setCounter(profile.maxDistance || 0)
 
+        if (profileCriteria.criterios.some(c => c.type == 'fieles')){
+          // console.log('allStores en REF: ', allStores)
+          initLocalesFavoritos(allStores)
+          setSelectedStoreIds(localesFavoritos.map(s => s.id))
+          // console.log('favoritos', (fieles as Fieles)?.localesFavoritos)
+        }
+      }
     }
     
     const isCriterioActive = (type: string) => criterios.some(c => c.type === type)
     
-    const navigator = useNavigate()
-    
     const add = () => setCounter(counter + 1)
-    
     const rest = () => setCounter(counter - 1)
 
+    /* ===== SELECCIONO/AGREGO CRITERIO ===== */
+    const toggleCriterio = (type: string, newCriteria: CriterioCliente) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        setCriterios([ ...criterios, newCriteria ])
+        profile.agregarCriterios(criterios)
+      } else {
+        setCriterios(criterios.filter(c => c.type !== type))
+      }
+    }
+
+    /* ===== GUARDADO DE CRITERIOS EN CONTEXT ===== */
+    const handleSave = async () => {
+      const nuevo = profile.agregarCriterios(criterios) 
+      
+      // Si es impaciente, cargo su distancia maxima
+      if ((nuevo.criteria as Combinado).criterios?.some(c => c.type == 'impaciente')) {
+        // Esto es una locura
+        setProfile(prev =>
+          UserProfile.fromJSON({
+            ...prev.toJSON(),
+            maxDistance: counter
+          })
+        )
+      }
+          
+      console.log('nuevo perfil', nuevo)
+      console.log('perfil viejo', profileOG)
+    }
+
+    /* ===== FRASES: CONSUMISTA ===== */
+    const handleGuardarFrases = () => {
+      const frasesNuevas = inputFrases.toLowerCase().split(',')
+      .map(f => f.trim()) // elimino espacios
+      .filter(f => f.length > 0) // elimino strings vacíos
+
+      const listaDeFrases = [...frasesFavoritas,...frasesNuevas]
+      // console.log(listaDeFrases)
+      updateFrases(listaDeFrases)
+      setInputFrases('')
+      setShowInput(false)
+    }
+
+    const handleEliminarFrases = (frase: string) => {
+      const updatedList = frasesFavoritas.filter(i => i !== frase)
+      // console.log(updatedList)
+      updateFrases(updatedList)
+    }
 
     const handleOpenInput = () => {
         setShowInput(true) 
     }
-    
-    // useOnInit(() =>{
-    //     initialCriterios = (profile.criteria as Combinado)?.criterios
-    //     setCriterios(initialCriterios)
-    //     console.log('setCruterios', initialCriterios)
-    //     
-    //     console.log('perfil', profile)
-    // })
-    // NO FUNCIONA PORQUE -> array de dependencias vacío ([]), se ejecuta una sola vez cuando el componente se monta
-    
-    const toggleCriterio = (type: string, newCriteria: CriterioCliente) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            setCriterios([ ...criterios, newCriteria ])
-            profile.agregarCriterios(criterios)
-        } else {
-            setCriterios(criterios.filter(c => c.type !== type))
-        }
-    }
-
-    const handleSave = async () => {
-        const nuevo = profile.agregarCriterios(criterios) 
-        
-        // Si es impaciente, cargo su distancia maxima
-        if ((nuevo.criteria as Combinado).criterios?.some(c => c.type == 'impaciente')) {
-          // Esto es una locura
-          setProfile(prev =>
-            UserProfile.fromJSON({
-              ...prev.toJSON(),
-              maxDistance: counter
-            })
-          )
-        }
-            
-        console.log('nuevo perfil', nuevo)
-        console.log('perfil viejo', profileOG)
-    }
-
-    // ====== FRASES ======
-
-    const handleGuardarFrases = () => {
-        const frasesNuevas = inputFrases.split(',')
-        .map(f => f.trim()) // elimino espacios
-        .filter(f => f.length > 0) // elimino strings vacíos
-
-        const listaDeFrases = [...frasesFavoritas,...frasesNuevas]
-        // console.log(listaDeFrases)
-        updateFrases(listaDeFrases)
-        setInputFrases('')
-        setShowInput(false)
-    }
-
-    const handleEliminarFrases = (frase: string) => {
-        const updatedList = frasesFavoritas.filter(i => i !== frase)
-        // console.log(updatedList)
-        updateFrases(updatedList)
-    }
 
     const handleCerrarInput = () => {
-        setInputFrases('') // Limpiar el input al cancelar
-        setShowInput(false) 
+      setInputFrases('') // Limpiar el input al cancelar
+      setShowInput(false) 
     }
 
     const updateFrases = (listaDeFrases : string[]) => {
@@ -156,61 +147,62 @@ const SearchCriteria = () => {
       setFrasesFavoritas(listaDeFrases)
     } 
 
-    // ====== LOCALES ======
-
+    /* ===== LOCALES: FIELES ===== */
+    /* ===== PEDIDO AL BACK DE TODOS LOS LOCALES ===== */
     const getAllStores = async () => {
-        try {
-            const locales = await storeService.getStoresDom()
-            console.log('locales', locales)
-            setAllStores(locales)
-        } catch (e) {
-            console.error(e)
-        }
+      try {
+        const locales = await storeService.getStoresDom()
+        // console.log('locales', locales)
+        setAllStores(locales)
+        initLocalesFavoritos(locales)
+      } catch (e) {
+          console.error(e)
+      }
     }
 
-    useOnInit(
-        getAllStores
-    )
+    useOnInit(() => {
+      // console.log("en OnInit")
+      getAllStores()
+    })
 
-
+    /* ===== AGREGADO Y ELIMINADO DE LOCALES FAVORITOS ===== */
     const handleOpenModal = async () => {
-        setOpenFieles(true)
+      setOpenFieles(true)
     }
 
     const availableStores = allStores.filter(
-        s => !localesFavoritos.some(c => c.id === s.id)
+      s => !localesFavoritos.some(c => c.id === s.id)
     )
 
     const handleSelectStore = (id: number) => {
-        setSelectedStoreIds(prev =>
-            prev.includes(id)
-                ? prev.filter(x => x !== id)
-                : [...prev, id]
-        )
+      setSelectedStoreIds(prev =>
+        prev.includes(id)
+          ? prev.filter(x => x !== id)
+          : [...prev, id]
+      )
     }
 
     const handleRemoveStore = (id: number) => {
-        const updated = localesFavoritos.filter(s => s.id !== id)
-        updateLocales(updated)
+      const updated = localesFavoritos.filter(s => s.id !== id)
+      updateLocales(updated)
     }
 
 
     const handleSaveStores = () => {
-        const seleccionados = allStores.filter(s => selectedStoreIds.includes(s.id!))
-        const listaDeLocales = [...localesFavoritos, ...seleccionados]
-        updateLocales(listaDeLocales)
+      const seleccionados = allStores.filter(s => selectedStoreIds.includes(s.id!))
+      const listaDeLocales = [...localesFavoritos, ...seleccionados]
+      updateLocales(listaDeLocales)
 
-        setSelectedStoreIds([])
-        setOpenFieles(false)
+      setSelectedStoreIds([])
+      setOpenFieles(false)
     }
 
     const updateLocales = (listaDeLocales: Store[]) => {
-        listaDeLocales = [... new Set(listaDeLocales)]
-        const crit = criterios.filter(c => c.type !== 'fieles')
-        setCriterios([...crit, new Fieles(listaDeLocales)])
-        setLocalesFavoritos(listaDeLocales)
+      listaDeLocales = [... new Set(listaDeLocales)]
+      const crit = criterios.filter(c => c.type !== 'fieles')
+      setCriterios([...crit, new Fieles(listaDeLocales)])
+      setLocalesFavoritos(listaDeLocales)
     }
-
 
     return(
         <>
@@ -267,7 +259,7 @@ const SearchCriteria = () => {
                 <div className='restaurant-section'>
                     {localesFavoritos.length > 0 ? (
                         localesFavoritos.map(local => {
-                            console.log('Renderizando local:', local)
+                            // console.log('Renderizando local:', local)
                             return (
                             
                             <RestaurantCard
@@ -286,6 +278,7 @@ const SearchCriteria = () => {
                         )})
                     ) : (
                         <Typography variant='body2' className='empty-msg'>
+                          {`${localesFavoritos}`}
                             No agregaste restaurantes aún
                         </Typography>
                     )}

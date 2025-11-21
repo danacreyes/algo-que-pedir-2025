@@ -34,7 +34,7 @@ const Profile = () => {
             console.log(UserProfile.fromJSON(profile))
             const updatedProfile = await userService.updateProfile(profile)
             setProfile(updatedProfile)
-            setProfileOG(updatedProfile)
+            setProfileOG(UserProfile.fromJSON(updatedProfile.toJSON())) // ... es una copia!
         } catch (error) {
             console.error('Error al actualizar el perfil', error)
         } finally {
