@@ -33,6 +33,7 @@ const Profile = () => {
             const updatedProfile = await userService.updateProfile(profile)
             setProfile(updatedProfile)
             setProfileOG(UserProfile.fromJSON(updatedProfile.toJSON())) // ... es una copia!
+            showToast('Usuario modificado con exito', 'success')
         } catch (error) {
             console.error('Error al guardar el perfil', error)
             showToast('Error al guardar el perfil', 'error')
