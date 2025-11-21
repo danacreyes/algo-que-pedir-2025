@@ -253,7 +253,7 @@ const OrderCheckout = () => {
                             Subtotal
                         </Typography>
                         <Typography variant='body2' className="summary-value">
-                            ${isNew ? subtotal.toFixed(2) : order?.precioSubtotal}
+                            ${isNew ? subtotal.toFixed(2) : order?.precioSubtotal.toFixed(2)}
                         </Typography>
                     </Box>
                     <Box className="summary-row">
