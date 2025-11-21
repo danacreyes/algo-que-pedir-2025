@@ -63,7 +63,7 @@ const SearchCriteria = () => {
                 const fieles = profileCriteria.criterios.find(c => c.type == 'fieles') as Fieles
                 setLocalesFavoritos((fieles as Fieles)?.localesFavoritos)
                 setSelectedStoreIds(fieles.localesFavoritos.map(s => s.id))
-                console.log('favoritos', localesFavoritos)
+                console.log('favoritos', (fieles as Fieles)?.localesFavoritos)
             }
 
         }
@@ -154,11 +154,7 @@ const SearchCriteria = () => {
 
     // ====== LOCALES ======
 
-    useOnInit(() => {
-        gelAllStores()
-    })
-
-    const gelAllStores = async () => {
+    const getAllStores = async () => {
         try {
             const locales = await storeService.getStoresDom()
             console.log('locales', locales)
@@ -167,6 +163,11 @@ const SearchCriteria = () => {
             console.error(e)
         }
     }
+
+    useOnInit(
+        getAllStores
+    )
+
 
     const handleOpenModal = async () => {
         setOpenFieles(true)
@@ -186,32 +187,24 @@ const SearchCriteria = () => {
 
     const handleRemoveStore = (id: number) => {
         const updated = localesFavoritos.filter(s => s.id !== id)
-        setLocalesFavoritos(updated)
-
-        const nuevosCriterios = [
-            ...criterios.filter(c => c.type !== 'fieles'),
-            new Fieles(updated)
-        ]
-        setCriterios(nuevosCriterios)
+        updateLocales(updated)
     }
 
 
     const handleSaveStores = () => {
         const seleccionados = allStores.filter(s => selectedStoreIds.includes(s.id!))
-
-        const crit = criterios.filter(c => c.type !== 'fieles')
-
-        const updated = [
-            ...localesFavoritos,
-            ...seleccionados.filter(s => !localesFavoritos.some(l => l.id === s.id))
-        ]
-
-        setLocalesFavoritos(updated)
-
-        setCriterios([ ...crit, new Fieles(seleccionados) ])
+        const listaDeLocales = [...localesFavoritos, ...seleccionados]
+        updateLocales(listaDeLocales)
 
         setSelectedStoreIds([])
         setOpenFieles(false)
+    }
+
+    const updateLocales = (listaDeLocales: Store[]) => {
+        listaDeLocales = [... new Set(listaDeLocales)]
+        const crit = criterios.filter(c => c.type !== 'fieles')
+        setCriterios([...crit, new Fieles(listaDeLocales)])
+        setLocalesFavoritos(listaDeLocales)
     }
 
 
@@ -269,7 +262,10 @@ const SearchCriteria = () => {
                 </Grid>
                 <div className='restaurant-section'>
                     {localesFavoritos.length > 0 ? (
-                        localesFavoritos.map(local => (
+                        localesFavoritos.map(local => {
+                            console.log('Renderizando local:', local)
+                            return (
+                            
                             <RestaurantCard
                                 key={local.id}
                                 src={local.storeURL}
@@ -283,7 +279,7 @@ const SearchCriteria = () => {
                                     />
                                 }
                             />
-                        ))
+                        )})
                     ) : (
                         <Typography variant='body2' className='empty-msg'>
                             No agregaste restaurantes aún

@@ -50,7 +50,7 @@ export const Generalista: CriterioCliente = {
 export class Fieles implements CriterioCliente {
   public type = 'fieles'
 
-  public localesFavoritos: Store[]
+  public localesFavoritos: Store[] = []
 
   constructor(locales: Store[] = []) {
     this.localesFavoritos = locales
@@ -61,13 +61,21 @@ export class Fieles implements CriterioCliente {
   }
 
   puedePedir(plato: MenuItemType, usuario: UserProfile): boolean {
-    // const localIdDelPlato = 1 // Placeholder de Store ID
+    // Ver si el local del plato ya está entre los favoritos
+    // const yaEsFavorito = this.localesFavoritos.some(
+    //   fav => fav.id === plato.local.id
+    // )
 
-    // TODO
+    // // Si no estaba → lo agregamos
+    // if (!yaEsFavorito) {
+    //   this.localesFavoritos.push(plato.local)
+    // }
 
-    // return this.localesFavoritos.has(localIdDelPlato)
+    // Fieles siempre permite pedir
     return true
   }
+
+
 }
 
 export class Consumista implements CriterioCliente {

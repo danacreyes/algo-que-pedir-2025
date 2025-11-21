@@ -31,8 +31,9 @@ class StoreService {
   }
 
   async getStoresDom() {
-    const response = await axios.get(`${REST_SERVER_URL}/stores`)
-    return response.data.map(Store.fromJSON)
+    const response = await axios.get<StoreDomJSON[]>(`${REST_SERVER_URL}/storesDom`)
+    console.log('response', response)
+    return response.data.map(it => Store.fromJSON(it))
   }
 }
 

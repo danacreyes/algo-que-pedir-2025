@@ -3,21 +3,7 @@ import RestaurantCard from '../RestaurantCard/RestaurantCard'
 import './modal-stores.css'
 import { Store } from '../../domain/storeDom'
 
-const ModalStores = ({
-    open,
-    onClose,
-    stores,
-    selectedIds,
-    onToggle,
-    onConfirm
-}: {
-    open: boolean,
-    onClose: () => void,
-    stores: Store[],
-    selectedIds: number[],
-    onToggle: (id: number) => void,
-    onConfirm: () => void
-}) => {
+const ModalStores = ({open, onClose, stores, selectedIds, onToggle, onConfirm}: {open: boolean, onClose: () => void, stores: Store[], selectedIds: number[], onToggle: (id: number) => void, onConfirm: () => void}) => {
 
     return (
         <Modal open={open} onClose={onClose}>
