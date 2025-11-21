@@ -41,7 +41,7 @@ const SearchCriteria = () => {
     /* ===== INICIALIZAR LOCALES ===== */
     const initLocalesFavoritos = (locales: Store[]) => {
       // inicializo los localesFavoritos en cada first render
-      const fieles = (profile.criteria as Combinado).criterios.find(c => c.type == 'fieles') as Fieles
+      const fieles = (profile.criteria as Combinado)?.criterios?.find(c => c.type == 'fieles') as Fieles
       const favs = locales.filter(
         store => fieles?.localesFavoritos.some(fav => fav.id == store.id)
       )
