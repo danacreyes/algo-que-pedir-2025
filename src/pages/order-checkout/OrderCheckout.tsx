@@ -72,7 +72,7 @@ const OrderCheckout = () => {
                 userID: Number(localStorage.getItem('id')),
                 localID: effectiveLocalId!,
                 platosIDs: itemsIDs,
-                medioDePago: paymentMethod as PaymentType, 
+                medioDePago: currentPaymentMethod as PaymentType, 
                 estado: Estado.PENDIENTE, 
             }
 
@@ -84,7 +84,7 @@ const OrderCheckout = () => {
             setTimeout(() => {
                 clearCart()
                 navigate('/home')
-            }, 1500)
+            }, 1000)
             
         } catch (error) {
             console.error('Error al crear pedido:', error)
@@ -119,7 +119,7 @@ const OrderCheckout = () => {
     // estas variables sueltas se recalculan en cada render
     const subtotal = getTotalPrice()
     // const serviceFee = 2.62 //? esto no se que onda
-    let serviceFee = paymentMethod == 'EFECTIVO' ? 0 : subtotal * 0.1
+    let serviceFee = currentPaymentMethod == 'EFECTIVO' ? 0 : subtotal * 0.1
     const total = subtotal + serviceFee + (store?.deliveryFee as number)
 
     const location = useLocation()
