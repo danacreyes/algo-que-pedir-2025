@@ -163,7 +163,7 @@ const StoreDetail = () => {
 
     const getStoreItems = async () => {
         try {
-            const backItemsResponse = await menuItemsService.getItemsByStore(Number(id))
+            const backItemsResponse = await menuItemsService.getItemsByStore(Number(id), Number(localStorage.getItem('id')))
             setDishes(backItemsResponse)
         } catch (error) {
             console.info('An error has occurred: ', error)
@@ -235,9 +235,12 @@ const StoreDetail = () => {
                     <Box className="tab-context-content">
                         {/* ==================== Items ==================== */}
                         <TabPanel value='1' className="tab-panel">
-                            {dishes.map((dish) => (
-                                <DishCard dish={dish} key={dish.id} onOpen={() => handleOpen(dish.id)}/>
-                            ))}
+                            {dishes.length != 0 ? (
+                                dishes.map((dish) => 
+                                    (<DishCard dish={dish} key={dish.id} onOpen={() => handleOpen(dish.id)}/>))
+                            ) : ( 
+                            <Typography>No hay platos para pedir</Typography>
+                            )}
                         </TabPanel>
 
                         {/* ==================== Reviews ==================== */}
