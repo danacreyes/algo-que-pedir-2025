@@ -1,12 +1,12 @@
 /* ============= SEARCH SECTION ============= */
 .main-container-search{
     display: flex;
-    width: 100vw !important;
     flex-direction: column; 
-    padding: 1.5em; 
+    padding: 0; 
     gap: 1em;
     font-family: var(--primary-font);
     height: 100%;
+    /* width: 100vw; */
 }
 
 div.main-container-check{
@@ -15,7 +15,21 @@ div.main-container-check{
     border-radius: 15px;
     border: solid 1px lightgray;
     overflow: visible;
-    
+    margin: 0 1em 0 1em;
+}
+
+div.box-counter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6em;
+}
+
+div.container-counter{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
 }
 
 /* TITLE SECTION */
@@ -47,3 +61,72 @@ button.btn-add{
     box-shadow: none;
 }
 
+/* --- Estilos para los Chips (Palabras buscadas) --- */
+
+.input-frases-wrapper{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.frase-chip-container {
+    padding-top: 8px; 
+    padding-left: 16px; 
+    padding-right: 16px;
+    margin-bottom: 8px; 
+}
+
+.frase-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    margin-right: 8px;
+    margin-top: 4px; 
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: #333;
+}
+
+.frase-chip-clear-icon {
+    margin-left: 4px;
+    padding: 0;
+    min-width: 0;
+    height: 18px;
+    width: 18px;
+    color: #999; 
+}
+
+.input-frases-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.input-frases-field input {
+    font-size: 1rem;
+    border: none;
+}
+
+.input-frases-field label {
+    color: gray;
+}
+
+.icon-button-control {
+    padding: 0;
+    min-width: 0;
+    color: gray;
+}
+
+.empty-msg{
+    color:#333;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+@media (min-width: 600px) {
+    div.container-counter{
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

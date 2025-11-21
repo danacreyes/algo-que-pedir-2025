@@ -1,15 +1,18 @@
-.box-section-criteria{
-    width: 100%;
+/* .box-section-criteria{
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 1em;
-}
+} */
 
 div.box-ingredients{
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+div.ingredients-group{
+    padding: 0 1em 1em 1em;
 }
 
 div.ingredient-item{
@@ -47,6 +50,7 @@ div.modal{
     max-width: 500px;
     width: 90%;
     gap: 0.5em;
+    align-items: center;
 }
 
 .modal-items{
@@ -67,14 +71,19 @@ div.modal{
 .btn-group{
     display: flex;
     gap: 0.5em;
+    width: 100%;
 }
 
 button.btn-add-ingredient{
-    position: fixed;
-    bottom: 0;
-    z-index: 1000;
-    margin-bottom: 5em;
-    width: 90%;
-    display: flex;
-    justify-content: center;
+    /* position: fixed; */
+    border-radius: 8px;
+    padding: 9.6px 0;
+    text-transform: none;
+    /* font-weight: bold; */
+    width: 100%;
+}
+
+.advise-icon{
+    font-size: xx-large;
+    color: var(--primary-color);
 }

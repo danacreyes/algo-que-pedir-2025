@@ -71,7 +71,7 @@ const Login = () => {
   }
  // CAMBIAR POR OnInit()
   useEffect(() => {
-    console.log(location.state?.from?.pathname)
+    // console.log(location.state?.from?.pathname)
     if (location.state?.from?.pathname != '/' && location.state?.from?.pathname != undefined) showToast('Debe loguearse.', 'error')
   }, [])
     

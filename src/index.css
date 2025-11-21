@@ -142,6 +142,7 @@ input, select, textarea, button {
 
 button.btn-primary{
   background-color: #E82933;
+  color: white;
   padding: 0.8em;
   width: 100%;
   border-radius: 6px;
