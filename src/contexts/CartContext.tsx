@@ -35,7 +35,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export const CartProvider = ({children}: {children: React.ReactNode}) => {
     const [items, setItems] = React.useState<CartItem[]>([])
     const [currentLocalId, setCurrentLocalId] = React.useState<number | null>(null)
-    const [currentPaymentMethod, setCurrentPaymentMethod] = React.useState<PaymentType | null>(null)
+    const [currentPaymentMethod, setCurrentPaymentMethod] = React.useState<PaymentType>(PaymentType.EFECTIVO)
     
     const addItem = (item: CartItem) => {
 
