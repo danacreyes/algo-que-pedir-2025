@@ -53,7 +53,6 @@ const SearchCriteria = () => {
             if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
                 const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
                 setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
-                 
             }
 
             // Seteamos su distancia maxima
@@ -61,7 +60,12 @@ const SearchCriteria = () => {
 
             if (profileCriteria.criterios.some(c => c.type == 'fieles')){
                 const fieles = profileCriteria.criterios.find(c => c.type == 'fieles') as Fieles
-                setLocalesFavoritos((fieles as Fieles)?.localesFavoritos)
+                // setLocalesFavoritos((fieles as Fieles)?.localesFavoritos)
+                const favs = allStores.filter(
+                    store => fieles.localesFavoritos.some(fav => fav.id == store.id)
+                )
+                // console.log('favs en REF: ', favs)
+                setLocalesFavoritos(favs)
                 setSelectedStoreIds(fieles.localesFavoritos.map(s => s.id))
                 console.log('favoritos', (fieles as Fieles)?.localesFavoritos)
             }
