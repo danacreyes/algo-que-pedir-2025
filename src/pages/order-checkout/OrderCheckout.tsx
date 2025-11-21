@@ -29,7 +29,7 @@ import { userService } from '../../services/UserService'
 
 const OrderCheckout = () => {
     // const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
-    const [paymentMethod, setPaymentMethod] = React.useState<PaymentType>(PaymentType.EFECTIVO)
+    const [paymentMethod, setPaymentMethod] = React.useState<PaymentType>()
     const { toast, showToast } = useToast()
     const navigate = useNavigate()
 
@@ -132,6 +132,7 @@ const OrderCheckout = () => {
         const backStoreResponse = await storeService.getStore(effectiveLocalId)
         setStore(backStoreResponse)
         // console.log(backStoreResponse.paymentTypes)
+        setPaymentMethod(backStoreResponse?.paymentTypes[0] as PaymentType)
     }
 
     const getOrderandStoreData = async () => {
@@ -317,6 +318,7 @@ const OrderCheckout = () => {
                         </FormControl>) : (null)) : (
                             <FormControl fullWidth disabled>
                                 <Select value={order?.metodoDePago ?? ''}>
+                                  <MenuItem value={order?.metodoDePago}>{paymentLabels[order?.metodoDePago!]}</MenuItem>
                                     {store?.paymentTypes
                                     // .filter((pago) => (pago == order?.metodoDePago))
                                     .map((pago: PaymentType) => (
