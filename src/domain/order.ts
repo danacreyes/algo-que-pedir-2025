@@ -18,6 +18,7 @@ export type OrderForBack = {
   platosIDs: number[],
   medioDePago: string,
   estado: Estado,
+  subtotal: number
 }
 
 export type ReducedOrderJSON = {

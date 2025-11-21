@@ -26,6 +26,7 @@ import { useToast } from '../../components/Toast/useToast'
 import { Toast } from '../../components/Toast/ToastContainer'
 import { useNavigate } from 'react-router-dom'
 import { userService } from '../../services/UserService'
+import { getErrorMessage } from '../../domain/errorHandler'
 
 const OrderCheckout = () => {
     // const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
@@ -52,6 +53,38 @@ const OrderCheckout = () => {
         clearCart()
     }
 
+    
+    const handleConfirmOrder = async () => {
+        try {
+            await userService.confirmOrder(Number(order?.id))
+            
+            showToast('Pedido confirmado', 'success')
+            
+            setTimeout(() => {
+                clearCart()
+                navigate('/order-details')
+            }, 1500)
+        } catch (error) {
+            const errorMessage = getErrorMessage(error)
+            showToast('Error al confirmar el pedido. ' + errorMessage, 'error')
+            
+        }
+    }
+    
+    const [store, setStore] = React.useState<Store>()
+    const [order, setOrder] = React.useState<Order>()
+    
+    const setPayment = (payment: PaymentType) => {
+        setPaymentMethod(payment)
+        setCurrentPayment(payment)
+    }
+    
+    // estas variables sueltas se recalculan en cada render
+    const subtotal = getTotalPrice()
+    // const serviceFee = 2.62 //? esto no se que onda
+    let serviceFee = currentPaymentMethod == 'EFECTIVO' ? 0 : subtotal * 0.1
+    const total = subtotal + serviceFee + (store?.deliveryFee as number)
+    
     const handleReserveOrder = async () => {
         try {
             // const itemsIDs = items.map( it => it.id )
@@ -59,9 +92,6 @@ const OrderCheckout = () => {
                 Array(plato.quantity).fill(plato.id)
             )
 
-            // console.log(itemsIDs)
-            // console.log(items)
-            
             const orderData: OrderForBack = {
                 // lo mejor es pasar las ids de 
                 // usuario
@@ -73,7 +103,8 @@ const OrderCheckout = () => {
                 localID: effectiveLocalId!,
                 platosIDs: itemsIDs,
                 medioDePago: currentPaymentMethod as PaymentType, 
-                estado: Estado.PENDIENTE, 
+                estado: Estado.PENDIENTE,
+                subtotal: subtotal
             }
 
             console.info(orderData)
@@ -87,40 +118,11 @@ const OrderCheckout = () => {
             }, 1000)
             
         } catch (error) {
-            console.error('Error al crear pedido:', error)
-            showToast('Error al crear el pedido. Por favor intenta nuevamente.', 'error')
+            const errorMessage = getErrorMessage(error)
+            showToast('Error al crear el pedido. ' + errorMessage, 'error')
         }
 
     }
-
-    const handleConfirmOrder = async () => {
-        try {
-            userService.confirmOrder(Number(order?.id))
-
-            showToast('Pedido confirmado', 'success')
-            
-            setTimeout(() => {
-                clearCart()
-                navigate('/order-details')
-            }, 1500)
-        } catch (error) {
-            console.error('Unexpected error: ', error)
-        }
-    }
-
-    const [store, setStore] = React.useState<Store>()
-    const [order, setOrder] = React.useState<Order>()
-
-    const setPayment = (payment: PaymentType) => {
-        setPaymentMethod(payment)
-        setCurrentPayment(payment)
-    }
-
-    // estas variables sueltas se recalculan en cada render
-    const subtotal = getTotalPrice()
-    // const serviceFee = 2.62 //? esto no se que onda
-    let serviceFee = currentPaymentMethod == 'EFECTIVO' ? 0 : subtotal * 0.1
-    const total = subtotal + serviceFee + (store?.deliveryFee as number)
 
     const location = useLocation()
 
