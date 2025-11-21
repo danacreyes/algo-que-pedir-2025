@@ -70,7 +70,7 @@ const OrderCheckout = () => {
                 // medio de pago
                 // y que el back se encargue de buscarlos
                 userID: Number(localStorage.getItem('id')),
-                localID: id,
+                localID: effectiveLocalId!,
                 platosIDs: itemsIDs,
                 medioDePago: paymentMethod as PaymentType, 
                 estado: Estado.PENDIENTE, 
@@ -154,7 +154,7 @@ const OrderCheckout = () => {
         <Box className="order-checkout-container">
             {/* Asi anda tambien */}
             {/* <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${id}` } : { path: '/order-details/'}} />  */}
-            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${effectiveLocalId}` } : { path: '/order-details/'}} />
+            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${id}` } : { path: '/order-details/'}} />
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}
