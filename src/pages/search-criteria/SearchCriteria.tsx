@@ -2,14 +2,13 @@ import { Box, Container, IconButton, Button, Card, Grid, Checkbox, Input } from 
 import Typography from '@mui/material/Typography'
 import ClearIcon from '@mui/icons-material/Clear'
 import AddIcon from '@mui/icons-material/Add'
-import { ReactNode, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import RemoveCircleIcon from '@mui/icons-material/Remove'
 import AddCircleIcon from '@mui/icons-material/Add'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 
 import '../Profile/profile.css'
 import './search-criteria.css'
-import { useNavigate } from 'react-router-dom'
 import HeaderBack from '../../components/HeaderBack/HeaderBack'
 import { useUserProfile } from '../../customHooks/useUserProfile'
 import { useOnInit } from '../../customHooks/useOnInit'
@@ -108,8 +107,8 @@ const SearchCriteria = () => {
         )
       }
           
-      console.log('nuevo perfil', nuevo)
-      console.log('perfil viejo', profileOG)
+      // console.log('nuevo perfil', nuevo)
+      // console.log('perfil viejo', profileOG)
     }
 
     /* ===== FRASES: CONSUMISTA ===== */

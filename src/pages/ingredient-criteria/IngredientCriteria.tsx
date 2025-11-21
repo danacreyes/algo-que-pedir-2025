@@ -9,7 +9,6 @@ import { ingredientService } from '../../services/IngredientService'
 import { useUserProfile } from '../../customHooks/useUserProfile'
 
 import './ingredient-criteria.css'
-import { userService } from '../../services/UserService'
 
 
 // sessionStorage.setItem('id', '1')

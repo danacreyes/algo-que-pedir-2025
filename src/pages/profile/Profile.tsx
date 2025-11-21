@@ -18,8 +18,6 @@ const Profile = () => {
     const { profile, setProfile, setProfileOG } = useUserProfile()
     const [errors, setErrors] = useState<Array<ValidationMessage>>([])
 
-    const [criterios, setCriterios] = useState(profile.criteria)
-
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
