@@ -5,8 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import IngredientCriteria from './IngredientCriteria'
 import { useUserProfile } from '../../customHooks/useUserProfile'
 import { ingredientService } from '../../services/IngredientService'
-import { makeIngredient } from '../../tests/ingredientMock'
-import { FoodGroupValue } from '../../domain/ingredient'
+import { FoodGroupValue, IngredientType } from '../../domain/ingredient'
 
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom')
@@ -20,42 +19,33 @@ vi.mock('../../customHooks/useUserProfile', () => ({
     useUserProfile: vi.fn(),
 }))
 
+// vi.fn() -> Simula callbacks o props de funciones
 const showToastMock = vi.fn()
 
 describe('Tests para IngredientCriteria', () => {
-    const mockIngredients = [
-        makeIngredient({
-            id: 1,
-            name: 'Queso Cheddar',
-            cost: 0.5,
-            foodGroup: FoodGroupValue.LACTEOS,
-            esOrigenAnimal: true,
-        }),
-        makeIngredient({
-            id: 2,
-            name: 'Tomate',
-            cost: 0.2,
-            foodGroup: FoodGroupValue.FRUTAS_Y_VERDURAS,
-            esOrigenAnimal: false,
-        }),
+    const mockIngredients: IngredientType[] = [
+        new IngredientType(1, 'Queso Cheddar', 0.5, FoodGroupValue.LACTEOS, true ),
+        new IngredientType(2, 'Tomate', 0.2, FoodGroupValue.FRUTAS_Y_VERDURAS, false )
     ]
 
     beforeEach(() => {
         vi.clearAllMocks()   // NO usar restoreAllMocks, porque borra los spyOn
         vi.resetAllMocks()
 
+        // ; -> aisla la llamada para que la linea anterior no se coma lo que sigue
         ;(useUserProfile as Mock).mockReturnValue({
             profile: {
             preferredIngredients: [],
             ingredientsToAvoid: [],
             },
-            setProfile: vi.fn(),
+            setProfile: vi.fn(), // Simula la función setProfile
             checkChanges: vi.fn(),
             showToast: showToastMock,
         })
     })
 
     test('CASO FELIZ: carga ingredientes correctamente del backend', async () => {
+        // en vez de hacer la llamada real, resuelve con lo que hay en el mock de ingredientes
         vi.spyOn(ingredientService, 'getAllIngredients').mockResolvedValueOnce(mockIngredients)
 
         render(
@@ -86,8 +76,8 @@ describe('Tests para IngredientCriteria', () => {
     })
 
     test('No puedo agregar un ingrediente preferido cuando criterio = avoid', async () => {
-        const queso = makeIngredient({id: 1, name: 'Queso Cheddar', foodGroup: FoodGroupValue.LACTEOS,})
-        const tomate = makeIngredient({id: 2, name: 'Tomate', foodGroup: FoodGroupValue.FRUTAS_Y_VERDURAS,})
+        const queso = new IngredientType(1, 'Queso Cheddar', 0.5, FoodGroupValue.LACTEOS, true )
+        const tomate = new IngredientType(2, 'Tomate', 0.2, FoodGroupValue.FRUTAS_Y_VERDURAS, false )
 
         // le agrego queso a la lista de ingredientes preferidos del usuario
         ;(useUserProfile as Mock).mockReturnValue({

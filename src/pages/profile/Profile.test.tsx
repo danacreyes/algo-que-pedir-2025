@@ -40,16 +40,15 @@ describe('Tests para Profile', () => {
     test('CASO FELIZ: guarda los cambios y se actualiza el perfil', async () => {
         vi.spyOn(userService, 'updateProfile').mockResolvedValueOnce(updatedProfile)
 
+        // <MemoryRouter> -> proporciona el contexto necesario de React Router, por ejemplo useParams
         render(
-            <MemoryRouter>
+            <MemoryRouter> 
                 <Profile />
             </MemoryRouter>
         )
 
         fireEvent.change(screen.getByLabelText('Nombre'), {target: { value: 'Ana Actualizada' },})
-
         fireEvent.change(screen.getByLabelText('Dirección'), {target: { value: 'Av Siempreviva 742' },})
-
         fireEvent.change(screen.getByLabelText('Ubicación'), {target: { value: 'Buenos Aires' },})
 
         fireEvent.click(screen.getByText('Guardar'))
