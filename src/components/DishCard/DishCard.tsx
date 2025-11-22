@@ -18,6 +18,7 @@ interface DishCardProps {
 const DishCard = ({ dish, onOpen }: DishCardProps) => {
     return (
         <Card
+        data-testid={`dish-card-${dish.id}`}
         key={dish.id}
         onClick={() => onOpen(dish.id)}
         variant='outlined'

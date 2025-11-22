@@ -213,7 +213,7 @@ const StoreDetail = () => {
             </Box>
 
             <Container className="restaurant-info-container">
-                <Typography variant='h5' className="restaurant-title">
+                <Typography variant='h5' className="restaurant-title" data-testid={`data_${store?.name}`} >
                     {store?.name}
                 </Typography>
                 <Typography variant='body2' className="restaurant-info-stats">
