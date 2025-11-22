@@ -47,7 +47,7 @@ const StoreRatings = () => {
                     variant='h5' sx={{margin: '1.5rem 0'}}>
                         Restaurantes a calificar
                     </Typography>
-                    <Divider />
+                    <Divider sx={{width: '90%'}}/>
                     {unratedStores.length != 0 ? 
                         showUnratedStores() : 
                         <Card variant='outlined' className='no-unrated-stores-card'>
