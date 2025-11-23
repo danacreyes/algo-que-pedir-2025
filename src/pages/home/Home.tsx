@@ -45,30 +45,30 @@ const Home = () => {
   })
 
   return (
-    <HomeContainer>
+    <HomeContainer data-testid="home-container">
       <HeaderContainer>
         <TitleTypography>
           Delivery
         </TitleTypography>
       </HeaderContainer>
       
-      <SearchContainer>
+      <SearchContainer data-testid="search-container">
         <SearchBar onSearch={buscarStores} searchValue={searchValue} />
       </SearchContainer>
       
-      <ContentBox>
+      <ContentBox data-testid="content-box">
         <ColorCheckboxes 
           isChecked={isChecked}
           onCheckboxChange={handleCheckboxChange}
         />
         
         {isChecked && (
-          <StoresCountTypography variant="body2">
+          <StoresCountTypography variant="body2" data-testid="stores-count">
             Mostrando {stores.length} locales cercanos
           </StoresCountTypography>
         )}
         
-        <CardsContainer>
+        <CardsContainer data-testid="cards-container">
           <MediaCard stores={stores} />
         </CardsContainer>
       </ContentBox>

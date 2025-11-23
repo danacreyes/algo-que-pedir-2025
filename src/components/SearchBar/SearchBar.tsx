@@ -52,6 +52,7 @@ export default function SearchBar({ onSearch, searchValue }: SearchBarProps): JS
                 value={localSearchValue}
                 onChange={handleInputChange}
                 onKeyUp={handleKeyPress}
+                data-testid="search-input"
               />
             </SearchContainer>
           </StyledToolbar>

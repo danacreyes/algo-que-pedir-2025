@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import {  Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { StoreType } from '../../domain/store'
 import {
@@ -25,12 +25,13 @@ export default function MediaCard({ stores }: MediaCardProps) {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+    <CardsContainer sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }} data-testid="media-card-container">
       {stores.length > 0 ? (
         stores.map((store) => (
           <StoreCard 
             key={store.id}
             onClick={() => handleCardClick(store.id)} 
+            data-testid={`store-card-${store.id}`}
           >
             <ImageContainer>
               <StoreImage
@@ -39,14 +40,14 @@ export default function MediaCard({ stores }: MediaCardProps) {
               />
             </ImageContainer>
             <StoreCardContent>
-              <Typography noWrap component="div" className="store-name">
+              <Typography noWrap component="div" className="store-name" data-testid={`store-name-${store.id}`}>
                 {store.name}
               </Typography>
-              <Typography noWrap variant="body2" className="store-address">
+              <Typography noWrap variant="body2" className="store-address"data-testid={`store-address-${store.id}`}>
                 {store.storeAddress} {store.storeAltitude}
               </Typography>
               {store.usuarioCercano && (
-                <NearbyStoreContainer>
+                <NearbyStoreContainer data-testid={`nearby-store-${store.id}`}>
                   <NearbyIcon />
                   <NearbyText variant="caption">
                     Local cercano
@@ -57,10 +58,11 @@ export default function MediaCard({ stores }: MediaCardProps) {
           </StoreCard>
         ))
       ) : (
-        <NoStoresText>
+        <NoStoresText data-testid="no-stores">
           No hay locales disponibles
         </NoStoresText>
       )}
     </CardsContainer>
+  
   )
 }
