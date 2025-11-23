@@ -49,7 +49,7 @@ function OrderDetails () {
           name={order.local.name} 
           detail={'Total: $' + order.precioTotal().toFixed(2)}
           detail2 = {order.fechaCreacionString + ' · ' + order.platos.length + ' productos'}
-          icon={order.estado == 'CANCELADO' ? '' : <Button variant="outlined" color="error">CANCELAR</Button>}
+          icon={order.estado == 'CANCELADO' ? '' : <Button color="error" className='btn-primary'>Cancelar</Button>}
           cardOnClickFunction={() => navigate('/order-checkout', {state: {id: order.local.id, isNew: false, orderId: order.id}})}
           buttonOnClickFunction={() => cancelOrder(order.id)}
         />

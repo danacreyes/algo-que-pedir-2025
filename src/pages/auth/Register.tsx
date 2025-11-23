@@ -13,19 +13,16 @@ import { useToast } from '../../components/Toast/useToast'
 import { CookingPot } from 'phosphor-react'
 
 const Register = () => {
-    const { toast, showToast } = useToast()
+  const { toast, showToast } = useToast()
   
   const navigate = useNavigate()
   const [user, setUser] = useState<UserJSONRegisterRequest>({name:'', lastName: '', email: '', password: '', passwordRetry: ''})
   const [errors, setErrors] = useState<Array<ValidationMessage>>([])
 
-  // eslint-disable-next-line no-undef
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // eslint-disable-next-line no-undef
     const form = e.currentTarget as HTMLFormElement
-    // eslint-disable-next-line no-undef
     const formData = new FormData(form)
 
     const userRegister = new UserType(
@@ -42,7 +39,6 @@ const Register = () => {
     if (userRegister.errors.length > 0) {
       setErrors(userRegister.errors)
       return errors
-      // return userRegister.errors
     }
 
     try {
@@ -58,7 +54,7 @@ const Register = () => {
         }, 2000)
     } catch (error) {
       const errorMessage = getErrorMessage(error)
-      showToast(errorMessage, 'error', 100000)
+      showToast(errorMessage, 'error', 5000)
     } finally {
       setErrors([])
     }
@@ -72,7 +68,7 @@ const Register = () => {
   }
     
   return (
-     <div className="main-container-login">
+    <div className="main-container-login">
       <div className='header-logo'>
         <CookingPot weight='fill' className='cooking-pot-logo'></CookingPot>
         <h1>Crea tu cuenta</h1>
@@ -91,6 +87,13 @@ const Register = () => {
           value={user.email}
           onChange={(e) => actualizar('email', e.target.value)}
           error={!errors?.every(valMess => valMess.field != 'email')}
+          slotProps={{ 
+            input: {
+              inputProps: {
+                'data-testid': 'emailInput'
+              },
+            }, 
+          }}
         />
         <ValidationField field='email' errors={errors} />
 
@@ -102,6 +105,13 @@ const Register = () => {
           value={user.password}
           onChange={(e) => actualizar('password', e.target.value)}
           error={!errors?.every(valMess => valMess.field != 'password')}
+          slotProps={{ 
+            input: {
+              inputProps: {
+                'data-testid': 'passwordInput'
+              },
+            }, 
+          }}
         />
         <ValidationField field='password' errors={errors} />
 
@@ -113,6 +123,13 @@ const Register = () => {
           value={user.passwordRetry}
           onChange={(e) => actualizar('passwordRetry', e.target.value)}
           error={!errors?.every(valMess => valMess.field != 'password')}
+          slotProps={{ 
+            input: {
+              inputProps: {
+                'data-testid': 'passwordRetryInput'
+              },
+            }, 
+          }}
         />
         <ValidationField field='password' errors={errors} />
 
@@ -120,6 +137,7 @@ const Register = () => {
         <Button variant="contained" color="primary" 
           type="submit"
           className='auth-submit-btn'
+          data-testid='registerBtn'
         >
           Registrarme
         </Button>

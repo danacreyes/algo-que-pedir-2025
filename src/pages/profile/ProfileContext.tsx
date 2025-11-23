@@ -20,10 +20,10 @@ const ProfileContext = () => {
             const userProfile = await userService.getProfile(id)
             setProfile(userProfile)
             setProfileOG(UserProfile.fromJSON(userProfile.toJSON())) // ... es una copia!
-
-            console.log('Perfil obtenido con exito', userProfile)
+            // console.log('Perfil obtenido con exito', userProfile)
         } catch (error) {
             console.info('Unexpected error', error)
+            showToast('Error al cargar el perfil. Por favor intenta nuevamente.', 'error')
         }
     }
 
@@ -32,7 +32,7 @@ const ProfileContext = () => {
       // console.log("viejo: ", profileOG)
       if (!profile.isEqual(profileOG) ) {
         // console.log("Hay cambios sin guardar!")
-        showToast("Hay cambios sin guardar!", 'error', 5000)
+        showToast('Hay cambios sin guardar!', 'error', 5000)
       }
     }
 
@@ -40,7 +40,7 @@ const ProfileContext = () => {
         
   return (
   <>
-    <Outlet context={ {profile, setProfile, profileOG, setProfileOG, checkChanges} satisfies ContextType}/>
+    <Outlet context={ {profile, setProfile, profileOG, setProfileOG, checkChanges, showToast} satisfies ContextType}/>
     <div id="toast-container">
       <Toast toast={toast} />
     </div>

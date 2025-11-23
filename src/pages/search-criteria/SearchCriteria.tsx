@@ -19,9 +19,10 @@ import { Store } from '../../domain/storeDom'
 import { storeService } from '../../services/LocalesService'
 import ModalStores from '../../components/ModalStores/ModalStores.js'
 import { UserProfile } from '../../domain/userProfile'
+import { useToast } from '../../components/Toast/useToast.js'
 
 const SearchCriteria = () => {
-    const { profile, setProfile, profileOG, checkChanges } = useUserProfile()
+    const { profile, setProfile, profileOG, checkChanges, showToast } = useUserProfile()
 
     const isInitializedRef = useRef(false)
 
@@ -31,6 +32,7 @@ const SearchCriteria = () => {
     const [showInput, setShowInput] = useState(false)
     const [inputFrases, setInputFrases] = useState('')
     const [frasesFavoritas, setFrasesFavoritas ] = useState<string[]>([])
+    // const { toast, showToast } = useToast()
 
     const [openFieles, setOpenFieles] = useState(false)
     const [allStores, setAllStores] = useState<Store[]>([])
@@ -94,17 +96,23 @@ const SearchCriteria = () => {
 
     /* ===== GUARDADO DE CRITERIOS EN CONTEXT ===== */
     const handleSave = async () => {
-      const nuevo = profile.agregarCriterios(criterios) 
-      
-      // Si es impaciente, cargo su distancia maxima
-      if ((nuevo.criteria as Combinado).criterios?.some(c => c.type == 'impaciente')) {
-        // Esto es una locura
-        setProfile(prev =>
-          UserProfile.fromJSON({
-            ...prev.toJSON(),
-            maxDistance: counter
-          })
-        )
+      try{
+        const nuevo = profile.agregarCriterios(criterios) 
+        
+        // Si es impaciente, cargo su distancia maxima
+        if ((nuevo.criteria as Combinado).criterios?.some(c => c.type == 'impaciente')) {
+          // Esto es una locura
+          setProfile(prev =>
+            UserProfile.fromJSON({
+              ...prev.toJSON(),
+              maxDistance: counter
+            })
+          )
+        }
+        showToast('Criterios del usuario modificados', 'success')
+      } catch(error){
+        console.error('Error al modificar usuario:', error)
+        showToast('Error al modificar el usuario. Por favor intenta nuevamente.', 'error')
       }
           
       // console.log('nuevo perfil', nuevo)
@@ -203,9 +211,10 @@ const SearchCriteria = () => {
       setLocalesFavoritos(listaDeLocales)
     }
 
+    
+
     return(
         <>
-        
         <Container className='main-container-search' sx={{ pb: 9 }}>
             <HeaderBack title="Criterios de búsqueda" backTo="/profile" onClickCustom={checkChanges} />
 
@@ -246,7 +255,7 @@ const SearchCriteria = () => {
             </Card>
 
             <Card className='main-container-check' variant='outlined'>
-                <Grid container spacing={3} className='grid-section'>
+                <Grid container spacing={3} className='grid-section fieles-section'>
                     <Grid size={10}>
                         <Typography variant="body2">Fieles</Typography>
                         <Typography variant="body2" color='gray'>Solo los restaurantes preferidos</Typography>
@@ -273,6 +282,10 @@ const SearchCriteria = () => {
                                         className="remove-icon"
                                     />
                                 }
+                                classNameCard='restaurant-card'
+                                classNameImage='restaurant-image-left-profile'
+                                classNameContent='restaurant-card-content'
+                                classNameIcon='restaurant-icon'
                             />
                         )})
                     ) : (
@@ -379,8 +392,10 @@ const SearchCriteria = () => {
                     
                 </Container>
             </Card>               
-
-            <Button variant="contained" className='btn-primary' onClick={handleSave}>Guardar</Button>
+            
+             <Box className="see-order-container" sx={{ mt: 'auto' }}>
+                <Button variant="contained" className='btn-primary btn-search-criteria' onClick={handleSave}>Modificar</Button>
+             </Box>
         </Container>
         </>
     )

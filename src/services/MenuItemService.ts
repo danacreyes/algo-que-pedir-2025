@@ -11,8 +11,8 @@ class MenuItemsService {
     return menuItemReduced
   }
 
-  async getItemsByStore(id: number) {
-    const response = await axios.get<MenuItemJSONReduced[]>(`${REST_SERVER_URL}/platos-react/${id}`)
+  async getItemsByStore(id: number, userId: number) {
+    const response = await axios.get<MenuItemJSONReduced[]>(`${REST_SERVER_URL}/platos-react/${id}?userId=${userId}`)
     return response.data
   }
 

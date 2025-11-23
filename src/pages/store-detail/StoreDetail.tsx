@@ -38,29 +38,9 @@ const dishesReducedMock: MenuItemJSONReduced[] = [
     },
 ]
 
-    //! arreglar el movimiento raro que hace el header
-    // Arreglar esto asi es horrible, este tamaño es por lo que ocupa el BottomNavigation, esto es con lo que dijo el profe --listo
-    //! cambiar todo a porcentajes lo que sea vw y vh(este no tanto, igual ni lo uso)
-
-    // tambien todo lo que se comparta entre las dos paginas pasalo a componentes --listo
-    // usar contex o local storage, o un service --listo
-
-    // ver donde guardar el pedido, el profe dijo que tiene que estar en el front --listo
-    // falta que se guarde el pedido y se muestre cuando pongas ver pedido, te lleva a la pagina (Checkout del pedido) --listo
-    // falta poner que en el modal cuando toques agregar al pedido se agregue --listo
-    // la app no debe permitir a un usuario agregar dos veces el mismo plato. Puede solamente editar la cantidad. --listo (a mi manera)
-
-    // falta que traiga las reviews y los pedidos --listo
     //! preguntar como se si es popular
-    // te deja agregar platos de muchos locales no solo uno! --listo
-
-    // que te traiga las cosas de el back y que cuando estes en inicio y toques un local te lleve a ese local --listo
-    // con parrams de router de me devuleva el store id que hizo fernanda --listo
     //! traer las cosas en dos partes, si entra a menu traer los platos, si entra a reseñas traer las reseñas, y armar otro DTO para que me traiga las cosas tipo reseñas, reviws, pedidos, eso se hace apenas carga la pagina
-    // hacer un count de el repo de pedidos y ver cuantos hay con el id de el local --listo
     //! como usas el local storage lo que tiene que hacer cuando pones completar el plato es, peris, va a el back, el back valida si siguen existiendo todos los platos que estan en el pedido y luego que tire un error de el back que ya no esta ese plato (luego que lo saque o te ponga que lo saques o nose algo de eso)
-
-    //! traer las cosas 
 
     //! test end to end un test por end point
 
@@ -163,7 +143,7 @@ const StoreDetail = () => {
 
     const getStoreItems = async () => {
         try {
-            const backItemsResponse = await menuItemsService.getItemsByStore(Number(id))
+            const backItemsResponse = await menuItemsService.getItemsByStore(Number(id), Number(localStorage.getItem('id')))
             setDishes(backItemsResponse)
         } catch (error) {
             console.info('An error has occurred: ', error)
@@ -213,7 +193,7 @@ const StoreDetail = () => {
             </Box>
 
             <Container className="restaurant-info-container">
-                <Typography variant='h5' className="restaurant-title">
+                <Typography variant='h5' className="restaurant-title" data-testid={`data_${store?.name}`} >
                     {store?.name}
                 </Typography>
                 <Typography variant='body2' className="restaurant-info-stats">
@@ -235,9 +215,12 @@ const StoreDetail = () => {
                     <Box className="tab-context-content">
                         {/* ==================== Items ==================== */}
                         <TabPanel value='1' className="tab-panel">
-                            {dishes.map((dish) => (
-                                <DishCard dish={dish} key={dish.id} onOpen={() => handleOpen(dish.id)}/>
-                            ))}
+                            {dishes.length != 0 ? (
+                                dishes.map((dish) => 
+                                    (<DishCard dish={dish} key={dish.id} onOpen={() => handleOpen(dish.id)}/>))
+                            ) : ( 
+                            <Typography>No hay platos para pedir</Typography>
+                            )}
                         </TabPanel>
 
                         {/* ==================== Reviews ==================== */}

@@ -15,7 +15,7 @@ import '../search-criteria/search-criteria.css'
 import './profile.css'
 
 const Profile = () => {
-    const { profile, setProfile, setProfileOG } = useUserProfile()
+    const { profile, setProfile, setProfileOG, showToast } = useUserProfile()
     const [errors, setErrors] = useState<Array<ValidationMessage>>([])
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -33,8 +33,10 @@ const Profile = () => {
             const updatedProfile = await userService.updateProfile(profile)
             setProfile(updatedProfile)
             setProfileOG(UserProfile.fromJSON(updatedProfile.toJSON())) // ... es una copia!
+            showToast('Usuario modificado con exito', 'success')
         } catch (error) {
-            console.error('Error al actualizar el perfil', error)
+            console.error('Error al guardar el perfil', error)
+            showToast('Error al guardar el perfil', 'error')
         } finally {
             setErrors([])
         }
@@ -182,7 +184,7 @@ const Profile = () => {
                             </IconButton>                            
                         </Box>
 
-                         <Box className='main-box-preferences' >
+                        <Box className='main-box-preferences' >
                             <Typography variant="body1" sx={{fontWeight: 600}} >Ingredientes a evitar</Typography>
                             <IconButton size='small' onClick={() => handleNavigateTo('/profile/ingredient-criteria/avoid')} className='icon-style'> 
                                 <KeyboardArrowRightIcon/>

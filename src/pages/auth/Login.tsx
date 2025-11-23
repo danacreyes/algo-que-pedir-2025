@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import {Button} from '@mui/material'
@@ -8,10 +8,10 @@ import { UserJSONLoginRequest, UserType } from '../../domain/user'
 import { userService } from '../../services/UserService'
 import { ValidationMessage } from '../../domain/validationMessage'
 import ValidationField from '../../components/ValidationField/ValidationField'
-// import { showError } from '../domain/errorHandler';
 import { getErrorMessage } from '../../domain/errorHandler'
 import { Toast } from '../../components/Toast/ToastContainer'
 import { useToast } from '../../components/Toast/useToast'
+import { useOnInit } from '../../customHooks/useOnInit'
 
 const Login = () => {
   const { toast, showToast } = useToast()
@@ -22,13 +22,10 @@ const Login = () => {
   const location = useLocation()
   const from = location.state?.from?.pathname || '/'
 
-  // eslint-disable-next-line no-undef
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // eslint-disable-next-line no-undef
     const form = e.currentTarget as HTMLFormElement
-    // eslint-disable-next-line no-undef
     const formData = new FormData(form)
 
     const userLogin = new UserType(
@@ -39,13 +36,10 @@ const Login = () => {
     )
 
     userLogin.validate()
-    // console.log(userLogin.errors);
-    // console.log(userLogin);
 
     if (userLogin.errors.length > 0) {
       setErrors(userLogin.errors)
       return errors
-      // return userLogin.errors
     }
 
     try {
@@ -54,8 +48,6 @@ const Login = () => {
         navigate(from, {replace: true}) // recordar la ruta “from” y volver tras login
       }
     } catch (error) {
-      // alert(`Email: ${user.email}, Password: ${user.password}`);
-      // alert('Error en el login. Verifique sus credenciales.');
       const errorMessage = getErrorMessage(error)
       showToast(errorMessage, 'error')
     } finally {
@@ -69,11 +61,11 @@ const Login = () => {
       [clave]: valor
     })
   }
- // CAMBIAR POR OnInit()
-  useEffect(() => {
+
+  useOnInit(() => {
     // console.log(location.state?.from?.pathname)
     if (location.state?.from?.pathname != '/' && location.state?.from?.pathname != undefined) showToast('Debe loguearse.', 'error')
-  }, [])
+  })
     
   return (
     <div className="main-container-login">
@@ -95,6 +87,13 @@ const Login = () => {
           value={user.email}
           onChange={(e) => actualizar('email', e.target.value)}
           error={!errors?.every(valMess => valMess.field != 'email')}
+          slotProps={{ 
+            input: {
+              inputProps: {
+                'data-testid': 'emailInput'
+              },
+            }, 
+          }}
         />
         <ValidationField field='email' errors={errors} />
 
@@ -106,12 +105,20 @@ const Login = () => {
           value={user.password}
           onChange={(e) => actualizar('password', e.target.value)}
           error={!errors?.every(valMess => valMess.field != 'password')}
+          slotProps={{ 
+            input: {
+              inputProps: {
+                'data-testid': 'passwordInput'
+              },
+            }, 
+          }}
         />
         <ValidationField field='password' errors={errors} />
 
         <Button variant="contained" color="primary" 
           type="submit"
           className='auth-submit-btn'
+          data-testid='iniciarBtn'
         >
           Iniciar sesión
         </Button>
