@@ -184,7 +184,7 @@ const Profile = () => {
                             </IconButton>                            
                         </Box>
 
-                         <Box className='main-box-preferences' >
+                        <Box className='main-box-preferences' >
                             <Typography variant="body1" sx={{fontWeight: 600}} >Ingredientes a evitar</Typography>
                             <IconButton size='small' onClick={() => handleNavigateTo('/profile/ingredient-criteria/avoid')} className='icon-style'> 
                                 <KeyboardArrowRightIcon/>

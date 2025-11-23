@@ -31,6 +31,7 @@ class StoreService {
   async getReviewsByStore(id: number, paginationData: PaginationData): Promise<paginatedReviews> {
     const response = await axios.get(`${REST_SERVER_URL}/store-reviews/${id}?page=${paginationData?.page || 1}&limit=${paginationData?.limit || 10}`)
     const reviewsCut = response.data.reviewsCut.map((it: StoreRateJSON) => StoreRate.fromJSON(it))
+    //console.log(reviewsCut)
     return { reviewsCut, hasMore: response.data.hasMore }
   }
 
