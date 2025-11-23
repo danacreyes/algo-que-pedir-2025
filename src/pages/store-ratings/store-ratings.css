@@ -12,6 +12,12 @@ div.main-container {
     left: 1.5em;
 }
 
+section.section-title-and-tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .section-title {
     position: fixed;
     top: 0.5em;
@@ -24,4 +30,13 @@ div.main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+div.no-unrated-stores-card {
+    background: none;
+    margin-top: 1.5em;
+    width: 20em;
+    position: absolute;
+    left: 3.5em;
+    top: 5.5em;
 }

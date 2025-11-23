@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { createContext, useContext } from 'react'
+import { PaymentType } from '../domain/storeDom'
 
 //* me traigo cosas que no uso, ya se, pero despues se puede evaluar cuales se sacan
 type CartItem = {
@@ -24,6 +25,8 @@ type CartContextType = {
     getTotalPrice: () => number
     totalItems: () => number
     setCurrentLocal: (localId: number) => void
+    setCurrentPayment: (payment: PaymentType) => void
+    currentPaymentMethod: PaymentType | null
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -32,14 +35,16 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export const CartProvider = ({children}: {children: React.ReactNode}) => {
     const [items, setItems] = React.useState<CartItem[]>([])
     const [currentLocalId, setCurrentLocalId] = React.useState<number | null>(null)
-
+    const [currentPaymentMethod, setCurrentPaymentMethod] = React.useState<PaymentType>(PaymentType.EFECTIVO)
+    
     const addItem = (item: CartItem) => {
-        setCurrentLocalId(item.localId)
-        const itemInOrder = items.find(i => i.id == item.id)
 
         if (items.length > 0 && item.localName != items[0]?.localName) {
             throw new Error('No puedes agregar platos de diferentes locales')
         }
+
+        setCurrentLocalId(item.localId)
+        const itemInOrder = items.find(i => i.id == item.id)
 
         if (itemInOrder) {
             setItems(items.map(i => i.id === item.id 
@@ -74,8 +79,12 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
         setCurrentLocalId(localId)
     }
 
+    const setCurrentPayment = (payment: PaymentType) => {
+        setCurrentPaymentMethod(payment)
+    }
+
     return (
-        <CartContext.Provider value={{ items, currentLocalId, addItem, removeItem, clearCart, getTotalPrice, totalItems, setCurrentLocal }}>
+        <CartContext.Provider value={{ items, currentLocalId, addItem, removeItem, clearCart, getTotalPrice, totalItems, setCurrentLocal, setCurrentPayment, currentPaymentMethod }}>
             {children}
         </CartContext.Provider>
     )

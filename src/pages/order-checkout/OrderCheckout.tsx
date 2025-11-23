@@ -29,7 +29,7 @@ import { userService } from '../../services/UserService'
 
 const OrderCheckout = () => {
     // const [items, setItems] = React.useState<OrderItemType[]>(ordersMock)
-    const [paymentMethod, setPaymentMethod] = React.useState<PaymentType>(PaymentType.EFECTIVO)
+    const [paymentMethod, setPaymentMethod] = React.useState<PaymentType>()
     const { toast, showToast } = useToast()
     const navigate = useNavigate()
 
@@ -42,14 +42,7 @@ const OrderCheckout = () => {
     //     setItems(items.filter(item => item.id !== id))
     // }
 
-    const { items, removeItem, clearCart, getTotalPrice, currentLocalId } = useCart()
-
-    // estas variables sueltas se recalculan en cada render
-    const subtotal = getTotalPrice()
-    const serviceFee = 2.62 //? esto no se que onda
-    const deliveryFee = 0.00
-    const storeCharges = 0.00
-    const total = subtotal + serviceFee + deliveryFee + storeCharges
+    const { items, removeItem, clearCart, getTotalPrice, currentLocalId, setCurrentPayment, currentPaymentMethod } = useCart()
 
     // const handleClearCart = () => {
     //     setItems([])
@@ -61,7 +54,13 @@ const OrderCheckout = () => {
 
     const handleReserveOrder = async () => {
         try {
-            const itemsIDs = items.map( it => it.id )
+            // const itemsIDs = items.map( it => it.id )
+            const itemsIDs = items.flatMap(plato =>
+                Array(plato.quantity).fill(plato.id)
+            )
+
+            // console.log(itemsIDs)
+            // console.log(items)
             
             const orderData: OrderForBack = {
                 // lo mejor es pasar las ids de 
@@ -71,9 +70,9 @@ const OrderCheckout = () => {
                 // medio de pago
                 // y que el back se encargue de buscarlos
                 userID: Number(localStorage.getItem('id')),
-                localID: id,
+                localID: effectiveLocalId!,
                 platosIDs: itemsIDs,
-                medioDePago: paymentMethod as PaymentType, 
+                medioDePago: currentPaymentMethod as PaymentType, 
                 estado: Estado.PENDIENTE, 
             }
 
@@ -85,7 +84,7 @@ const OrderCheckout = () => {
             setTimeout(() => {
                 clearCart()
                 navigate('/home')
-            }, 1500)
+            }, 1000)
             
         } catch (error) {
             console.error('Error al crear pedido:', error)
@@ -112,6 +111,17 @@ const OrderCheckout = () => {
     const [store, setStore] = React.useState<Store>()
     const [order, setOrder] = React.useState<Order>()
 
+    const setPayment = (payment: PaymentType) => {
+        setPaymentMethod(payment)
+        setCurrentPayment(payment)
+    }
+
+    // estas variables sueltas se recalculan en cada render
+    const subtotal = getTotalPrice()
+    // const serviceFee = 2.62 //? esto no se que onda
+    let serviceFee = currentPaymentMethod == 'EFECTIVO' ? 0 : subtotal * 0.1
+    const total = subtotal + serviceFee + (store?.deliveryFee as number)
+
     const location = useLocation()
 
     const { id } = location.state as { id: number }
@@ -125,6 +135,8 @@ const OrderCheckout = () => {
     const getStoreData = async () => {
         const backStoreResponse = await storeService.getStore(effectiveLocalId)
         setStore(backStoreResponse)
+        // console.log(backStoreResponse.paymentTypes)
+        setPaymentMethod(backStoreResponse?.paymentTypes[0] as PaymentType)
     }
 
     const getOrderandStoreData = async () => {
@@ -147,7 +159,7 @@ const OrderCheckout = () => {
         <Box className="order-checkout-container">
             {/* Asi anda tambien */}
             {/* <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${id}` } : { path: '/order-details/'}} />  */}
-            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${effectiveLocalId}` } : { path: '/order-details/'}} />
+            <HeaderBack title={'Tu pedido'} backTo={isNew ? { path: `/store-detail/${id}` } : { path: '/order-details/'}} />
 
             <Container className="order-content-container">
                 {/* ==================== Restaurant Info ==================== */}
@@ -246,7 +258,7 @@ const OrderCheckout = () => {
                             Subtotal
                         </Typography>
                         <Typography variant='body2' className="summary-value">
-                            ${isNew ? subtotal.toFixed(2) : order?.precioSubtotal}
+                            ${isNew ? subtotal.toFixed(2) : order?.precioSubtotal.toFixed(2)}
                         </Typography>
                     </Box>
                     <Box className="summary-row">
@@ -254,7 +266,7 @@ const OrderCheckout = () => {
                             Recargo por tipo de pago
                         </Typography>
                         <Typography variant='body2' className="summary-value">
-                            ${isNew ? serviceFee : order?.aCobrarPorPedido().toFixed(2)}
+                            ${isNew ? serviceFee.toFixed(2) : order?.aCobrarPorPedido().toFixed(2)}
                         </Typography>
                     </Box>
                     <Box className="summary-row">
@@ -262,15 +274,7 @@ const OrderCheckout = () => {
                             Tarifa de entrega
                         </Typography>
                         <Typography variant='body2' className="summary-value">
-                            ${store?.deliveryFee}
-                        </Typography>
-                    </Box>
-                    <Box className="summary-row">
-                        <Typography variant='body2' className="summary-label">
-                            Costos de Local
-                        </Typography>
-                        <Typography variant='body2' className="summary-value">
-                            ${isNew ? storeCharges : order?.deliveryComission.toFixed(2)}
+                            ${isNew ? store?.deliveryFee.toFixed(2) : order?.local.deliveryFee.toFixed(2)}
                         </Typography>
                     </Box>
                 </Box>
@@ -294,11 +298,11 @@ const OrderCheckout = () => {
                     <Typography variant='body2' className="payment-label">
                         Forma de pago
                     </Typography>
-                    {isNew ? (
+                    {isNew ? (store?.paymentTypes.length ? (
                         <FormControl fullWidth>
                             <Select
-                                value={paymentMethod}
-                                onChange={(e) => setPaymentMethod(e.target.value as PaymentType)}
+                                value={currentPaymentMethod == null ? paymentMethod : currentPaymentMethod}
+                                onChange={(e) => setPayment(e.target.value as PaymentType)}
                                 className="payment-select"
                                 >
                                 {store?.paymentTypes?.map((pago) => (
@@ -307,11 +311,12 @@ const OrderCheckout = () => {
                                     </MenuItem>
                                 ))}
                             </Select>
-                        </FormControl>) : (
+                        </FormControl>) : (null)) : (
                             <FormControl fullWidth disabled>
                                 <Select value={order?.metodoDePago ?? ''}>
+                                    <MenuItem value={order?.metodoDePago}>{paymentLabels[order?.metodoDePago!]}</MenuItem>
                                     {store?.paymentTypes
-                                    .filter((pago) => (pago == order?.metodoDePago))
+                                    // .filter((pago) => (pago == order?.metodoDePago))
                                     .map((pago: PaymentType) => (
                                         <MenuItem key={pago} value={pago}>
                                             {paymentLabels[pago]}

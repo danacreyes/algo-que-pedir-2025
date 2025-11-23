@@ -1,16 +1,69 @@
 import Typography from '@mui/material/Typography'
-import { Avatar, FormControl, TextField, Grid, Box, Container, Button, IconButton } from '@mui/material'
-import PreferencesBox from '../../components/PreferencesBox/PreferencesBox'
+import { Avatar, FormControl, Box, Container, Button, IconButton } from '@mui/material'
+import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+import LogoutButton from '../../components/LogoutButton'
+import { useState } from 'react'
+import { UserProfile } from '../../domain/userProfile'
+import { userService } from '../../services/UserService'
+import ValidationField from '../../components/ValidationField/ValidationField'
+import { ValidationMessage } from '../../domain/validationMessage'
+import { useUserProfile } from '../../customHooks/useUserProfile'
 
 import '../search-criteria/search-criteria.css'
 import './profile.css'
 
-import LogoutButton from '../../components/LogoutButton'
-
 const Profile = () => {
+    const { profile, setProfile, setProfileOG } = useUserProfile()
+    const [errors, setErrors] = useState<Array<ValidationMessage>>([])
+
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+
+        profile.validate()
+
+        if (profile.errors.length > 0) {
+            setErrors(profile.errors)
+            return errors
+        }
+
+        try {
+            console.log(UserProfile.fromJSON(profile))
+            const updatedProfile = await userService.updateProfile(profile)
+            setProfile(updatedProfile)
+            setProfileOG(UserProfile.fromJSON(updatedProfile.toJSON())) // ... es una copia!
+        } catch (error) {
+            console.error('Error al actualizar el perfil', error)
+        } finally {
+            setErrors([])
+        }
+    }
+
+    const updateInput = (field: keyof UserProfile, value: unknown) => {
+        const updated = new UserProfile(
+            profile.id,
+            field === 'name' ? String(value) : profile.name,
+            field === 'email' ? String(value) : profile.email,
+            field === 'lastName' ? String(value) : profile.lastName,
+            field === 'address' ? String(value) : profile.address,
+            field === 'location' ? String(value) : profile.location,
+            field === 'latitude' ? Number(value) : profile.latitude,
+            field === 'longitude' ? Number(value) : profile.longitude,
+            profile.ingredientsToAvoid,
+            profile.preferredIngredients
+        )
+        setProfile(updated)
+    }
+
+    const navigate = useNavigate()
+
+    // React Router navigation to Ingredient Criteria page
+    const handleNavigateTo = (link: string) => {
+        navigate(link)
+    }
+
     return(
-        <>
         <Container className='container-profile' sx={{ pb: 9 }}>
             
             <Typography variant="h6" className='title-main-container'>Perfil</Typography>
@@ -25,64 +78,132 @@ const Profile = () => {
                     />
                 </Box>
                 <Box>
-                    <Typography variant="h5" className='primary-title-profile'>Olivia Bennett</Typography>
-                    <Typography variant="body2" color='gray' align='center'>olivia.bennett@email.com</Typography>
+                    <Typography variant="h5" className='primary-title-profile'>{`${profile?.name} ${profile?.lastName}`}</Typography>
+                    <Typography variant="body2" color='gray' align='center'>{profile?.email}</Typography>
                 </Box>
             </Container>
 
             {/* PERSONAL INFORMATION */}
-            <form className='group-section'> 
+            <form onSubmit={onSubmit} className='group-section'> 
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>Informacion personal</Typography>
 
                 <Box>
                     <FormControl className='form-field'>
-                        <TextField id="user-name" label="Nombre" variant="outlined" size="small"/>
-                        <TextField id="user-username" label="Apellido" variant="outlined" size="small"/>
-                        <TextField id="user-address" label="Direccion" variant="outlined" size="small"/>
-                        <TextField id="user-location" label="Ubicacion" variant="outlined" size="small"/>
-                        <Grid container spacing={2} columns={16}>
-                            <Grid size={8}>
-                                <TextField id="user-latitude" label="Latitud" variant="outlined" size="small" sx={{width: '100%'}}/>
-                            </Grid>
-                            <Grid size={8}>
-                                <TextField id="user-longitude" label="Longitud" variant="outlined" size="small" sx={{width: '100%'}}/>
-                            </Grid>
-                        </Grid>
+                        <div className='input-wrapper'>
+                            <label htmlFor="user-name" className='label-profile'>Nombre</label>
+                            <input
+                                type="text"
+                                id="user-name"
+                                name="user-name"
+                                value={profile?.name}
+                                className='input-profile'
+                                onChange={(event) => updateInput('name', event.target.value)}
+                            />
+                            <ValidationField field='name' errors={errors} />
+                        </div>
+
+                        <div className='input-wrapper'>
+                            <label htmlFor="user-lastName" className='label-profile'>Apellido</label>
+                            <input
+                                type="text"
+                                id="user-lastName"
+                                name="user-lastName"
+                                value={profile?.lastName}
+                                className='input-profile'
+                                onChange={(event) => updateInput('lastName', event.target.value)}
+                            />
+                            <ValidationField field='lastName' errors={errors} />
+                        </div>
+
+                        <div className='input-wrapper'>
+                            <label htmlFor="user-address" className='label-profile'>Dirección</label>
+                            <input
+                                type="text"
+                                id="user-address"
+                                name="user-address"
+                                value={profile?.address}
+                                className='input-profile'
+                                onChange={(event) => updateInput('address', event.target.value)}
+                            />
+                            <ValidationField field='address' errors={errors} />
+                        </div>
+
+                        <div className='input-wrapper'>
+                            <label htmlFor="user-location" className='label-profile'>Ubicación</label>
+                            <input
+                                type="text"
+                                id="user-location"
+                                name="user-location"
+                                value={profile?.location}
+                                className='input-profile'
+                                onChange={(event) => updateInput('location', event.target.value)}
+                            />
+                            <ValidationField field='location' errors={errors} />
+                        </div>
+
+                        <div className='input-wrapper-div'>
+                            <div className='input-wrapper-direction'>
+                                <label htmlFor="user-latitude" className='label-profile'>Latitud</label>
+                                <input
+                                    type="text"
+                                    id="user-latitude"
+                                    name="user-latitude"
+                                    value={profile?.latitude}
+                                    className='input-profile'
+                                    onChange={(event) => updateInput('latitude', event.target.value)}
+                                />
+                                <ValidationField field='latitude' errors={errors} />
+                            </div>
+                            <div className='input-wrapper-direction'>
+                                <label htmlFor="user-longitude" className='label-profile'>Longitud</label>
+                                <input
+                                    type="text"
+                                    id="user-longitude"
+                                    name="user-longitude"
+                                    value={profile?.longitude}
+                                    className='input-profile'
+                                    onChange={(event) => updateInput('longitude', event.target.value)}
+                                />
+                                <ValidationField field='longitude' errors={errors} />
+                            </div>
+                        </div>
                     </FormControl>
                 </Box>
+
+                {/* PREFERENCES */}
+                <Container className='group-section'>
+                    <Typography variant="h6" sx={{fontWeight: 700}}>Preferencias</Typography>
+
+                    <Box className='form-field-preferences' >
+                        <Box className='main-box-preferences' >
+                            <Typography variant="body1" sx={{fontWeight: 600}} >Criterios de Busqueda</Typography>
+                            <IconButton size='small' onClick={() => handleNavigateTo('/profile/search-criteria')} className='icon-style'> 
+                                <KeyboardArrowRightIcon/>
+                            </IconButton>                            
+                        </Box>
+
+                         <Box className='main-box-preferences' >
+                            <Typography variant="body1" sx={{fontWeight: 600}} >Ingredientes a evitar</Typography>
+                            <IconButton size='small' onClick={() => handleNavigateTo('/profile/ingredient-criteria/avoid')} className='icon-style'> 
+                                <KeyboardArrowRightIcon/>
+                            </IconButton>
+                        </Box> 
+
+                        <Box className='main-box-preferences' >
+                            <Typography variant="body1" sx={{fontWeight: 600}} >Ingredientes preferidos</Typography>
+                            <IconButton size='small' onClick={() => handleNavigateTo('/profile/ingredient-criteria/prefers')} className='icon-style'> 
+                                <KeyboardArrowRightIcon/>
+                            </IconButton>
+                        </Box>
+                    </Box>
+
+                </Container>
+                
+                <Button type='submit' variant="contained" className='btn-primary'>Guardar</Button>
+                <LogoutButton/>
             </form>
 
-            {/* PREFERENCES (podria hacer los Box otro componente) */}
-            <Container className='group-section'>
-                <Typography variant="h6" sx={{fontWeight: 700}}>Preferencias</Typography>
-
-                <Box>
-                    <Box className='main-box-preferences' >
-                        <Typography variant="body1" sx={{fontWeight: 600}} >Criterios de Busqueda</Typography>
-                        <IconButton size='small' href='/search-criteria' className='icon-style'> 
-                            <KeyboardArrowRightIcon/>
-                        </IconButton>                            
-                    </Box>
-                    
-                    <PreferencesBox
-                        title ='Ingredientes a evitar'
-                        link ='/ingredient-criteria/avoid'
-                        icon = {<KeyboardArrowRightIcon/>}
-                    />
-                    
-                    <PreferencesBox
-                        title ='Ingredientes preferidos'
-                        link ='/ingredient-criteria/prefers'
-                        icon = {<KeyboardArrowRightIcon/>}
-                    />
-                </Box>
-
-            </Container>
-            <Button variant="contained" className='btn-primary'>Guardar</Button>
-            <LogoutButton/>
-
         </Container>
-        </>
     )
 }
 
