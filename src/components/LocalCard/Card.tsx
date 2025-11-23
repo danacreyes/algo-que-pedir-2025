@@ -1,91 +1,66 @@
-import React from 'react'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import Typography from '@mui/material/Typography'
+import { Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { StoreType } from '../../domain/store'
-import { Box, Chip } from '@mui/material'
-import PlaceIcon from '@mui/icons-material/Place'
-
+import {
+  CardsContainer,
+  StoreCard,
+  ImageContainer,
+  StoreImage,
+  StoreCardContent,
+  NearbyStoreContainer,
+  NearbyIcon,
+  NearbyText,
+  NoStoresText
+} from './StyledCard'
 
 interface MediaCardProps {
   stores: StoreType[];
 }
 
 export default function MediaCard({ stores }: MediaCardProps) {
-  const Navigate = useNavigate()
+  const navigate = useNavigate()
 
   const handleCardClick = (storeId: number) => {
-    Navigate(`store-detail/${storeId}`)
+    navigate(`store-detail/${storeId}`)
   }
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
       {stores.length > 0 ? (
         stores.map((store) => (
-          <Card 
+          <StoreCard 
             key={store.id}
-            sx={{ 
-              width: 150, 
-              height: 200,
-              minWidth: 150, 
-              minHeight: 200, 
-              cursor: 'pointer', 
-              '&:hover': { boxShadow: 3 }, 
-              margin: 2, 
-              padding: 2, 
-              display: 'flex', 
-              flexDirection: 'column', 
-              overflow: 'hidden'
-            }}
             onClick={() => handleCardClick(store.id)} 
           >
-            <Box sx={{ position: 'relative' }}> 
-              <CardMedia
-                sx={{ 
-                  height: 100,  
-                  width: '100%',  
-                  objectFit: 'cover', 
-                  position: 'relative' 
-                }}
+            <ImageContainer>
+              <StoreImage
                 image={store.storeURL}
                 title={`Imagen de ${store.name}`}
               />
-            </Box>
-            <CardContent sx={{ flexGrow: 1, p: 1 }}>
-              <Typography noWrap component="div" sx={{ maxWidth: '100px' }}>
+            </ImageContainer>
+            <StoreCardContent>
+              <Typography noWrap component="div" className="store-name">
                 {store.name}
               </Typography>
-              <Typography noWrap sx={{ color: 'text.secondary', maxWidth: '100px', fontSize: '0.8rem' }}>
+              <Typography noWrap variant="body2" className="store-address">
                 {store.storeAddress} {store.storeAltitude}
               </Typography>
-              {/* si store.usuarioCercano es true, renderiza el componente a la derecha */}
               {store.usuarioCercano && (
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    mt: 0.5,
-                    color: 'error.main',
-                    fontSize: '0.75rem',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  <PlaceIcon sx={{ fontSize: '1rem', mr: 0.5 }} />
-                  <Typography variant="caption" sx={{ color: 'error.main', fontWeight: 'bold' }}>
+                <NearbyStoreContainer>
+                  <NearbyIcon />
+                  <NearbyText variant="caption">
                     Local cercano
-                  </Typography>
-                </Box>
+                  </NearbyText>
+                </NearbyStoreContainer>
               )}
-            </CardContent>
-          </Card>
+            </StoreCardContent>
+          </StoreCard>
         ))
       ) : (
-        <Typography sx={{ padding: 2 }}>
+        <NoStoresText>
           No hay locales disponibles
-        </Typography>
+        </NoStoresText>
       )}
-    </Box>
+    </CardsContainer>
   )
 }
