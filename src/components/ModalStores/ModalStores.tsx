@@ -48,7 +48,7 @@ const ModalStores = ({open, onClose, stores, selectedIds, onToggle, onConfirm}: 
                                 </div>
                             ))
                         ) : (
-                            <Typography>No hay restaurantes disponibles</Typography>
+                            <Typography className='empty-stores'>No hay restaurantes disponibles</Typography>
                         )}
                     </div>
 

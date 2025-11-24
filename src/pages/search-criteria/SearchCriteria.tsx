@@ -163,6 +163,7 @@ const SearchCriteria = () => {
         initLocalesFavoritos(locales)
       } catch (e) {
           console.error(e)
+          showToast('Error al cargar los locales. Por favor intenta nuevamente.', 'error')
       }
     }
 
@@ -395,7 +396,7 @@ const SearchCriteria = () => {
             </Card>               
             
              <Box className="see-order-container" sx={{ mt: 'auto' }}>
-                <Button variant="contained" className='btn-primary btn-search-criteria' onClick={handleSave}>Modificar</Button>
+                <Button variant="contained" className='btn-primary' onClick={handleSave}>Modificar</Button>
              </Box>
         </Container>
         </>
