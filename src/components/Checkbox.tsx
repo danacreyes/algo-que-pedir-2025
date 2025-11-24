@@ -23,7 +23,8 @@ export default function ColorCheckboxes({ isChecked, onCheckboxChange }: ColorCh
           '&.Mui-checked': {
             color: '#de0d0d',
           },
-        }}        
+        }}   
+        data-testid="nearby-checkbox"     
       />
       <Typography>
         Buscar locales cercanos
