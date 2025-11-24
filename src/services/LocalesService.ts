@@ -23,8 +23,10 @@ class StoreService {
   }
 
   async getStore(id: number | null) {
-    const response = await axios.get<StoreDomJSON>(`${REST_SERVER_URL}/store-profile-react/${id}`)
+    const response = await axios.get<StoreDomJSON>(`${REST_SERVER_URL}/store-profile-react/${id}?userID=${localStorage.getItem('id')}`)
+    // console.log(response.data) esto es muy loco
     const store = Store.fromJSON(response.data)
+    // console.log(store)
     return store
   }
 

@@ -25,7 +25,7 @@ export default function MediaCard({ stores }: MediaCardProps) {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+    <CardsContainer sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
       {stores.length > 0 ? (
         stores.map((store) => (
           <StoreCard 

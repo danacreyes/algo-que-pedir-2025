@@ -181,7 +181,7 @@ const OrderCheckout = () => {
                                 {store?.name}
                             </Typography>
                             <Typography variant='body2' className="restaurant-details">
-                                {store?.gradePointAvg} · 5 km · Envío gratis (hardcoded!)
+                                {store?.gradePointAvg} · {store?.userDistance.toFixed(1)} km · Envío gratis
                             </Typography>
                         </Box>
                     </Box>

@@ -9,6 +9,7 @@ export type StoreDomJSON = {
   numberOfOrders: number,
   paymentTypes: PaymentType[],
   reviews: StoreRateJSON[],
+  userDistance: number
 }
 
 export type StoreReviewsJSON = {
@@ -31,7 +32,7 @@ export class Store {
     paymentTypes: PaymentType[]
     numberOfOrders: number
     deliveryTimeAvg: number
-    // ubicacion: number // ahre
+    userDistance: number
 
     constructor(
         id: number = -1,
@@ -42,7 +43,7 @@ export class Store {
         paymentTypes: PaymentType[] = [PaymentType.EFECTIVO],
         numberOfOrders = 0,
         deliveryTimeAvg = 0,
-        // ubicacion: number
+        userDistance: number = 0
     ) {
         this.id = id
         this.name = name
@@ -52,7 +53,7 @@ export class Store {
         this.paymentTypes = paymentTypes
         this.numberOfOrders = numberOfOrders
         this.deliveryTimeAvg = deliveryTimeAvg
-        // this.ubicacion = ubicacion
+        this.userDistance = userDistance
     }
 
     get gradePointAvg(): string {
