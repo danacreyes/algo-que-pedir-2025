@@ -9,16 +9,11 @@ const FraseConsumista = ({ frase, eliminarFrase }: {frase: string, eliminarFrase
 
   return (
     <Stack direction="row" spacing={1}>
-      {/* <Chip label={frase} onDelete={handleDelete} /> */}
-      <Chip label={frase} variant="outlined" onDelete={handleDelete} />
-      {/* <Chip label={frase} variant="outlined" onDelete={handleDelete} />
-      <Chip label={frase} variant="outlined" onDelete={handleDelete} />
-      <Chip label={frase} variant="outlined" onDelete={handleDelete} />
-      <Chip label={frase} variant="outlined" onDelete={handleDelete} />
-      <Chip label={frase} variant="outlined" onDelete={handleDelete} />
-      <Chip label={frase} variant="outlined" onDelete={handleDelete} /> */}
+      <Chip label={frase} variant="outlined" onDelete={handleDelete}
+      slotProps={{
+        label: { 'data-testid': `frase-${frase}` } as any
+      }} />
     </Stack>
-    // <p  style={{backgroundColor: '#e57373'}}>
   )
 }
 

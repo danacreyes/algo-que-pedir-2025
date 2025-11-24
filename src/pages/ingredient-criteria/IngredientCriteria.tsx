@@ -19,7 +19,7 @@ import './ingredient-criteria.css'
 
 const IngredientCriteria = () => {
     const { criteria } = useParams()
-    const { profile, setProfile, checkChanges } = useUserProfile()
+    const { profile, setProfile, checkChanges, showToast } = useUserProfile()
 
     const title = criteria === 'avoid' ? 'Ingredientes a evitar' : 'Ingredientes preferidos'
 
@@ -43,6 +43,7 @@ const IngredientCriteria = () => {
             setAllIngredients(all)
         } catch (err) {
             console.error('Error loading ingredients', err)
+            showToast('Error al cargar los ingredientes. Intente nuevamente.', 'error')
         }
     }
 

@@ -19,10 +19,9 @@ import { Store } from '../../domain/storeDom'
 import { storeService } from '../../services/LocalesService'
 import ModalStores from '../../components/ModalStores/ModalStores.js'
 import { UserProfile } from '../../domain/userProfile'
-import { useToast } from '../../components/Toast/useToast.js'
 
 const SearchCriteria = () => {
-    const { profile, setProfile, profileOG, checkChanges, showToast } = useUserProfile()
+    const { profile, setProfile, checkChanges, showToast } = useUserProfile()
 
     const isInitializedRef = useRef(false)
 
@@ -164,6 +163,7 @@ const SearchCriteria = () => {
         initLocalesFavoritos(locales)
       } catch (e) {
           console.error(e)
+          showToast('Error al cargar los locales. Por favor intenta nuevamente.', 'error')
       }
     }
 
@@ -225,7 +225,7 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos veganos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
+                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}}/>
                     </Grid>
                 </Grid>
             </Card>
@@ -296,7 +296,7 @@ const SearchCriteria = () => {
                     )}
                 </div>
                 <Box className='box-button'>
-                    <Button size='small' variant="contained" className='btn-add' onClick={handleOpenModal}><AddIcon fontSize='small'/></Button>
+                    <Button size='small' variant="contained" className='btn-add' onClick={handleOpenModal} data-testid='btn-fieles-add'><AddIcon fontSize='small'/></Button>
                 </Box>
                 {openFieles && (
                     <ModalStores
@@ -337,6 +337,7 @@ const SearchCriteria = () => {
                                         fullWidth
                                         placeholder="Escribe tus palabras clave aquí..."
                                         className="input-frases-field" 
+                                        data-testid='input-frases'
                                     /> 
                                 </Box>
                             </Grid>
@@ -347,6 +348,7 @@ const SearchCriteria = () => {
                                     onClick={handleGuardarFrases} 
                                     size="small" 
                                     className='icon-button-control'
+                                    data-testid='btn-frases-add'
                                 >
                                     <CheckIcon/>
                                 </Button>
@@ -362,7 +364,7 @@ const SearchCriteria = () => {
                         </Grid>
                     )}
                 <Box className='box-button'>
-                    <Button size='small' variant="contained" className='btn-add' onClick={handleOpenInput}><AddIcon fontSize='small'/></Button>
+                    <Button size='small' variant="contained" className='btn-add' onClick={handleOpenInput} data-testid='btn-consumista-add'><AddIcon fontSize='small'/></Button>
                 </Box>
             </Card>
 
@@ -383,7 +385,7 @@ const SearchCriteria = () => {
                         <IconButton size='small' aria-label="remove" sx={{ backgroundColor: '#f7f4f4', width: 30, height: 30 }} onClick={rest} disabled={counter === 0}>
                             <RemoveCircleIcon fontSize='small' sx={{color: 'gray'}} />
                         </IconButton>
-                        <Typography>{counter}</Typography>
+                        <Typography data-testid='maxDistance'>{counter}</Typography>
                         
                         <IconButton aria-label="add" sx={{ backgroundColor: '#f7f4f4', width: 30, height: 30 }} onClick={add}>
                             <AddCircleIcon fontSize='small' sx={{color: 'gray'}}/>
@@ -394,7 +396,7 @@ const SearchCriteria = () => {
             </Card>               
             
              <Box className="see-order-container" sx={{ mt: 'auto' }}>
-                <Button variant="contained" className='btn-primary btn-search-criteria' onClick={handleSave}>Modificar</Button>
+                <Button variant="contained" className='btn-primary' onClick={handleSave}>Modificar</Button>
              </Box>
         </Container>
         </>
