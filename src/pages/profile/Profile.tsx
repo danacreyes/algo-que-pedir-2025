@@ -29,7 +29,7 @@ const Profile = () => {
         }
 
         try {
-            console.log(UserProfile.fromJSON(profile))
+            // console.log(UserProfile.fromJSON(profile))
             const updatedProfile = await userService.updateProfile(profile)
             setProfile(updatedProfile)
             setProfileOG(UserProfile.fromJSON(updatedProfile.toJSON())) // ... es una copia!
