@@ -202,7 +202,7 @@ const OrderCheckout = () => {
                                         {item.title}
                                     </Typography>
                                 </Box>
-                                <Typography variant='body2' className="item-quantity">
+                                <Typography variant='body2' className="item-quantity" data-testid={`item-quantity-${item.id}`}>
                                     Cantidad: {item.quantity}
                                 </Typography>
                                 <Typography variant='body2' className="item-unit-price">
@@ -340,6 +340,7 @@ const OrderCheckout = () => {
                         onClick={isNew ? handleReserveOrder : handleConfirmOrder}
                         disabled={isNew && items.length === 0}
                         className="confirm-order-button"
+                        data-testid="reservar-confirmar-pedido-btn"
                     >
                         {isNew ? 'Reservar pedido' : 'Confirmar Pedido'}
                     </Button>

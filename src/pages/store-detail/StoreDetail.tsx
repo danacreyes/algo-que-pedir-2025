@@ -245,6 +245,7 @@ const StoreDetail = () => {
                     onClick={() => navigate('/order-checkout', {state: {id: store?.id, isNew: true}})}
                     className="see-order-button"
                     disabled={totalItems() < 1}
+                    data-testid="ver-pedido-btn"
                 >
                     Ver pedido ({totalItems()})
                 </Button>
@@ -256,6 +257,8 @@ const StoreDetail = () => {
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                data-testid="dish-modal"
+                id={`modal-${selectedDish?.id}`}
             >
                 <Box className="modal-box">
                     <CardMedia
@@ -293,7 +296,7 @@ const StoreDetail = () => {
                             >
                                 -
                             </Button>
-                            <Typography className="quantity-display">
+                            <Typography className="quantity-display" data-testid="modal-counter">
                                 {modalCounter}
                             </Typography>
                             <Button
@@ -301,6 +304,7 @@ const StoreDetail = () => {
                                 color="error"
                                 onClick={() => countModalcounter()}
                                 className="quantity-button"
+                                data-testid="modal-add-btn"
                             >
                                 +
                             </Button>
@@ -332,6 +336,7 @@ const StoreDetail = () => {
                                 color="error"
                                 className="add-button"
                                 onClick={handleAddToCart}
+                                data-testid="agregar-a-pedido"
                             >
                                 Agregar al Pedido
                             </Button>

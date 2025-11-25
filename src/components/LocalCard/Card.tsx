@@ -31,6 +31,7 @@ export default function MediaCard({ stores }: MediaCardProps) {
           <StoreCard 
             key={store.id}
             onClick={() => handleCardClick(store.id)} 
+            data-testid={`store-card-${store.id}`}
           >
             <ImageContainer>
               <StoreImage

@@ -42,7 +42,7 @@ function OrderDetails () {
 
   const showOrders = () => {
     return orders.map(order => 
-      <Container sx={{padding: '0.5em'}} key={order.id}>
+      <Container sx={{padding: '0.5em'}} key={order.id} data-testid={`restaurant-card-${order.local.id}-${order.id}`}>
         <RestaurantCard 
           src={order.local.storeURL} 
           alt='Imagen de local' 
