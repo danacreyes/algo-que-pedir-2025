@@ -7,6 +7,9 @@ import { userService } from '../../services/UserService'
 import ValidationField from '../../components/ValidationField/ValidationField'
 import { ValidationMessage } from '../../domain/user'
 import { StoreRate } from '../../domain/storeRate'
+import { getErrorMessage } from '../../domain/errorHandler'
+import { useToast } from '../../components/Toast/useToast'
+import { Toast } from '../../components/Toast/ToastContainer'
 
 const MAX_CHARACTERS: number = 250 
 
@@ -19,6 +22,7 @@ function RateStore() {
   const [charactersLeft, setCharactersLeft] = useState<number>(MAX_CHARACTERS)
   const [counterState, setCounterState] = useState<string>('safe')
   const [errors, setErrors] = useState<Array<ValidationMessage>>([])
+  const { toast, showToast } = useToast()
 
   const generateAndSubmitFormData = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault()
@@ -48,8 +52,9 @@ function RateStore() {
       await userService.rateStore(storeRate, Number(id))
       navigation.goTo('/store-ratings')
 
-    } catch {
-      console.info('Algo fallo. No se pudo')
+    } catch (error){
+      const errorMessage = getErrorMessage(error)
+      showToast('Error al cargar las ordenes. ' + errorMessage, 'error')
     }
   }
 
@@ -78,6 +83,7 @@ function RateStore() {
         <form
           onSubmit={generateAndSubmitFormData}
           id='store-rate-form'
+          data-testid='rating-form'
         >
           <fieldset
             style={{
@@ -97,6 +103,7 @@ function RateStore() {
                 gap: '1em',
                 left: '0.4em'
               }}
+              data-testid="rating-component"
             />
           </fieldset>
         
@@ -122,18 +129,21 @@ function RateStore() {
                   }
                 }}
                 placeholder='Describi tu experiencia'
-                style={{ 
-                  
-              }}></textarea>
-              <div className={`characters-counter ${counterState}`}>{charactersLeft}</div>
+                data-testid="rating-textarea">
+
+                </textarea>
+              <div className={`characters-counter ${counterState}`} data-testid="characters-counter">{charactersLeft}</div>
             </section>
             <ValidationField field='experience-description' errors={errors} />
           </fieldset>
           
-          <Button variant='contained' type='submit' className='btn-primary spaced-top'>Guardar</Button>
+          <Button variant='contained' type='submit' className='btn-primary spaced-top' data-testid="submit-rating">Guardar</Button>
         </form>
 
       </section>
+      <div id="toast-container">
+        <Toast toast={toast} />
+      </div>
     </div>
   )
 }

@@ -109,6 +109,6 @@ export class UserProfile {
     JSON.stringify(this.ingredientsToAvoid) === JSON.stringify(other.ingredientsToAvoid) &&
     JSON.stringify(this.preferredIngredients) === JSON.stringify(other.preferredIngredients) &&
     JSON.stringify(this.criteria) === JSON.stringify(other.criteria)
-  );
+  )
 }
 }

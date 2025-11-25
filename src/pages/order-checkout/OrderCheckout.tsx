@@ -259,7 +259,7 @@ const OrderCheckout = () => {
                         <Typography variant='body2' className="summary-label">
                             Subtotal
                         </Typography>
-                        <Typography variant='body2' className="summary-value">
+                        <Typography variant='body2' className="summary-value" data-testid='subtotal-value'>
                             ${isNew ? subtotal.toFixed(2) : order?.precioSubtotal.toFixed(2)}
                         </Typography>
                     </Box>
@@ -267,7 +267,7 @@ const OrderCheckout = () => {
                         <Typography variant='body2' className="summary-label">
                             Recargo por tipo de pago
                         </Typography>
-                        <Typography variant='body2' className="summary-value">
+                        <Typography variant='body2' className="summary-value" data-testid='service-fee'>
                             ${isNew ? serviceFee.toFixed(2) : order?.aCobrarPorPedido().toFixed(2)}
                         </Typography>
                     </Box>
@@ -275,7 +275,7 @@ const OrderCheckout = () => {
                         <Typography variant='body2' className="summary-label">
                             Tarifa de entrega
                         </Typography>
-                        <Typography variant='body2' className="summary-value">
+                        <Typography variant='body2' className="summary-value" data-testid="delivery-fee">
                             ${isNew ? store?.deliveryFee.toFixed(2) : order?.local.deliveryFee.toFixed(2)}
                         </Typography>
                     </Box>
@@ -288,7 +288,7 @@ const OrderCheckout = () => {
                     <Typography variant='h6' className="total-label">
                         Total
                     </Typography>
-                    <Typography variant='h6' className="total-value">
+                    <Typography variant='h6' className="total-value" data-testid="total-value">
                         ${isNew ? total.toFixed(2) : order?.precioTotal().toFixed(2)}
                     </Typography>
                 </Box>
@@ -306,6 +306,7 @@ const OrderCheckout = () => {
                                 value={currentPaymentMethod == null ? paymentMethod : currentPaymentMethod}
                                 onChange={(e) => setPayment(e.target.value as PaymentType)}
                                 className="payment-select"
+                                data-testid="payment-select"
                                 >
                                 {store?.paymentTypes?.map((pago) => (
                                     <MenuItem key={pago} value={pago}>
@@ -315,7 +316,7 @@ const OrderCheckout = () => {
                             </Select>
                         </FormControl>) : (null)) : (
                             <FormControl fullWidth disabled>
-                                <Select value={order?.metodoDePago ?? ''}>
+                                <Select value={order?.metodoDePago ?? ''} data-testid="payment-select">
                                     <MenuItem value={order?.metodoDePago}>{paymentLabels[order?.metodoDePago!]}</MenuItem>
                                     {store?.paymentTypes
                                     // .filter((pago) => (pago == order?.metodoDePago))
@@ -340,6 +341,7 @@ const OrderCheckout = () => {
                         onClick={isNew ? handleReserveOrder : handleConfirmOrder}
                         disabled={isNew && items.length === 0}
                         className="confirm-order-button"
+                        data-testid="confirm-order-btn"
                     >
                         {isNew ? 'Reservar pedido' : 'Confirmar Pedido'}
                     </Button>

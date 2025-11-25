@@ -6,9 +6,13 @@ import { userService } from '../../services/UserService'
 import { useOnInit } from '../../customHooks/useOnInit'
 import './store-ratings.css'
 import { Store } from '../../domain/storeDom'
+import { useToast } from '../../components/Toast/useToast'
+import { Toast } from '../../components/Toast/ToastContainer'
+import { getErrorMessage } from '../../domain/errorHandler'
 
 const StoreRatings = () => {
     const [unratedStores, setUnratedStores] = useState<Store[]>([])
+    const { toast, showToast } = useToast()
 
     const navigation = Navigator()
     
@@ -17,7 +21,8 @@ const StoreRatings = () => {
             const unratedStores: Store[] = await userService.getUnratedStores()
             setUnratedStores(unratedStores)
         } catch (error) {
-            console.info('An error has occurred',error)
+            const errorMessage = getErrorMessage(error)
+            showToast('Error al cargar las ordenes. ' + errorMessage, 'error')
         }
     }
 
@@ -26,13 +31,13 @@ const StoreRatings = () => {
     const showUnratedStores = () => {
         return unratedStores
         .map(store => 
-            <Container sx={{padding: '0.5em'}} key={store.id}>
+            <Container sx={{padding: '0.5em'}} key={store.id} data-testid={`store-to-rate-${store.id}`}>
                 <RestaurantCard 
                 src={store.storeURL} 
                 alt='Imagen de local' 
                 name={store.name} 
                 detail = {`${store.gradePointAvg} · ${store.deliveryTimeAvg} · ${store.isExpensive ? '$$' : '$'}`}
-                icon={<Button sx={{textAlign: 'center', textTransform: 'none'}} variant="contained" color="success">Calificar</Button>}
+                icon={<Button sx={{textAlign: 'center', textTransform: 'none'}} variant="contained" color="success" data-testid={`rate-btn-${store.id}`}>Calificar</Button>}
                 buttonOnClickFunction={() => navigation.goTo(`/rate-store/${store.id}`, { name : store.name })}
                 />
             </Container>
@@ -59,6 +64,9 @@ const StoreRatings = () => {
                             </Typography>
                         </Card>}
                 {/* </section> */}
+                <div id="toast-container">
+                    <Toast toast={toast} />
+                </div>
             </div>
         </>
     )

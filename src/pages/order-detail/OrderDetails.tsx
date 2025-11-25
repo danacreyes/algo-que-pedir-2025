@@ -11,9 +11,13 @@ import { useOnInit } from '../../customHooks/useOnInit'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import { useNavigate } from 'react-router-dom'
 import { userService } from '../../services/UserService'
+import { Toast } from '../../components/Toast/ToastContainer'
+import { useToast } from '../../components/Toast/useToast'
+import { getErrorMessage } from '../../domain/errorHandler'
 
 function OrderDetails () {
   const [orders, setOrders] = useState<Order[]>([])
+  const { toast, showToast } = useToast()
   const [state, setState] = useState('PENDIENTE')
   const navigate = useNavigate()
 
@@ -27,7 +31,8 @@ function OrderDetails () {
         const newOrders = await orderService.getFilteredUserOrders(newState)
         setOrders(newOrders)
     } catch (error) {
-      console.info('Unexpected error', error)
+      const errorMessage = getErrorMessage(error)
+      showToast('Error al cargar las ordenes. ' + errorMessage, 'error')
     }
   }
 
@@ -36,22 +41,24 @@ function OrderDetails () {
       userService.cancelOrder(id)
       setOrders(prev => prev.filter(order => order.id != id))
     } catch (error) {
-      console.info('Unexpected error', error)
+      const errorMessage = getErrorMessage(error)
+      showToast('Error al cancelar la orden. ' + errorMessage, 'error')
     }
   }
 
   const showOrders = () => {
     return orders.map(order => 
-      <Container sx={{padding: '0.5em'}} key={order.id}>
+      <Container sx={{padding: '0.5em'}} key={order.id} data-testid={`order-card-${order.id}`}>
         <RestaurantCard 
           src={order.local.storeURL} 
           alt='Imagen de local' 
           name={order.local.name} 
           detail={'Total: $' + order.precioTotal().toFixed(2)}
           detail2 = {order.fechaCreacionString + ' · ' + order.platos.length + ' productos'}
-          icon={order.estado == 'CANCELADO' ? '' : <Button color="error" className='btn-primary'>Cancelar</Button>}
+          icon={order.estado == 'CANCELADO' ? '' : <Button color="error" className='btn-primary' data-testid={`cancel-btn-${order.id}`}>Cancelar</Button>}
           cardOnClickFunction={() => navigate('/order-checkout', {state: {id: order.local.id, isNew: false, orderId: order.id}})}
           buttonOnClickFunction={() => cancelOrder(order.id)}
+          id={order.id}
         />
       </Container>
       )
@@ -89,6 +96,9 @@ function OrderDetails () {
           </TabContext>
         </Box>
       </section>
+      <div id="toast-container">
+        <Toast toast={toast} />
+      </div>
     </div>
     </>
   )

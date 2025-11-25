@@ -2,7 +2,7 @@ import { Box, IconButton, Typography } from '@mui/material'
 import { ReactNode } from 'react'
 import './restaurant-card.css'
 
-const RestaurantCard = ({src, alt, name, detail, detail2, icon, cardOnClickFunction, buttonOnClickFunction, classNameCard, classNameImage, classNameContent, classNameIcon}:{src: string, alt: string, name: string, detail: string, detail2?: string, icon: ReactNode, cardOnClickFunction?: () => void, buttonOnClickFunction?: () => void, classNameCard?:string, classNameImage?:string, classNameContent?:string, classNameIcon?:string}) => {
+const RestaurantCard = ({src, alt, name, detail, detail2, icon, cardOnClickFunction, buttonOnClickFunction, classNameCard, classNameImage, classNameContent, classNameIcon, id}:{src: string, alt: string, name: string, detail: string, detail2?: string, icon: ReactNode, cardOnClickFunction?: () => void, buttonOnClickFunction?: () => void, classNameCard?:string, classNameImage?:string, classNameContent?:string, classNameIcon?:string, id?: number}) => {
     return(
         <Box className={`main-box-restaurant ${classNameCard  ?? ''}`}>  
             <Box className='box-item-restaurant' onClick={cardOnClickFunction}>

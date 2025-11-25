@@ -137,7 +137,7 @@ const StoreDetail = () => {
             const backStoreResponse = await storeService.getStore(Number(id))
             setStore(backStoreResponse)
         } catch (error) {
-            console.info('An error has occurred: ', error)
+            showToast((error as Error).message, 'error')
         }
     }
 
@@ -146,7 +146,7 @@ const StoreDetail = () => {
             const backItemsResponse = await menuItemsService.getItemsByStore(Number(id), Number(localStorage.getItem('id')))
             setDishes(backItemsResponse)
         } catch (error) {
-            console.info('An error has occurred: ', error)
+            showToast((error as Error).message, 'error')
         }
     }
 
@@ -160,7 +160,7 @@ const StoreDetail = () => {
             setReviews((oldReviews) => (init ? [] : oldReviews).concat(reviewsCut))
             reviewsInMemory = true
         } catch (error) {
-            console.info('An error has occurred: ', error)
+            showToast((error as Error).message, 'error')
         }
     }
 
@@ -196,7 +196,7 @@ const StoreDetail = () => {
                 <Typography variant='h5' className="restaurant-title" data-testid={`data_${store?.name}`} >
                     {store?.name}
                 </Typography>
-                <Typography variant='body2' className="restaurant-info-stats">
+                <Typography variant='body2' className="restaurant-info-stats" data-testid={`store-rating-${store?.id}`}>
                     {store?.gradePointAvg} ({store?.numberOfReviews} reviews) · {store?.numberOfOrders} pedidos
                 </Typography>
 
