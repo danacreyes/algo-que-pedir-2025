@@ -293,6 +293,7 @@ const StoreDetail = () => {
                                 onClick={() => restModalcounter()}
                                 disabled={modalCounter <= 1}
                                 className="quantity-button"
+                                data-testid="modal-rest-btn"
                             >
                                 -
                             </Button>
@@ -327,6 +328,7 @@ const StoreDetail = () => {
                                 color="error"
                                 onClick={handleClose}
                                 className="cancel-button"
+                                data-testid="cerrar-modal-store"
                             >
                                 Cancelar
                             </Button>
@@ -346,7 +348,7 @@ const StoreDetail = () => {
             </Modal>
 
             {/* ==================== Toast ==================== */}
-            <div id="toast-container">
+            <div id="toast-container" data-testid='toast-storeDetail-test'>
                 <Toast toast={toast} />
             </div>
 

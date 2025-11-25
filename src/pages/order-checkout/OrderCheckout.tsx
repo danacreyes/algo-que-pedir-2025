@@ -173,11 +173,11 @@ const OrderCheckout = () => {
                         <Box
                             component='img'
                             src={store?.storeURL}
-                            alt='El Sabor Auténtico'
+                            alt={store?.name}
                             className="restaurant-logo"
                         />
                         <Box>
-                            <Typography className="restaurant-name">
+                            <Typography className="restaurant-name" data-testid='restaurant-name-test'>
                                 {store?.name}
                             </Typography>
                             <Typography variant='body2' className="restaurant-details">
@@ -358,7 +358,7 @@ const OrderCheckout = () => {
             ) : ''}
 
             {/* ==================== Toast ==================== */}
-            <div id="toast-container">
+            <div id="toast-container" data-testid='toast-orderCheckout-test'>
                 <Toast toast={toast} />
             </div>
 
