@@ -208,7 +208,7 @@ const StoreDetail = () => {
                             aria-label='menu tabs'
                         >
                             <Tab label='Menú' value='1' />
-                            <Tab label='Reseñas' value='2' />
+                            <Tab label='Reseñas' value='2' data-testid="reseñas-tab"/>
                         </TabList>
                     </Box>
 
@@ -228,7 +228,7 @@ const StoreDetail = () => {
                             {reviews.map((review) => (
                                 <RateCard key={review.experienceDesc} calificacion={Number(review.rate)} comentario={review.experienceDesc}/>
                             ))}
-                            {hasMore && <button className='pagination-button' onClick={getMoreStoreReviews}>Cargar mas</button>}
+                            {hasMore && <button className='pagination-button' onClick={getMoreStoreReviews} data-testid="cargar-mas-reseñas">Cargar mas</button>}
                         </TabPanel>
                     </Box>
                 </TabContext>
