@@ -34,6 +34,7 @@ const HeaderBack = ({ title, backTo, onClickCustom = () => {} }: HeaderProps) =>
                         }
                     }}
                     className="header-back-button"
+                    data-testid="header-back-btn"
                 >
                     <ArrowBackIcon />
                 </IconButton>

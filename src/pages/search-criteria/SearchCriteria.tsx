@@ -224,7 +224,11 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos veganos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}}/>
+                        <Checkbox checked={isCriterioActive('vegano')} onChange={toggleCriterio('vegano', Vegano)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} 
+                        slotProps={{
+                          input: { 'data-testid': 'vegano-checkbox'} as any 
+                        }}
+                        />
                     </Grid>
                 </Grid>
             </Card>
@@ -236,7 +240,11 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos de autor</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('exquisito')} onChange={toggleCriterio('exquisito', Exquisito)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
+                        <Checkbox checked={isCriterioActive('exquisito')} onChange={toggleCriterio('exquisito', Exquisito)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} 
+                        slotProps={{
+                          input: { 'data-testid': 'exquisito-checkbox'} as any 
+                        }}
+                        />
                     </Grid>
                 </Grid>
             </Card>
@@ -248,7 +256,11 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo platos con ingredientes preferidos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('conservador')} onChange={toggleCriterio('conservador', Conservador)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
+                        <Checkbox checked={isCriterioActive('conservador')} onChange={toggleCriterio('conservador', Conservador)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} 
+                        slotProps={{
+                          input: { 'data-testid': 'conservador-checkbox'} as any 
+                        }}
+                        />
                     </Grid>
                 </Grid>
             </Card>
@@ -260,7 +272,11 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Solo los restaurantes preferidos</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('fieles')} onChange={toggleCriterio('fieles', new Fieles([]))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
+                        <Checkbox checked={isCriterioActive('fieles')} onChange={toggleCriterio('fieles', new Fieles([]))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} 
+                        slotProps={{
+                          input: { 'data-testid': 'fieles-checkbox'} as any 
+                        }}
+                        />
                     </Grid>
                 </Grid>
                 <div className='restaurant-section'>
@@ -317,7 +333,11 @@ const SearchCriteria = () => {
                     </Grid>
                     <Grid size={2}>
                         {/* <Checkbox/> */}
-                        <Checkbox checked={isCriterioActive('consumista')} onChange={toggleCriterio('consumista', new Consumista(frasesFavoritas))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
+                        <Checkbox checked={isCriterioActive('consumista')} onChange={toggleCriterio('consumista', new Consumista(frasesFavoritas))} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} 
+                        slotProps={{
+                          input: { 'data-testid': 'consumista-checkbox'} as any 
+                        }}
+                        />
                     </Grid>
                     {frasesFavoritas.map(
                             (frase) =>
@@ -374,7 +394,11 @@ const SearchCriteria = () => {
                         <Typography variant="body2" color='gray'>Dentro de una distancia máxima</Typography>
                     </Grid>
                     <Grid size={2}>
-                        <Checkbox checked={isCriterioActive('impaciente')} onChange={toggleCriterio('impaciente', Impaciente)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} />
+                        <Checkbox checked={isCriterioActive('impaciente')} onChange={toggleCriterio('impaciente', Impaciente)} sx={{ display: 'flex', justifyContent: 'end', color: 'gray', '&.Mui-checked': { color: ' hsl(1, 77%, 45%)'},}} 
+                        slotProps={{
+                          input: { 'data-testid': 'impaciente-checkbox'} as any 
+                        }}
+                        />
                     </Grid>
                 </Grid>
                 <Container className='container-counter'>
@@ -395,7 +419,8 @@ const SearchCriteria = () => {
             </Card>               
             
              <Box className="see-order-container" sx={{ mt: 'auto' }}>
-                <Button variant="contained" className='btn-primary btn-search-criteria' onClick={handleSave}>Modificar</Button>
+                <Button variant="contained" className='btn-primary btn-search-criteria' onClick={handleSave}
+                data-testid="modificar-criteria-btn">Modificar</Button>
              </Box>
         </Container>
         </>

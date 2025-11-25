@@ -39,7 +39,7 @@ export default function MediaCard({ stores }: MediaCardProps) {
               />
             </ImageContainer>
             <StoreCardContent>
-              <Typography noWrap component="div" className="store-name">
+              <Typography noWrap component="div" className="store-name" data-testid={`store-name-${store.id}`}>
                 {store.name}
               </Typography>
               <Typography noWrap variant="body2" className="store-address">
@@ -57,7 +57,7 @@ export default function MediaCard({ stores }: MediaCardProps) {
           </StoreCard>
         ))
       ) : (
-        <NoStoresText>
+        <NoStoresText data-testid="no-stores-text">
           No hay locales disponibles
         </NoStoresText>
       )}

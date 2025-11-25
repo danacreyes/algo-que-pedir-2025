@@ -179,7 +179,7 @@ const Profile = () => {
                     <Box className='form-field-preferences' >
                         <Box className='main-box-preferences' >
                             <Typography variant="body1" sx={{fontWeight: 600}} >Criterios de Busqueda</Typography>
-                            <IconButton size='small' onClick={() => handleNavigateTo('/profile/search-criteria')} className='icon-style'> 
+                            <IconButton size='small' onClick={() => handleNavigateTo('/profile/search-criteria')} className='icon-style' data-testid="search-criteria-link"> 
                                 <KeyboardArrowRightIcon/>
                             </IconButton>                            
                         </Box>
@@ -201,7 +201,7 @@ const Profile = () => {
 
                 </Container>
                 
-                <Button type='submit' variant="contained" className='btn-primary'>Guardar</Button>
+                <Button type='submit' variant="contained" className='btn-primary' data-testid="guardar-perfil-btn">Guardar</Button>
                 <LogoutButton/>
             </form>
 

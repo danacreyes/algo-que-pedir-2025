@@ -1,5 +1,3 @@
-import * as React from 'react'
-import { red } from '@mui/material/colors'
 import Checkbox from '@mui/material/Checkbox'
 import { Box, Typography } from '@mui/material'
 

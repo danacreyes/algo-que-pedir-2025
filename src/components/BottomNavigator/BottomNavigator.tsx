@@ -20,10 +20,10 @@ export default function SimpleBottomNavigation() {
                 setValue(newValue)
                 }}
             >
-                <BottomNavigationAction label="Inicio" icon={<House />} component={Link} to='/' />
+                <BottomNavigationAction label="Inicio" icon={<House />} component={Link} to='/'  data-testid="nav-link-home"/>
                 <BottomNavigationAction label="Pedidos" icon={<Receipt />} component={Link} to='/order-details' />
                 <BottomNavigationAction label="Calificar" icon={<Star />} component={Link} to='/store-ratings' />
-                <BottomNavigationAction label="Perfil" icon={<User />} component={Link} to='/profile' />
+                <BottomNavigationAction label="Perfil" icon={<User />} component={Link} to='/profile' data-testid="nav-link-profile"/>
             </BottomNavigation>
         </Box>
     </Paper>
