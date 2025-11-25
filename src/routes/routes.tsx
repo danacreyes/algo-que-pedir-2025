@@ -33,7 +33,6 @@ export const AppRouter = () => {
                     <Route path="/store-detail/:id" element={<StoreDetail/>}/>
                     <Route path="/order-checkout" element={<OrderCheckout/>}/>
                     <Route path="/order-details" element={<OrderDetails/>}/>
-                    <Route path="/order/:id"/>
                     <Route path="/store-ratings/" element={<StoreRatings/>}/>
                     <Route path="/rate-store/:id" element={<RateStore/>}/>
                 </Route>

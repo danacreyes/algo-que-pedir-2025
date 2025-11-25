@@ -38,21 +38,13 @@ const OrderCheckout = () => {
     [PaymentType.EFECTIVO]: 'Efectivo',
     [PaymentType.TRANSFERENCIA_BANCARIA]: 'Transferencia Bancaria',
     [PaymentType.QR]: 'Código QR'
-}
-    // const removeItem = (id: number) => {
-    //     setItems(items.filter(item => item.id !== id))
-    // }
+    }
 
     const { items, removeItem, clearCart, getTotalPrice, currentLocalId, setCurrentPayment, currentPaymentMethod } = useCart()
-
-    // const handleClearCart = () => {
-    //     setItems([])
-    // }
 
     const handleClearCart = () => {
         clearCart()
     }
-
     
     const handleConfirmOrder = async () => {
         try {
@@ -81,24 +73,18 @@ const OrderCheckout = () => {
     
     // estas variables sueltas se recalculan en cada render
     const subtotal = getTotalPrice()
-    // const serviceFee = 2.62 //? esto no se que onda
     let serviceFee = currentPaymentMethod == 'EFECTIVO' ? 0 : subtotal * 0.1
     const total = subtotal + serviceFee + (store?.deliveryFee as number)
     
     const handleReserveOrder = async () => {
         try {
-            // const itemsIDs = items.map( it => it.id )
+            // Set de ids de platos
             const itemsIDs = items.flatMap(plato =>
                 Array(plato.quantity).fill(plato.id)
             )
 
             const orderData: OrderForBack = {
-                // lo mejor es pasar las ids de 
-                // usuario
-                // local
-                // platos
-                // medio de pago
-                // y que el back se encargue de buscarlos
+                // paso los ids de y el back se encarga de buscarlos
                 userID: Number(localStorage.getItem('id')),
                 localID: effectiveLocalId!,
                 platosIDs: itemsIDs,
@@ -106,8 +92,7 @@ const OrderCheckout = () => {
                 estado: Estado.PENDIENTE,
                 subtotal: subtotal
             }
-
-            console.info(orderData)
+            // console.info(orderData)
 
             await orderService.createOrder(orderData)
             showToast('Pedido reservado', 'success')
@@ -121,7 +106,6 @@ const OrderCheckout = () => {
             const errorMessage = getErrorMessage(error)
             showToast('Error al crear el pedido. ' + errorMessage, 'error')
         }
-
     }
 
     const location = useLocation()
@@ -154,8 +138,6 @@ const OrderCheckout = () => {
         // console.info(orderId)
         isNew ? getStoreData() : getOrderandStoreData()
     })
-
-    //! falta terminar los endpoiunts aca
 
     return (
         <Box className="order-checkout-container">
@@ -232,7 +214,7 @@ const OrderCheckout = () => {
                                     </Typography>
                                 </Box>
                                 <Typography variant='body2' className="item-quantity">
-                                    Cantidad: {order.aparicionesDe(plato.nombre)}
+                                    Cantidad: {order.aparicionesDe(plato.id)}
                                 </Typography>
                                 <Typography variant='body2' className="item-unit-price">
                                     Precio unitario: ${plato.precio.toFixed(2)}
@@ -241,7 +223,7 @@ const OrderCheckout = () => {
 
                             <Box className="item-price-actions">
                                 <Typography className="item-total">
-                                    ${(plato.precio * order.aparicionesDe(plato.nombre)).toFixed(2)}
+                                    ${(plato.precio * order.aparicionesDe(plato.id)).toFixed(2)}
                                 </Typography>
                             </Box>
                         </Box>

@@ -129,8 +129,8 @@ export class Order {
     return format(this.fechaCreacion, 'dd \'de\' MMM', { locale: es })
   }
 
-  aparicionesDe(nombrePlato: string): number {
-    return this.platos.filter(it => it.nombre == nombrePlato).length
+  aparicionesDe(idPlato: number): number {
+    return this.platos.filter(it => it.id == idPlato).length
   }
 
   platosSinRepetir(): MenuItemType[] {

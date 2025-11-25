@@ -90,7 +90,7 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
     )
 }
 
-// custom hook/hook helper para no repetir useContext(), copiado de Cat, sorry bro
+// custom hook/hook helper para no repetir useContext()
 // en cada componente y garantizar que se use dentro del provider
 export const useCart = () => {
     const context = useContext(CartContext)

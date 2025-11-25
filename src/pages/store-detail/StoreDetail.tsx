@@ -49,10 +49,8 @@ const StoreDetail = () => {
     const { id } = useParams()
     const [value, setValue] = React.useState('1')
     const [open, setOpen] = React.useState(false)
-    // const [selectedDish, setSelectedDish] = React.useState<dishType | null>(null)
     const [selectedDish, setSelectedDish] = React.useState<MenuItemJSONReduced | null>(null)
     const [modalCounter, setmodalCounter] = React.useState(1)
-    // const [dishes, setDishes] = React.useState<dishType[]>(dishesMock)
     const [dishes, setDishes] = React.useState<MenuItemJSONReduced[]>(dishesReducedMock)
     const [reviews, setReviews] = React.useState<StoreReviewsJSON[]>([])
     const navigate = useNavigate()
@@ -100,7 +98,7 @@ const StoreDetail = () => {
         return selectedDish.precio * modalCounter
     }
 
-    const { items, addItem, totalItems } = useCart()
+    const { addItem, totalItems } = useCart()
 
     const handleAddToCart = () => {
         try {
