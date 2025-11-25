@@ -60,14 +60,15 @@ const SearchCriteria = () => {
         isInitializedRef.current = true // Detenemos futuras inicializaciones
         // console.log('criterios de perfil',(profile.criteria as Combinado)?.criterios)
         
+        // Seteamos su distancia maxima
+        setCounter(profile.maxDistance || 0)
+        
         // Si es consumista, cargo sus frases
         if (profileCriteria.criterios.some(c => c.type == 'consumista')) {
           const consumista = profileCriteria.criterios.find(criterio => criterio.type == 'consumista')
           setFrasesFavoritas((consumista as Consumista)?.frasesFavoritas || [])
         }
 
-        // Seteamos su distancia maxima
-        setCounter(profile.maxDistance || 0)
 
         if (profileCriteria.criterios.some(c => c.type == 'fieles')){
           // console.log('allStores en REF: ', allStores)
@@ -96,18 +97,15 @@ const SearchCriteria = () => {
     /* ===== GUARDADO DE CRITERIOS EN CONTEXT ===== */
     const handleSave = async () => {
       try{
-        const nuevo = profile.agregarCriterios(criterios) 
+        profile.agregarCriterios(criterios) 
+        // Guargo su distancia maxima
+        setProfile(prev =>
+          UserProfile.fromJSON({
+            ...prev.toJSON(),
+            maxDistance: counter
+          })
+        )
         
-        // Si es impaciente, cargo su distancia maxima
-        if ((nuevo.criteria as Combinado).criterios?.some(c => c.type == 'impaciente')) {
-          // Esto es una locura
-          setProfile(prev =>
-            UserProfile.fromJSON({
-              ...prev.toJSON(),
-              maxDistance: counter
-            })
-          )
-        }
         showToast('Criterios del usuario modificados', 'success')
       } catch(error){
         console.error('Error al modificar usuario:', error)

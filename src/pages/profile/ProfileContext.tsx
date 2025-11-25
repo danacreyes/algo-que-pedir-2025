@@ -28,8 +28,8 @@ const ProfileContext = () => {
     }
 
     const checkChanges = () => {
-      // console.log("nuevo: ", profile)
-      // console.log("viejo: ", profileOG)
+      console.log("nuevo: ", profile)
+      console.log("viejo: ", profileOG)
       if (!profile.isEqual(profileOG) ) {
         // console.log("Hay cambios sin guardar!")
         showToast('Hay cambios sin guardar!', 'error', 5000)
