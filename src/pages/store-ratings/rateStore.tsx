@@ -73,7 +73,7 @@ function RateStore() {
 
       <section className='main-body-and-form'>
         <Typography 
-          variant='h5' sx={{ fontSize: '1.9em'}}>
+          variant='h5' sx={{ fontSize: '1.9em'}} data-testid="restaurant-name">
             ¿Cómo fue tu experiencia con {name}?
         </Typography>
         <Typography 
@@ -129,15 +129,14 @@ function RateStore() {
                   }
                 }}
                 placeholder='Describi tu experiencia'
-                data-testid="rating-textarea">
-
-                </textarea>
-              <div className={`characters-counter ${counterState}`} data-testid="characters-counter">{charactersLeft}</div>
+                data-testid="textarea-rating"
+                ></textarea>
+              <div className={`characters-counter ${counterState}`}>{charactersLeft}</div>
             </section>
             <ValidationField field='experience-description' errors={errors} />
           </fieldset>
           
-          <Button variant='contained' type='submit' className='btn-primary spaced-top' data-testid="submit-rating">Guardar</Button>
+          <Button variant='contained' type='submit' className='btn-primary spaced-top' data-testid="guardar-rating">Guardar</Button>
         </form>
 
       </section>

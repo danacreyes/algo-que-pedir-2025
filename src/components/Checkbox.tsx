@@ -2,8 +2,6 @@ import { red } from '@mui/material/colors'
 import Checkbox from '@mui/material/Checkbox'
 import { Box, Typography } from '@mui/material'
 
-const label = { inputProps: { 'aria-label': 'Checkbox' } }
-
 interface ColorCheckboxesProps {
   isChecked: boolean
   onCheckboxChange: (checked: boolean) => void

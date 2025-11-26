@@ -206,7 +206,7 @@ const StoreDetail = () => {
                             aria-label='menu tabs'
                         >
                             <Tab label='Menú' value='1' />
-                            <Tab label='Reseñas' value='2' />
+                            <Tab label='Reseñas' value='2' data-testid="reseñas-tab"/>
                         </TabList>
                     </Box>
 
@@ -226,7 +226,7 @@ const StoreDetail = () => {
                             {reviews.map((review) => (
                                 <RateCard key={review.experienceDesc} calificacion={Number(review.rate)} comentario={review.experienceDesc}/>
                             ))}
-                            {hasMore && <button className='pagination-button' onClick={getMoreStoreReviews}>Cargar mas</button>}
+                            {hasMore && <button className='pagination-button' onClick={getMoreStoreReviews} data-testid="cargar-mas-reseñas">Cargar mas</button>}
                         </TabPanel>
                     </Box>
                 </TabContext>
@@ -243,6 +243,7 @@ const StoreDetail = () => {
                     onClick={() => navigate('/order-checkout', {state: {id: store?.id, isNew: true}})}
                     className="see-order-button"
                     disabled={totalItems() < 1}
+                    data-testid="ver-pedido-btn"
                 >
                     Ver pedido ({totalItems()})
                 </Button>
@@ -254,6 +255,8 @@ const StoreDetail = () => {
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                data-testid="dish-modal"
+                id={`modal-${selectedDish?.id}`}
             >
                 <Box className="modal-box">
                     <CardMedia
@@ -288,10 +291,11 @@ const StoreDetail = () => {
                                 onClick={() => restModalcounter()}
                                 disabled={modalCounter <= 1}
                                 className="quantity-button"
+                                data-testid="modal-rest-btn"
                             >
                                 -
                             </Button>
-                            <Typography className="quantity-display">
+                            <Typography className="quantity-display" data-testid="modal-counter">
                                 {modalCounter}
                             </Typography>
                             <Button
@@ -299,6 +303,7 @@ const StoreDetail = () => {
                                 color="error"
                                 onClick={() => countModalcounter()}
                                 className="quantity-button"
+                                data-testid="modal-add-btn"
                             >
                                 +
                             </Button>
@@ -321,6 +326,7 @@ const StoreDetail = () => {
                                 color="error"
                                 onClick={handleClose}
                                 className="cancel-button"
+                                data-testid="cerrar-modal-store"
                             >
                                 Cancelar
                             </Button>
@@ -330,6 +336,7 @@ const StoreDetail = () => {
                                 color="error"
                                 className="add-button"
                                 onClick={handleAddToCart}
+                                data-testid="agregar-a-pedido"
                             >
                                 Agregar al Pedido
                             </Button>
@@ -339,7 +346,7 @@ const StoreDetail = () => {
             </Modal>
 
             {/* ==================== Toast ==================== */}
-            <div id="toast-container">
+            <div id="toast-container" data-testid='toast-storeDetail-test'>
                 <Toast toast={toast} />
             </div>
 

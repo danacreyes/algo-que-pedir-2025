@@ -155,11 +155,11 @@ const OrderCheckout = () => {
                         <Box
                             component='img'
                             src={store?.storeURL}
-                            alt='El Sabor Auténtico'
+                            alt={store?.name}
                             className="restaurant-logo"
                         />
                         <Box>
-                            <Typography className="restaurant-name">
+                            <Typography className="restaurant-name" data-testid='restaurant-name-test'>
                                 {store?.name}
                             </Typography>
                             <Typography variant='body2' className="restaurant-details">
@@ -184,7 +184,7 @@ const OrderCheckout = () => {
                                         {item.title}
                                     </Typography>
                                 </Box>
-                                <Typography variant='body2' className="item-quantity">
+                                <Typography variant='body2' className="item-quantity" data-testid={`item-quantity-${item.id}`}>
                                     Cantidad: {item.quantity}
                                 </Typography>
                                 <Typography variant='body2' className="item-unit-price">
@@ -323,7 +323,7 @@ const OrderCheckout = () => {
                         onClick={isNew ? handleReserveOrder : handleConfirmOrder}
                         disabled={isNew && items.length === 0}
                         className="confirm-order-button"
-                        data-testid="confirm-order-btn"
+                        data-testid="reservar-confirmar-pedido-btn"
                     >
                         {isNew ? 'Reservar pedido' : 'Confirmar Pedido'}
                     </Button>
@@ -341,7 +341,7 @@ const OrderCheckout = () => {
             ) : ''}
 
             {/* ==================== Toast ==================== */}
-            <div id="toast-container">
+            <div id="toast-container" data-testid='toast-orderCheckout-test'>
                 <Toast toast={toast} />
             </div>
 

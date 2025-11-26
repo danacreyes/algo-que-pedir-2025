@@ -58,7 +58,7 @@ export default function MediaCard({ stores }: MediaCardProps) {
           </StoreCard>
         ))
       ) : (
-        <NoStoresText data-testid="no-stores">
+        <NoStoresText data-testid="no-stores-text">
           No hay locales disponibles
         </NoStoresText>
       )}

@@ -13,13 +13,13 @@ const RestaurantCard = ({src, alt, name, detail, detail2, icon, cardOnClickFunct
                     className={`${classNameImage ?? 'img-restaurant'}`}
                 />
                 <Box className={`restaurant-card-content ${classNameContent ?? ''}`}>
-                    <Typography variant="body2" className="restaurant-title" sx={{ fontWeight: 600 }} color='gray'>{name}</Typography>
+                    <Typography variant="body2" className="restaurant-title" sx={{ fontWeight: 600 }} color='gray' data-testid="restaurant-title">{name}</Typography>
                     <Typography variant="body2" className="restaurant-description"  color='gray'>{detail}</Typography>
                     <Typography variant="body2" className="restaurant-description" color='gray'>{detail2}</Typography>
                 </Box>
             </Box>
             
-            <Box className={`${classNameIcon ?? 'icon-custom'}`} onClick={buttonOnClickFunction}>
+            <Box className={`${classNameIcon ?? 'icon-custom'}`} onClick={buttonOnClickFunction} >
                 {icon}
             </Box>
         </Box>

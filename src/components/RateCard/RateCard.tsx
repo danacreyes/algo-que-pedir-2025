@@ -8,7 +8,7 @@ function RateCard({ calificacion, comentario } : { calificacion: number, comenta
             <Box className='box-item-review'>
                 <Box>
                     <Rating name="read-only" value={calificacion} readOnly />
-                    <Typography variant="body2" color='gray'>"{comentario}"</Typography>
+                    <Typography variant="body2" color='gray' data-testid="reseña-texto">"{comentario}"</Typography>
                 </Box>
             </Box>
         </Box>

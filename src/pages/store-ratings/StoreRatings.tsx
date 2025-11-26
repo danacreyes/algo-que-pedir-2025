@@ -37,7 +37,7 @@ const StoreRatings = () => {
                 alt='Imagen de local' 
                 name={store.name} 
                 detail = {`${store.gradePointAvg} · ${store.deliveryTimeAvg} · ${store.isExpensive ? '$$' : '$'}`}
-                icon={<Button sx={{textAlign: 'center', textTransform: 'none'}} variant="contained" color="success" data-testid={`rate-btn-${store.id}`}>Calificar</Button>}
+                icon={<Button sx={{textAlign: 'center', textTransform: 'none'}} variant="contained" color="success" data-testid={`calificar-${store.id}`}>Calificar</Button>}
                 buttonOnClickFunction={() => navigation.goTo(`/rate-store/${store.id}`, { name : store.name })}
                 />
             </Container>
