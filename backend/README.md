@@ -1,40 +1,86 @@
-# Ejemplo base para TP Algo3
+# 🍔 Algo que Pedir – Backend (Kotlin + Spring Boot)
 
-[![Build](https://github.com/algo3-unsam/proyecto-base-tp/actions/workflows/build.yml/badge.svg)](https://github.com/algo3-unsam/tp-recetas-2020-gr-xx/actions/workflows/build.yml) ![Coverage](./.github/badges/jacoco.svg)
+API REST desarrollada con **Kotlin + Spring Boot** que implementa la lógica de negocio del sistema de pedidos de comida.
 
-- El build de Github Actions funciona de una, no tenés que configurar nada
-- También el coverage se genera solito si respetás las dependencias que están en el `build.gradle.kts`
-- en el archivo [settings.gradle.kts](./settings.gradle.kts) que está en el raíz tenés que cambiarle al nombre de tu proyecto
+Esta aplicación provee los endpoints necesarios para la gestión de usuarios, pedidos, locales e ingredientes, y es consumida por dos clientes frontend (React y Svelte).
 
-```kts
-rootProject.name = "proyecto-base-tp"
-```
+---
 
-- Para los badges de build y coverage (las imágenes que ves con el build passing y el % en este README), tenés que reemplazar `tp-worldcapp-2023-gr-xx` por el repositorio correspondiente.
+## 🚀 Funcionalidades
 
-## El proyecto
+- API RESTful para gestión de pedidos y usuarios.
+- Separación en capas: Controller · Service · Repository · Model.
+- Reglas de negocio implementadas en el dominio.
+- Manejo global de excepciones.
+- Uso de DTOs para desacoplar la API del modelo interno.
+- Tests unitarios e integración.
+- CI configurado con GitHub Actions.
 
-Antes que nada, la idea de este proyecto es que te sirva como base para poder desarrollar el backend en la materia [Algoritmos 3](https://algo3.uqbar-project.org/). Por eso está basado en _Maven_, y el archivo `build.gradle.kts` tiene dependencias a
+---
 
-- Spring Boot
-- JUnit
-- JaCoCo (Java Code Coverage), para que agregues el % de cobertura en el README
-- la versión de Kotlin que estaremos usando
-- además de estar basado en la JDK 21
+## 🏗 Arquitectura
 
-### Pasos para adaptar tu proyecto de Algo2 a Algo3
+El proyecto sigue una arquitectura en capas típica de Spring Boot:
+Controller → Service → Repository → Model
 
-El proceso más simple para que puedan reutilizar el proyecto de Algo2 en Algo3 es:
+- **Controller**: expone endpoints HTTP.
+- **Service**: contiene lógica de negocio y validaciones.
+- **Repository**: almacenamiento en memoria (sin base de datos persistente).
+- **Model**: entidades del dominio y aplicación de patrones de diseño.
 
-- generar una copia de todo el directorio que contiene este proyecto
-- eliminar la carpeta `.git` que está oculta
-- copiar del proyecto de Algo2 las carpetas `src/main/kotlin` y `src/test/kotlin` y la ubican en el mismo lugar en el proyecto de Algo3
-- apuntar al proyecto de github mediante
+La información se almacena en memoria durante la ejecución.
+
+---
+
+## 🛠 Stack Tecnológico
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" />
+  <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
+  <img src="https://img.shields.io/badge/JUnit-25A162?style=for-the-badge&logo=junit5&logoColor=white" />
+</p>
+
+---
+
+## 🧪 Testing
+
+El proyecto incluye:
+
+- Tests unitarios
+- Tests de integración
+- Validación de reglas de negocio
+- Ejecución automatizada en CI
+
+Para ejecutar los tests:
 
 ```bash
-git remote add origin ...dirección del repo git...
+./gradlew test
 ```
+---
+## ⚙️ Ejecución Local
 
-El proyecto tiene un main, en la clase `ProyectoApplication`, que levantará el servidor web en el puerto 9000, tienen que renombrarlo al TP actual. También tenés
+Requisitos: **JDK 17+**
+```bash
+git clone https://github.com/danacreyes/algo-que-pedir-2025.git
+cd backend
+```
+<img width="429" height="59" alt="image" src="https://github.com/user-attachments/assets/e468cfc0-7007-4bda-8ebc-a80cb7bd4aad" />
 
-- un test de integración de ejemplo (en `src/test/kotlin`)
+Servidor disponible en: [http://localhost:9000](http://localhost:9000)
+
+--- 
+## 👩‍💻 Proyecto desarrollado en equipo
+- Catalina Correa
+- Nicolas Cernadas
+- Dana Cossettini Reyes
+- Maximiliano Andres Bianchimano
+- Fernanda Perez
+
+---
+
+## 📫 Contacto
+
+**Dana Cossettini Reyes** - 
+Estudiante avanzada de Programación Informática - 
+📧 dana2004c.r@gmail.com
