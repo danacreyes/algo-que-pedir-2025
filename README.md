@@ -114,7 +114,7 @@ https://github.com/user-attachments/assets/6bb5f0e9-4651-408e-a320-2dfaffbc80aa
 Para ejecutar correctamente cada módulo del sistema, se recomienda revisar los README específicos de cada subproyecto:
 
 - 📦 [Backend](./backend/README.md)  → Instrucciones para correr la API REST (Kotlin + Spring Boot)
-- 👤 [Frontend Cliente](./frontend-react/README.md) → Instrucciones para ejecutar la vista Cliente (React + TypeScript + Vite)
+- 👤 [Frontend Cliente](./frontend-react+typescript/README.md) → Instrucciones para ejecutar la vista Cliente (React + TypeScript + Vite)
 - 🏪 [Frontend Restaurante](./frontend-svelte/README.md) → Instrucciones para ejecutar la vista Restaurante (Svelte)
 
 Cada uno contiene:
