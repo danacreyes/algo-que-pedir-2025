@@ -26,12 +26,13 @@ El proyecto integra conceptos de:
 
 ## 🏗 Arquitectura General
 
+```bash
 Cliente (React) Restaurante (Svelte)
 ↓ ↓
 API REST
 ↓
 Backend (Kotlin + Spring Boot)
-
+```
 Ambos clientes consumen los mismos endpoints, pero exponen funcionalidades específicas según el rol del usuario.
 
 ---
@@ -104,6 +105,25 @@ https://github.com/user-attachments/assets/6bb5f0e9-4651-408e-a320-2dfaffbc80aa
 # 🛠 Stack Tecnológico
 
 <p align="center"> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" /> <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" /> <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" /> <img src="https://img.shields.io/badge/Svelte-FF3E00?style=for-the-badge&logo=svelte&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" /> </p>
+
+
+---
+
+## 📌 Información Importante
+
+Para ejecutar correctamente cada módulo del sistema, se recomienda revisar los README específicos de cada subproyecto:
+
+- 📦 [Backend](./backend/README.md)  → Instrucciones para correr la API REST (Kotlin + Spring Boot)
+- 👤 [Frontend Cliente](./frontend-react/README.md) → Instrucciones para ejecutar la vista Cliente (React + TypeScript + Vite)
+- 🏪 [Frontend Restaurante](./frontend-svelte/README.md) → Instrucciones para ejecutar la vista Restaurante (Svelte)
+
+Cada uno contiene:
+- Requisitos previos
+- Comandos de instalación
+- Variables de entorno necesarias
+- Puertos utilizados
+
+⚠️ Es importante iniciar primero el **backend**, y luego los frontends.
 
 --- 
 ## 👩‍💻 Proyecto desarrollado en equipo
