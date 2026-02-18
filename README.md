@@ -1,0 +1,122 @@
+# 🍔 Algo que Pedir – Sistema de Gestión de Pedidos
+
+Aplicación web para la gestión de pedidos gastronómicos, compuesta por múltiples clientes que consumen una misma API REST.
+
+El sistema contempla dos perfiles diferenciados:
+
+- 👤 Cliente (Frontend en React + TypeScript)
+- 🏪 Restaurante / Local (Frontend en Svelte)
+- 🧠 Backend centralizado en Kotlin + Spring Boot
+
+Este proyecto demuestra la integración de múltiples interfaces trabajando sobre un backend unificado.
+
+---
+## 🎯 Objetivo Académico
+
+*Trabajo práctico de Algoritmos III*
+**Tecnicatura en Programación Informática – UNSAM (2C 2025)**
+
+El proyecto integra conceptos de:
+- Arquitectura en capas
+- Patrones de diseño
+- Testing
+- Integración multi-cliente con backend centralizado
+- Separación de responsabilidades
+---
+
+## 🏗 Arquitectura General
+
+Cliente (React) Restaurante (Svelte)
+↓ ↓
+API REST
+↓
+Backend (Kotlin + Spring Boot)
+
+Ambos clientes consumen los mismos endpoints, pero exponen funcionalidades específicas según el rol del usuario.
+
+---
+
+## 📂 Estructura del Proyecto
+
+```bash
+algo-que-pedir-2025/
+│
+├── backend/ → API REST
+├── frontend-react+typescript/ → Vista Cliente
+├── frontend-svelte/ → Vista Restaurante
+```
+
+---
+
+## 👤 Frontend Cliente (React)
+
+Aplicación desarrollada con React + TypeScript orientada al usuario final.
+
+### Funcionalidades
+
+- Registro e inicio de sesión
+![ejemplo registro](./docs/ejemplo%20registro.mp4)
+- Visualización del menú
+- Creación de pedidos
+- Consulta de pedidos realizados
+- Seguimiento de estado del pedido
+
+---
+
+## 🏪 Frontend Restaurante (Svelte)
+
+Interfaz administrativa desarrollada en Svelte destinada al local gastronómico.
+
+### Funcionalidades
+- Visualización de pedidos recibidos
+- Cambio de estado del pedido (pendiente → preparado)
+- Gestión de ingredientes
+- Edición de platos
+- Administración del perfil del local
+
+---
+
+## 🧠 Backend (Kotlin + Spring Boot)
+
+API REST encargada de la lógica de negocio y gestión de datos.
+
+### Características
+
+- Arquitectura en capas (Controller → Service → Repository → Model)
+- DTOs para separación de responsabilidades
+- Manejo global de excepciones
+- Tests unitarios e integración
+- Persistencia en memoria (sin base de datos)
+
+---
+
+## 🎥 Demo del Sistema
+
+1. Inicio sesion como cliente y restaurante
+2. Cambio preferencias del cliente
+3. Cliente crea pedido (React)
+4. Restaurante visualiza pedido (Svelte)
+5. Restaurante cambia estado
+6. Cliente ve actualización reflejada y puede calificar
+7. Restaurante tiene nueva reseña
+
+![Demo Sistema](./docs/End-to-end%20video.mp4)
+
+# 🛠 Stack Tecnológico
+<p align="center"> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" /> <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" /> <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" /> <img src="https://img.shields.io/badge/Svelte-FF3E00?style=for-the-badge&logo=svelte&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" /> </p>
+
+--- 
+## 👩‍💻 Proyecto desarrollado en equipo
+- Catalina Correa
+- Nicolas Cernadas
+- Dana Cossettini Reyes
+- Maximiliano Andres Bianchimano
+- Fernanda Perez
+
+---
+
+## 📫 Contacto
+
+**Dana Cossettini Reyes** - 
+Estudiante avanzada de Programación Informática - 
+📧 dana2004c.r@gmail.com
