@@ -55,7 +55,6 @@ Aplicación desarrollada con React + TypeScript orientada al usuario final.
 ### Funcionalidades
 
 - Registro e inicio de sesión
-![ejemplo registro](./docs/ejemplo%20registro.mp4)
 - Visualización del menú
 - Creación de pedidos
 - Consulta de pedidos realizados
@@ -100,9 +99,10 @@ API REST encargada de la lógica de negocio y gestión de datos.
 6. Cliente ve actualización reflejada y puede calificar
 7. Restaurante tiene nueva reseña
 
-![Demo Sistema](./docs/End-to-end%20video.mp4)
+https://github.com/user-attachments/assets/6bb5f0e9-4651-408e-a320-2dfaffbc80aa
 
 # 🛠 Stack Tecnológico
+
 <p align="center"> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" /> <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" /> <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" /> <img src="https://img.shields.io/badge/Svelte-FF3E00?style=for-the-badge&logo=svelte&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" /> </p>
 
 --- 
