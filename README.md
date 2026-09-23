@@ -1,132 +1,136 @@
-# 🍔 Algo que Pedir – Sistema de Gestión de Pedidos
+# 🍔 Algo que Pedir – Order Management System
 
-Aplicación web para la gestión de pedidos gastronómicos, compuesta por múltiples clientes que consumen una misma API REST.
+> A multi-client web application for restaurant orders: a React app for customers and a Svelte app for restaurants, both powered by a single Kotlin + Spring Boot REST API.
 
-El sistema contempla dos perfiles diferenciados:
-
-- 👤 Cliente (Frontend en React + TypeScript)
-- 🏪 Restaurante / Local (Frontend en Svelte)
-- 🧠 Backend centralizado en Kotlin + Spring Boot
-
-Este proyecto demuestra la integración de múltiples interfaces trabajando sobre un backend unificado.
-
----
-## 🎯 Objetivo Académico
-
-*Trabajo práctico de Algoritmos III*
-**Tecnicatura en Programación Informática – UNSAM (2C 2025)**
-
-El proyecto integra conceptos de:
-- Arquitectura en capas
-- Patrones de diseño
-- Testing
-- Integración multi-cliente con backend centralizado
-- Separación de responsabilidades
----
-
-## 🏗 Arquitectura General
-
-```bash
-Cliente (React) Restaurante (Svelte)
-↓ ↓
-API REST
-↓
-Backend (Kotlin + Spring Boot)
-```
-Ambos clientes consumen los mismos endpoints, pero exponen funcionalidades específicas según el rol del usuario.
+<p align="center">
+  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" />
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/Svelte-FF3E00?style=for-the-badge&logo=svelte&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+</p>
 
 ---
 
-## 📂 Estructura del Proyecto
+## 🎯 Academic Purpose
 
-```bash
-algo-que-pedir-2025/
-│
-├── backend/ → API REST
-├── frontend-react+typescript/ → Vista Cliente
-├── frontend-svelte/ → Vista Restaurante
-```
+*Practical assignment for Algorithms III*
+**Associate Degree in Computer Programming – UNSAM (2nd semester 2025)**
 
----
+The project brings together concepts such as:
 
-## 👤 Frontend Cliente (React)
-
-Aplicación desarrollada con React + TypeScript orientada al usuario final.
-
-### Funcionalidades
-
-- Registro e inicio de sesión
-- Visualización del menú
-- Creación de pedidos
-- Consulta de pedidos realizados
-- Seguimiento de estado del pedido
+- Layered architecture
+- Design patterns
+- Unit and integration testing
+- Multi-client integration with a centralized backend
+- Separation of concerns
 
 ---
 
-## 🏪 Frontend Restaurante (Svelte)
+## 🔎 Overview
 
-Interfaz administrativa desarrollada en Svelte destinada al local gastronómico.
+The system has two different user profiles that share the same backend:
 
-### Funcionalidades
-- Visualización de pedidos recibidos
-- Cambio de estado del pedido (pendiente → preparado)
-- Gestión de ingredientes
-- Edición de platos
-- Administración del perfil del local
+| Profile | Technology | Purpose |
+|---------|------------|---------|
+| 👤 **Customer** | React + TypeScript (Vite) | Browse the menu, place orders and follow their status |
+| 🏪 **Restaurant** | Svelte | Manage incoming orders, dishes, ingredients and the venue profile |
 
----
-
-## 🧠 Backend (Kotlin + Spring Boot)
-
-API REST encargada de la lógica de negocio y gestión de datos.
-
-### Características
-
-- Arquitectura en capas (Controller → Service → Repository → Model)
-- DTOs para separación de responsabilidades
-- Manejo global de excepciones
-- Tests unitarios e integración
-- Persistencia en memoria (sin base de datos)
+Both clients use the same endpoints, but each one offers specific features depending on the user's role.
 
 ---
 
-## 🎥 Demo del Sistema
+## 🎥 Demo
 
-1. Inicio sesion como cliente y restaurante
-2. Cambio preferencias del cliente
-3. Cliente crea pedido (React)
-4. Restaurante visualiza pedido (Svelte)
-5. Restaurante cambia estado
-6. Cliente ve actualización reflejada y puede calificar
-7. Restaurante tiene nueva reseña
+The demo follows one complete order from both sides:
+
+1. Log in as a customer and as a restaurant
+2. Change the customer's preferences
+3. The customer creates an order (React)
+4. The restaurant sees the order (Svelte)
+5. The restaurant changes the order status
+6. The customer sees the update reflected and can leave a rating
+7. The restaurant receives a new review
 
 https://github.com/user-attachments/assets/6bb5f0e9-4651-408e-a320-2dfaffbc80aa
 
-# 🛠 Stack Tecnológico
+---
 
-<p align="center"> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" /> <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" /> <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" /> <img src="https://img.shields.io/badge/Svelte-FF3E00?style=for-the-badge&logo=svelte&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" /> </p>
+## 🏗 Architecture
 
+```
+Customer (React)     Restaurant (Svelte)
+        ↓                    ↓
+              REST API
+                 ↓
+   Backend (Kotlin + Spring Boot)
+```
+
+The backend follows a layered architecture, so each layer has one clear responsibility:
+
+```
+Controller → Service → Repository → Model
+```
 
 ---
 
-## 📌 Información Importante
+## ✨ Features
 
-Para ejecutar correctamente cada módulo del sistema, se recomienda revisar los README específicos de cada subproyecto:
+### 👤 Customer (React)
 
-- 📦 [Backend](./backend/README.md)  → Instrucciones para correr la API REST (Kotlin + Spring Boot)
-- 👤 [Frontend Cliente](./frontend-react+typescript/README.md) → Instrucciones para ejecutar la vista Cliente (React + TypeScript + Vite)
-- 🏪 [Frontend Restaurante](./frontend-svelte/README.md) → Instrucciones para ejecutar la vista Restaurante (Svelte)
+- Sign up and log in
+- Menu display
+- Order creation
+- History of placed orders
+- Order status tracking
+- Ratings for completed orders
 
-Cada uno contiene:
-- Requisitos previos
-- Comandos de instalación
-- Variables de entorno necesarias
-- Puertos utilizados
+### 🏪 Restaurant (Svelte)
 
-⚠️ Es importante iniciar primero el **backend**, y luego los frontends.
+- View incoming orders
+- Change the order status (pending → prepared)
+- Ingredient management
+- Dish editing
+- Venue profile management
+- View customer reviews
 
---- 
-## 👩‍💻 Proyecto desarrollado en equipo
+### 🧠 Backend (Kotlin + Spring Boot)
+
+- **Layered architecture** (Controller → Service → Repository → Model)
+- **DTOs** to separate the API contract from the domain model
+- **Global exception handling**, so errors are returned in a consistent format
+- **Unit and integration tests**
+- **In-memory persistence** (no database), which keeps setup simple
+- **Design patterns used:** <!-- TODO: list the real ones, e.g. Strategy, Observer, Builder... -->
+
+---
+
+## 🚀 Running the Project
+
+Each subproject has its own README with prerequisites, installation commands, environment variables and ports:
+
+- 📦 [Backend](./backend/README.md) → REST API (Kotlin + Spring Boot)
+- 👤 [Customer Frontend](./frontend-react+typescript/README.md) → React + TypeScript + Vite
+- 🏪 [Restaurant Frontend](./frontend-svelte/README.md) → Svelte
+
+⚠️ **Start the backend first, and then the frontends.**
+
+---
+
+## 📂 Project Structure
+
+```
+algo-que-pedir-2025/
+│
+├── backend/                     → REST API
+├── frontend-react+typescript/   → Customer view
+└── frontend-svelte/             → Restaurant view
+```
+
+---
+
+## 👩‍💻 Team
+
 - Catalina Correa
 - Nicolas Cernadas
 - Dana Cossettini Reyes
@@ -135,8 +139,9 @@ Cada uno contiene:
 
 ---
 
-## 📫 Contacto
-
-**Dana Cossettini Reyes** - 
-Estudiante avanzada de Programación Informática - 
+## 📫 Contact
+ 
+**Dana Cossettini Reyes** -
 📧 dana2004c.r@gmail.com
+ 
+**Institution:** National University of San Martín (UNSAM) · **Year:** 2025
