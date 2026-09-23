@@ -12,7 +12,7 @@
 
 ---
 
-## 🎯 Academic Purpose
+## Academic Purpose
 
 *Practical assignment for Algorithms III*
 **Associate Degree in Computer Programming – UNSAM (2nd semester 2025)**
@@ -27,20 +27,20 @@ The project brings together concepts such as:
 
 ---
 
-## 🔎 Overview
+## Overview
 
 The system has two different user profiles that share the same backend:
 
 | Profile | Technology | Purpose |
 |---------|------------|---------|
-| 👤 **Customer** | React + TypeScript (Vite) | Browse the menu, place orders and follow their status |
-| 🏪 **Restaurant** | Svelte | Manage incoming orders, dishes, ingredients and the venue profile |
+| **Customer** | React + TypeScript (Vite) | Browse the menu, place orders and follow their status |
+| **Restaurant** | Svelte | Manage incoming orders, dishes, ingredients and the venue profile |
 
 Both clients use the same endpoints, but each one offers specific features depending on the user's role.
 
 ---
 
-## 🎥 Demo
+## Demo
 
 The demo follows one complete order from both sides:
 
@@ -56,7 +56,7 @@ https://github.com/user-attachments/assets/6bb5f0e9-4651-408e-a320-2dfaffbc80aa
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 ```
 Customer (React)     Restaurant (Svelte)
@@ -74,9 +74,9 @@ Controller → Service → Repository → Model
 
 ---
 
-## ✨ Features
+## Features
 
-### 👤 Customer (React)
+### Customer (React)
 
 - Sign up and log in
 - Menu display
@@ -85,7 +85,7 @@ Controller → Service → Repository → Model
 - Order status tracking
 - Ratings for completed orders
 
-### 🏪 Restaurant (Svelte)
+### Restaurant (Svelte)
 
 - View incoming orders
 - Change the order status (pending → prepared)
@@ -94,7 +94,7 @@ Controller → Service → Repository → Model
 - Venue profile management
 - View customer reviews
 
-### 🧠 Backend (Kotlin + Spring Boot)
+### Backend (Kotlin + Spring Boot)
 
 - **Layered architecture** (Controller → Service → Repository → Model)
 - **DTOs** to separate the API contract from the domain model
@@ -105,19 +105,19 @@ Controller → Service → Repository → Model
 
 ---
 
-## 🚀 Running the Project
+## Running the Project
 
 Each subproject has its own README with prerequisites, installation commands, environment variables and ports:
 
-- 📦 [Backend](./backend/README.md) → REST API (Kotlin + Spring Boot)
-- 👤 [Customer Frontend](./frontend-react+typescript/README.md) → React + TypeScript + Vite
-- 🏪 [Restaurant Frontend](./frontend-svelte/README.md) → Svelte
+- [Backend](./backend/README.md) → REST API (Kotlin + Spring Boot)
+- [Customer Frontend](./frontend-react+typescript/README.md) → React + TypeScript + Vite
+- [Restaurant Frontend](./frontend-svelte/README.md) → Svelte
 
 ⚠️ **Start the backend first, and then the frontends.**
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 algo-que-pedir-2025/
@@ -129,7 +129,7 @@ algo-que-pedir-2025/
 
 ---
 
-## 👩‍💻 Team
+## Team
 
 - Catalina Correa
 - Nicolas Cernadas
@@ -139,7 +139,7 @@ algo-que-pedir-2025/
 
 ---
 
-## 📫 Contact
+## Contact
  
 **Dana Cossettini Reyes** -
 📧 dana2004c.r@gmail.com
